@@ -22,3 +22,5 @@ COPY ./poetry.lock .
 RUN poetry install
 
 COPY ./app ./app
+
+ENTRYPOINT ["./app/entrypoint.sh"]

@@ -6,7 +6,8 @@ services:
       context: .
       dockerfile: ./app/Dockerfile
     container_name: web-app-tantradjango
-    command: ./app/entrypoint.sh
+    command: poetry run python manage.py runserver 0.0.0.0:8000
+
     volumes:
       - ./app:/home/app
     ports:
@@ -24,9 +25,9 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME-tantra_db}
+      POSTGRES_USER: ${DB_USER-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD-postgres}
 
 volumes:
   postgres_data:
