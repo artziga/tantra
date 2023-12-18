@@ -11,6 +11,8 @@ RUN pip install --upgrade pip
 RUN python -m pip install --no-cache-dir poetry
 
 RUN mkdir -p /home/app
+RUN mkdir -p /home/app/static
+
 
 WORKDIR /home
 
