@@ -1,0 +1,74 @@
+{% load static %}
+{% load menu %}
+<aside class="offcanvas-navigation" id="offcanvasnav">
+    <div class="offcanvas-navigation__inner">
+        <a href="" class="btn-close">
+            <i class="flaticon-cross"></i>
+            <span class="sr-only">Close Offcanvas Navigtion</span>
+        </a>
+        <div class="offcanvas-navigation__top">
+            <ul class="offcanvas-menu">
+                {% if user.is_authenticated %}
+                {% side_profile_menu user %}
+                {% endif %}
+                <li>
+                    <a href="{% url 'main:index' %}">
+                        <span class="mm-text">Главная</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'specialists:specialists' %}">
+                        <span class="mm-text">Мастера</span>
+                    </a>
+                </li>
+                <li class="has-children">
+                    <a href="#">
+                        <span class="mm-text">Дополнительно</span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="{% url 'main:contact-us' %}">
+                                <span class="mm-text">Обратная связь</span>
+                            </a>
+                        </li>
+                        <li>
+                            {% if user.is_authenticated %}
+                                {% if user.is_specialist %}
+                                    <a href="{% url 'specialists:delete_a_specialist' %}">
+                                        <span class="mm-text">Удалить профиль массажиста</span>
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'specialists:become_a_specialist' %}">
+                                        <span class="mm-text">Создать профиль массажиста</span>
+                                    </a>
+                                {% endif %}
+                            {% else %}
+                                <a href="{% url 'accounts:specialist_registration' %}">
+                                    <span class="mm-text">Создать профиль массажиста</span>
+                                </a>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </li>
+                {% if not user.is_authenticated %}
+                <li>
+                    <a href="#">
+                        <span class="mm-text"></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{%url 'accounts:login' %}">
+                        <span class="mm-text">Вход</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{%url 'accounts:registration' %}">
+                        <span class="mm-text">Регистрация</span>
+                    </a>
+                </li>
+
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</aside>

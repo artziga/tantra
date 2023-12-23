@@ -1,0 +1,49 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+  <!-- contact section -->
+  <title>Вход</title>
+  <section class="contact_section layout_padding_form ">
+    <div class="container">
+      <div class="heading_container">
+        <h2>
+          Вход
+        </h2>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="contact_form-container">
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              {{ form.non_field_errors }}
+              {% for field in form %}
+                <div>
+                  {{ field.label_tag }}
+                  {{ field }}
+                  {% if field.errors %}
+                    <ul class="errorlist">
+                      {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </div>
+              {% endfor %}
+      <div class="button-column">
+      <button class="contact_section contact_form-container button" type="submit">Отправить</button>
+
+      </div>
+            </form>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-5 offset-lg-1">
+          <div class="img-box">
+            <img src="{% static 'main/images/contact-img.jpg' %}" alt="No found">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end contact section -->
+{% endblock content %}

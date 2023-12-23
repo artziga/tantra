@@ -1,0 +1,10 @@
+{% extends 'map/map_base.html' %}
+{% load static %}
+
+{% block map_content %}
+  {% for specialist in specialists %}
+    {% if specialist.specialist_profile.address %}
+    {% include 'map/map_content.html' %}
+    {% endif %}
+  {% endfor %}
+{% endblock map_content %}

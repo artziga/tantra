@@ -1,0 +1,64 @@
+{% load static %}
+{% load menu %}
+
+<header class="header header-default site-header">
+    <div class="header__outer">
+        <div class="header__inner header--fixed">
+            <div class="container">
+                <div class="header__main">
+                    <div class="header__col header__left">
+                        <a href="{% url 'specialists:specialists' %}" class="logo">
+                            <figure class="logo--normal">
+                                <img src="{% static 'main/img/logo/logo.png' %}" alt="Logo">
+                            </figure>
+                            <figure class="logo--transparency">
+                                <img src="{% static 'main/img/logo/logo.png' %}" alt="Logo">
+                            </figure>
+                        </a>
+                    </div>
+                    <div class="header__col header__center">
+                        <nav class="main-navigation d-none d-lg-block">
+                            <ul class="mainmenu">
+                                <li class="mainmenu__item menu-item position-relative">
+                                    <a href="{% url 'main:index' %}" class="mainmenu__link">Главная</a>
+                                </li>
+                                <li class="mainmenu__item menu-item position-relative">
+                                    <a href="{% url 'specialists:specialists' %}" class="mainmenu__link">Мастера</a>
+                                </li>
+                                <li class="mainmenu__item menu-item-has-children position-relative">
+                                    <a href="#" class="mainmenu__link">Дополнительно</a>
+                                    <div class="inner-menu">
+                                        <ul class="sub-menu">
+                                            <li>
+                                                <a href="{% url 'main:contact-us' %}">Обратная связь</a>
+                                            </li>
+                                            <li>
+                                            {% if user.is_authenticated %}
+                                                {% if user.is_specialist %}
+                                                    <a href="{% url 'specialists:delete_a_specialist' %}">Удалить профиль массажиста</a>
+                                                {% else %}
+                                                    <a href="{% url 'specialists:become_a_specialist' %}">Создать профиль массажиста</a>
+                                                {% endif %}
+                                            {% else %}
+                                                <a href="{% url 'accounts:specialist_registration' %}">Создать профиль массажиста</a>
+                                            {% endif %}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="header__col header__right">
+                        {% profile_menu user %}
+                        <div class="toolbar-item d-block d-lg-none">
+                            <a href="#offcanvasnav" class="hamburger-icon js-toolbar menu-btn">
+                                <i class="fa fa-align-justify" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="header-sticky-height"></div>
+</header>

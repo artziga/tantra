@@ -1,0 +1,456 @@
+<!doctype html>
+{% load static %}
+<html class="no-js" lang="zxx">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Payne - Backpack eCommerce HTML Template</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicons -->
+    <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="assets/img/icon.png">
+
+    <!-- ************************* CSS Files ************************* -->
+
+    <!-- Vendor CSS -->
+    <link rel="stylesheet" href="{% static 'main/css/vendor.css' %}">
+
+    <!-- style css -->
+    <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+
+    <!--  подключение яндекс карты-->
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey={{API_KEY}}&suggest_apikey={{GEOSUGGEST_KEY}}" type="text/javascript"></script>
+
+
+    {% block head %}
+    {% endblock head %}
+</head>
+
+<body>
+
+    <!-- Preloader Start -->
+    <div class="ft-preloader active">
+        <div class="ft-preloader-inner h-100 d-flex align-items-center justify-content-center">
+            <div class="ft-child ft-bounce1"></div>
+            <div class="ft-child ft-bounce2"></div>
+            <div class="ft-child ft-bounce3"></div>
+        </div>
+    </div>
+    <!-- Preloader End -->
+
+    <!-- Main Wrapper Start -->
+    <div class="wrapper">
+        <!-- Header Start -->
+        {% include 'main/header_menu.html' %}
+    </div>
+        <!-- Header End -->
+
+
+        {% block content %}
+        {% endblock content %}
+
+        <!-- Footer Start-->
+        <footer class="footer bg-color pt--70 pt-xs--60" data-bg-color="#f4f8fa">
+            <div class="container">
+<!--                <div class="row border-bottom pb&#45;&#45;60 pb-sm&#45;&#45;28 pb-xs&#45;&#45;49">-->
+<!--                    <div class="col footer-column-1 mb-sm&#45;&#45;42">-->
+<!--                        <div class="footer-widget">-->
+<!--                            <div class="textwidget">-->
+<!--                                <figure class="footer-logo mb&#45;&#45;10">-->
+<!--                                    <img src="{% static 'main/img/logo/logo.png' %}" alt="Logo">-->
+<!--                                </figure>-->
+<!--                            </div>-->
+<!--                            <div class="address-widget">-->
+<!--                                <address>1203 Town Center Orive #L 335458 USA</address>-->
+<!--                                <a href="tel:+84112345678">+841 123 456 78</a>-->
+<!--                                <a href="mailto:info@company.com">info@company.com</a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col footer-column-2 mb-md&#45;&#45;33">-->
+<!--                        <div class="footer-widget">-->
+<!--                            <h3 class="widget-title mb&#45;&#45;35 mb-sm&#45;&#45;15">Store Menu</h3>-->
+<!--                            <ul class="footer-menu">-->
+<!--                                <li>-->
+<!--                                    <a href="shop.html">-->
+<!--                                        <i class="fa fa-angle-right"></i>-->
+<!--                                        <span>Best Seller</span>-->
+<!--                                    </a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="shop.html">-->
+<!--                                        <i class="fa fa-angle-right"></i>-->
+<!--                                        <span>New Arrivals</span>-->
+<!--                                    </a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="shop.html">-->
+<!--                                        <i class="fa fa-angle-right"></i>-->
+<!--                                        <span>Men</span>-->
+<!--                                    </a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="shop.html">-->
+<!--                                        <i class="fa fa-angle-right"></i>-->
+<!--                                        <span>Women</span>-->
+<!--                                    </a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="shop.html">-->
+<!--                                        <i class="fa fa-angle-right"></i>-->
+<!--                                        <span>Accessories</span>-->
+<!--                                    </a>-->
+<!--                                </li>-->
+<!--                            </ul>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col footer-column-3 mb-sm&#45;&#45;33">-->
+<!--                        <div class="footer-widget">-->
+<!--                            <h3 class="widget-title mb&#45;&#45;35 mb-sm&#45;&#45;15">Information</h3>-->
+<!--                            <ul class="footer-menu">-->
+<!--                                <li>-->
+<!--                                    <a href="#">-->
+<!--                                        <i class="fa fa-angle-right"></i>-->
+<!--                                        <span>About Us</span>-->
+<!--                                    </a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="#">-->
+<!--                                        <i class="fa fa-angle-right"></i>-->
+<!--                                        <span>Delivery Information</span>-->
+<!--                                    </a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="#">-->
+<!--                                        <i class="fa fa-angle-right"></i>-->
+<!--                                        <span>Privacy Policy</span>-->
+<!--                                    </a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="#">-->
+<!--                                        <i class="fa fa-angle-right"></i>-->
+<!--                                        <span>Terms &amp; Conditions</span>-->
+<!--                                    </a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="#">-->
+<!--                                        <i class="fa fa-angle-right"></i>-->
+<!--                                        <span>Look Books</span>-->
+<!--                                    </a>-->
+<!--                                </li>-->
+<!--                            </ul>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col footer-column-4 mb-xs&#45;&#45;33">-->
+<!--                        <div class="footer-widget">-->
+<!--                            <h3 class="widget-title mb&#45;&#45;35 mb-sm&#45;&#45;15">Question</h3>-->
+<!--                            <div class="footer-widget">-->
+<!--                                <ul class="footer-menu">-->
+<!--                                    <li>-->
+<!--                                        <a href="#">-->
+<!--                                            <i class="fa fa-angle-right"></i>-->
+<!--                                            <span>Help</span>-->
+<!--                                        </a>-->
+<!--                                    </li>-->
+<!--                                    <li>-->
+<!--                                        <a href="order-tracking.html">-->
+<!--                                            <i class="fa fa-angle-right"></i>-->
+<!--                                            <span>Track Order</span>-->
+<!--                                        </a>-->
+<!--                                    </li>-->
+<!--                                    <li>-->
+<!--                                        <a href="#">-->
+<!--                                            <i class="fa fa-angle-right"></i>-->
+<!--                                            <span>Support</span>-->
+<!--                                        </a>-->
+<!--                                    </li>-->
+<!--                                    <li>-->
+<!--                                        <a href="shop.html">-->
+<!--                                            <i class="fa fa-angle-right"></i>-->
+<!--                                            <span>Shopping &amp; Delivery</span>-->
+<!--                                        </a>-->
+<!--                                    </li>-->
+<!--                                    <li>-->
+<!--                                        <a href="#">-->
+<!--                                            <i class="fa fa-angle-right"></i>-->
+<!--                                            <span>FAQs</span>-->
+<!--                                        </a>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col footer-column-5">-->
+<!--                        <div class="footer-widget">-->
+<!--                            <h3 class="widget-title mb&#45;&#45;35 mb-sm&#45;&#45;15">My Account</h3>-->
+<!--                            <ul class="footer-menu">-->
+<!--                                <li>-->
+<!--                                    <a href="my-account.html">-->
+<!--                                        <i class="fa fa-angle-right"></i>-->
+<!--                                        <span>My Account</span>-->
+<!--                                    </a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="order-tracking.html">-->
+<!--                                        <i class="fa fa-angle-right"></i>-->
+<!--                                        <span>Order Delivery</span>-->
+<!--                                    </a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="wishlist.html">-->
+<!--                                        <i class="fa fa-angle-right"></i>-->
+<!--                                        <span>Wishlist</span>-->
+<!--                                    </a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="#">-->
+<!--                                        <i class="fa fa-angle-right"></i>-->
+<!--                                        <span>Newsletter</span>-->
+<!--                                    </a>-->
+<!--                                </li>-->
+<!--                            </ul>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+                <div class="row ptb--20">
+                    <div class="col-12 text-center">
+                        <p class="copyright-text">Tantra Kazan &copy; 2023 all rights reserved</p>
+                        <div class="social space-10">
+                            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="social__link">
+                                <i class="fa fa-facebook"></i>
+                                <span class="sr-only">Facebook</span>
+                            </a>
+                            <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer" class="social__link">
+                                <i class="fa fa-twitter"></i>
+                                <span class="sr-only">Twitter</span>
+                            </a>
+                            <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" class="social__link">
+                                <i class="fa fa-linkedin"></i>
+                                <span class="sr-only">Linkedin</span>
+                            </a>
+                            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" class="social__link">
+                                <i class="fa fa-instagram"></i>
+                                <span class="sr-only">Instagram</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Footer End-->
+
+        <!-- OffCanvas Menu Start -->
+        {% include 'main/side_menu.html' %}
+        <!-- OffCanvas Menu End -->
+
+<!--        &lt;!&ndash; Mini Cart Start &ndash;&gt;-->
+<!--        <aside class="mini-cart" id="miniCart">-->
+<!--            <div class="mini-cart-wrapper">-->
+<!--                <div class="mini-cart__close">-->
+<!--                    <a href="#" class="btn-close"><i class="flaticon-cross"></i></a>-->
+<!--                </div>-->
+<!--                <div class="mini-cart-inner">-->
+<!--                    <h3 class="mini-cart__heading mb&#45;&#45;45">Shopping Cart</h3>-->
+<!--                    <div class="mini-cart__content">-->
+<!--                        <ul class="mini-cart__list">-->
+<!--                            <li class="mini-cart__product">-->
+<!--                                <a href="#" class="mini-cart__product-remove">-->
+<!--                                    <i class="flaticon-cross"></i>-->
+<!--                                </a>-->
+<!--                                <div class="mini-cart__product-image">-->
+<!--                                    <img src="assets/img/products/product-11-90x90.jpg" alt="products">-->
+<!--                                </div>-->
+<!--                                <div class="mini-cart__product-content">-->
+<!--                                    <a class="mini-cart__product-title" href="product-details.html">Lexbaro Begadi</a>-->
+<!--                                    <span class="mini-cart__product-quantity">1 x $49.00</span>-->
+<!--                                </div>-->
+<!--                            </li>-->
+<!--                            <li class="mini-cart__product">-->
+<!--                                <a href="#" class="mini-cart__product-remove">-->
+<!--                                    <i class="flaticon-cross"></i>-->
+<!--                                </a>-->
+<!--                                <div class="mini-cart__product-image">-->
+<!--                                    <img src="assets/img/products/product-12-90x90.jpg" alt="products">-->
+<!--                                </div>-->
+<!--                                <div class="mini-cart__product-content">-->
+<!--                                    <a class="mini-cart__product-title" href="product-details.html">Lexbaro Begadi</a>-->
+<!--                                    <span class="mini-cart__product-quantity">1 x $49.00</span>-->
+<!--                                </div>-->
+<!--                            </li>-->
+<!--                            <li class="mini-cart__product">-->
+<!--                                <a href="#" class="mini-cart__product-remove">-->
+<!--                                    <i class="flaticon-cross"></i>-->
+<!--                                </a>-->
+<!--                                <div class="mini-cart__product-image">-->
+<!--                                    <img src="assets/img/products/product-13-90x90.jpg" alt="products">-->
+<!--                                </div>-->
+<!--                                <div class="mini-cart__product-content">-->
+<!--                                    <a class="mini-cart__product-title" href="product-details.html">Lexbaro Begadi</a>-->
+<!--                                    <span class="mini-cart__product-quantity">1 x $49.00</span>-->
+<!--                                </div>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                        <div class="mini-cart__total">-->
+<!--                            <span>Subtotal</span>-->
+<!--                            <span class="ammount">$98.00</span>-->
+<!--                        </div>-->
+<!--                        <div class="mini-cart__buttons">-->
+<!--                            <a href="cart.html" class="btn btn-fullwidth btn-bg-primary mb&#45;&#45;20">View Cart</a>-->
+<!--                            <a href="checkout.html" class="btn btn-fullwidth btn-bg-primary">Checkout</a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </aside>-->
+<!--        &lt;!&ndash; Mini Cart End &ndash;&gt;-->
+
+<!--        &lt;!&ndash; Qicuk View Modal Start &ndash;&gt;-->
+<!--        <div class="modal fade product-modal" id="productModal" tabindex="-1" role="dialog" aria-hidden="true">-->
+<!--            <div class="modal-dialog" role="document">-->
+<!--                <div class="modal-content">-->
+<!--                    <div class="modal-body">-->
+<!--                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                            <span aria-hidden="true"><i class="flaticon-cross"></i></span>-->
+<!--                        </button>-->
+<!--                        <div class="row">-->
+<!--                            <div class="col-lg-6">-->
+<!--                                <div class="element-carousel slick-vertical-center" data-slick-options='{-->
+<!--                                    "slidesToShow": 1,-->
+<!--                                    "slidesToScroll": 1,-->
+<!--                                    "arrows": true,-->
+<!--                                    "prevArrow": {"buttonClass": "slick-btn slick-prev", "iconClass": "fa fa-angle-double-left" },-->
+<!--                                    "nextArrow": {"buttonClass": "slick-btn slick-next", "iconClass": "fa fa-angle-double-right" }-->
+<!--                                }'>-->
+<!--                                <div class="item">-->
+<!--                                    <figure class="product-gallery__image">-->
+<!--                                        <img src="assets/img/products/product-03-270x300.jpg" alt="Product">-->
+<!--                                        <span class="product-badge sale">Sale</span>-->
+<!--                                    </figure>-->
+<!--                                </div>-->
+<!--                                <div class="item">-->
+<!--                                    <figure class="product-gallery__image">-->
+<!--                                        <img src="assets/img/products/product-04-270x300.jpg" alt="Product">-->
+<!--                                        <span class="product-badge sale">Sale</span>-->
+<!--                                    </figure>-->
+<!--                                </div>-->
+<!--                                <div class="item">-->
+<!--                                    <figure class="product-gallery__image">-->
+<!--                                        <img src="assets/img/products/product-05-270x300.jpg" alt="Product">-->
+<!--                                        <span class="product-badge sale">Sale</span>-->
+<!--                                    </figure>-->
+<!--                                </div>-->
+<!--                                <div class="item">-->
+<!--                                    <figure class="product-gallery__image">-->
+<!--                                        <img src="assets/img/products/product-06-270x300.jpg" alt="Product">-->
+<!--                                        <span class="product-badge sale">Sale</span>-->
+<!--                                    </figure>-->
+<!--                                </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="col-lg-6">-->
+<!--                                <div class="modal-box product-summary">-->
+<!--                                    <div class="product-navigation text-right mb&#45;&#45;20">-->
+<!--                                        <a href="#" class="prev"><i class="fa fa-angle-double-left"></i></a>-->
+<!--                                        <a href="#" class="next"><i class="fa fa-angle-double-right"></i></a>-->
+<!--                                    </div>-->
+<!--                                    <div class="product-rating d-flex mb&#45;&#45;20">-->
+<!--                                        <div class="star-rating star-four">-->
+<!--                                            <span>Rated <strong class="rating">5.00</strong> out of 5</span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <h3 class="product-title mb&#45;&#45;20">Golden Easy Spot Chair.</h3>-->
+<!--                                    <p class="product-short-description mb&#45;&#45;20">Donec accumsan auctor iaculis. Sed suscipit-->
+<!--                                        arcu ligula, at egestas magna molestie a. Proin ac ex maximus, ultrices justo eget,-->
+<!--                                        sodales orci. Aliquam egestas libero ac turpis pharetra, in vehicula lacus-->
+<!--                                        scelerisque. Vestibulum ut sem laoreet, feugiat tellus at, hendrerit arcu.</p>-->
+<!--                                    <div class="product-price-wrapper mb&#45;&#45;25">-->
+<!--                                        <span class="money">$200.00</span>-->
+<!--                                        <span class="price-separator">-</span>-->
+<!--                                        <span class="money">$400.00</span>-->
+<!--                                    </div>-->
+<!--                                    <form action="#" class="variation-form mb&#45;&#45;20">-->
+<!--                                        <div class="product-size-variations d-flex align-items-center mb&#45;&#45;15">-->
+<!--                                            <p class="variation-label">Size:</p>-->
+<!--                                            <div class="product-size-variation variation-wrapper">-->
+<!--                                                <div class="variation">-->
+<!--                                                    <a class="product-size-variation-btn selected" data-toggle="tooltip"-->
+<!--                                                        data-placement="top" title="S">-->
+<!--                                                        <span class="product-size-variation-label">S</span>-->
+<!--                                                    </a>-->
+<!--                                                </div>-->
+<!--                                                <div class="variation">-->
+<!--                                                    <a class="product-size-variation-btn" data-toggle="tooltip"-->
+<!--                                                        data-placement="top" title="M">-->
+<!--                                                        <span class="product-size-variation-label">M</span>-->
+<!--                                                    </a>-->
+<!--                                                </div>-->
+<!--                                                <div class="variation">-->
+<!--                                                    <a class="product-size-variation-btn" data-toggle="tooltip"-->
+<!--                                                        data-placement="top" title="L">-->
+<!--                                                        <span class="product-size-variation-label">L</span>-->
+<!--                                                    </a>-->
+<!--                                                </div>-->
+<!--                                                <div class="variation">-->
+<!--                                                    <a class="product-size-variation-btn" data-toggle="tooltip"-->
+<!--                                                        data-placement="top" title="XL">-->
+<!--                                                        <span class="product-size-variation-label">XL</span>-->
+<!--                                                    </a>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <a href="" class="reset_variations">Clear</a>-->
+<!--                                    </form>-->
+<!--                                    <div class="product-action d-flex flex-sm-row align-items-sm-center flex-column align-items-start mb&#45;&#45;30">-->
+<!--                                        <div class="quantity-wrapper d-flex align-items-center mr&#45;&#45;30 mr-xs&#45;&#45;0 mb-xs&#45;&#45;30">-->
+<!--                                            <label class="quantity-label" for="qty">Quantity:</label>-->
+<!--                                            <div class="quantity">-->
+<!--                                                <input type="number" class="quantity-input" name="qty" id="qty" value="1"-->
+<!--                                                    min="1">-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <button type="button" class="btn btn-shape-square btn-size-sm"-->
+<!--                                            onclick="window.location.href='cart.html'">-->
+<!--                                            Add To Cart-->
+<!--                                        </button>-->
+<!--                                    </div>-->
+<!--                                    <div class="product-footer-meta">-->
+<!--                                        <p><span>Category:</span>-->
+<!--                                            <a href="shop.html">Full Sweater</a>,-->
+<!--                                            <a href="shop.html">SweatShirt</a>,-->
+<!--                                            <a href="shop.html">Jacket</a>,-->
+<!--                                            <a href="shop.html">Blazer</a>-->
+<!--                                        </p>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; Qicuk View Modal End &ndash;&gt;-->
+
+        <!-- Global Overlay Start -->
+        <div class="global-overlay"></div>
+        <!-- Global Overlay End -->
+
+        <!-- Scroll To Top Start -->
+        <a class="scroll-to-top" href=""><i class="fa fa-angle-double-up"></i></a>
+        <!-- Scroll To Top End -->
+    </div>
+    <!-- Main Wrapper End -->
+
+    <!-- ************************* JS Files ************************* -->
+
+    <!-- jQuery JS -->
+    <script src="{% static 'main/js/vendor.js' %}"></script>
+
+    <!-- Main JS -->
+    <script src="{% static 'main/js/main.js' %}"></script>
+{% block script %}
+{% endblock script %}
+</body>
+
+</html>

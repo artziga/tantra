@@ -42,6 +42,7 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 # Application definition
 
 INSTALLED_APPS = [
+    "main.apps.MainConfig",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -51,7 +52,6 @@ INSTALLED_APPS = [
     'star_ratings',
     "accounts.apps.AccountsConfig",
     "users.apps.UsersConfig",
-
 ]
 
 MIDDLEWARE = [
@@ -140,7 +140,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'main.User'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

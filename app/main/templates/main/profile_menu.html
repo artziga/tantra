@@ -1,0 +1,58 @@
+{% load static %}
+<nav class="main-navigation d-none d-lg-block">
+    <ul class="mainmenu">
+
+    {% if user.is_authenticated %}
+        <li class="mainmenu__item menu-item-has-children position-relative">
+            <a href="#" class="mainmenu__link"><i class="fa fa-chevron-down" aria-hidden="true"></i></a>
+            <div class="inner-menu">
+                <ul class="sub-menu">
+                    {% for title, url in menu.items %}
+                    <li>
+                        {% if title == 'Выйти' %}
+                            <li>
+                                <form id="logout-form" method="post" action="{{ url }}">
+                                    {% csrf_token %}
+                                    <a href="#" onclick="document.getElementById('logout-form').submit();">{{ title }}</a>
+                                </form>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{{ url }}">{{ title }}</a>
+                            </li>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+        </li>
+        {% if user.is_specialist %}
+        <a href="{% url 'specialists:profile' %}">
+        {% else %}
+        <a href="{% url 'users:profile' %}">
+        {% endif %}
+            <img src="{% if user.avatar %}
+          {{ user.avatar.mini_thumbnail.url }}
+          {% else %}
+          {% static 'main/img/others/profile-icon.png' %}
+          {% endif %}" alt="Avatar" class="avatar">
+          </a>
+        {% else %}
+        <li class="mainmenu__item">
+          <a class="mainmenu__link" href="{%url 'accounts:login' %}">
+            Вход
+          </a>
+        </li>
+        <li class="mainmenu__item position-relative">
+        <span class="mainmenu__item">|</span>
+        </li>
+        <li class="mainmenu__item">
+          <a class="mainmenu__link mr--10" class="mainmenu__item position-relative"
+             href="{%url 'accounts:registration' %}">
+            Регистрация
+          </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>

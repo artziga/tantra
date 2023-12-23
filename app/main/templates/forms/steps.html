@@ -1,0 +1,14 @@
+<div class="statusbar ">
+  <ol class="fa-ul steps mb-70">
+    {% for step in steps %}
+      {% if forloop.counter0 < wizard.steps.step0 %}
+        <li class="step is-complete" >{{ step|safe }}
+      {% elif forloop.counter0 == wizard.steps.step0 %}
+        <li class="step is-active" data-step="{{forloop.counter}}">{{ step|safe }}
+      {% else %}
+        <li class="step" data-step="{{forloop.counter}}">{{ step|safe }}
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ol>
+</div>

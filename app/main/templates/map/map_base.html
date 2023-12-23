@@ -1,0 +1,21 @@
+{% load static %}
+{% block map %}
+
+<script type="text/javascript">
+    ymaps.ready(init);
+    function init() {
+    var myMap = new ymaps.Map("map", {
+            center: [55.823462, 49.131547],
+            zoom: 13
+        }, {
+            searchControlProvider: 'yandex#search'
+        });
+
+
+{% block map_content %}
+{% endblock map_content %}
+
+}
+</script>
+{% endblock map %}
+

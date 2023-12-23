@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+                {% if user.avatar %}
+                {% with photo=user.avatar %}
+                <div class="avatar-image mb--10">
+                <img src="{{ photo.image.url }}" alt="Фото">
+                </div>
+                {% endwith %}
+                {% endif %}
+        </div>
+        <div class="col-md-4 d-flex align-items-center">
+            <div class="mb--20">
+                {% if user.avatar %}
+                <label class="form__label">Сменить аватар:</label>
+                {% else %}
+                <label class="form__label">Загрузить аватар:</label>
+                {% endif %}
+                {{ form.avatar }}
+            </div>
+        </div>
+    </div>
+</div>

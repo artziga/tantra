@@ -1,0 +1,48 @@
+{% extends "main/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block head %}
+{{ wizard.form.media }}
+{% endblock %}
+
+
+{% block content %}
+<title>{{ title }}</title>
+        <div class="main-content-wrapper">
+            <div class="page-content-inner pt--40 pb--80">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            <h2 class="mb--40">
+                              {{ title }}
+                            </h2>
+                            {% include 'forms/steps.html' %}
+                              <form class="form form--login" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{ wizard.management_form }}
+                                {{ form.media }}
+                                  {% block fields %}
+                                  {% endblock %}
+
+                                {% if wizard.steps.prev %}
+                                  <button class="btn btn-size-sm" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">Назад</button>
+                                {% endif %}
+                                {% if wizard.steps.current == wizard.steps.last %}
+                                  <button class="btn btn-size-sm" type="submit">Отправить</button>
+                                {% else %}
+                                  <button class="btn btn-size-sm" type="submit">Далее</button>
+                                {% endif %}
+                              </form>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+<script>
+    ymaps.ready(function () {
+        var addressInput = new ymaps.SuggestView('addressInput');
+    });
+</script>
+{% endblock content %}
+

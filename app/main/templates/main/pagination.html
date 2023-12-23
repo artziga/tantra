@@ -1,0 +1,53 @@
+<nav class="pagination-wrap">
+    <ul class="pagination">
+        {%if is_paginated %}
+            {% if page_obj.has_previous %}
+                <li>
+                <a href="?page={{ page_obj.previous_page_number }}&{{ filter_params }}" class="page-number">«</a>
+                </li>
+            {% endif %}
+            {% if page_obj.number|add:'-3' > 1 %}
+                <li>
+                <a href="?page=1&{{ filter_params }}" class="page-number">1</a>
+                </li>
+            {% endif %}
+            {% if page_obj.number|add:'-3' >= 3 %}
+                    <li><span class="dot"></span></li>
+                    <li><span class="dot"></span></li>
+                    <li><span class="dot"></span></li>
+            {% endif %}
+            {% if paginator.page_range|length > 1 %}
+              {% for i in paginator.page_range %}
+                {% if page_obj.number == i %}
+                <li>
+                 <a class="page-number current">{{ i }}</a>
+                </li>
+                {% elif i > page_obj.number|add:'-4' and i < page_obj.number|add:'4' %}
+                <li>
+                <a href="?page={{ i }}&{{ filter_params }}" class="page-number">{{ i }}</a>
+                </li>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+
+            {% if page_obj.number|add:'4' < page_obj.paginator.num_pages %}
+                <li><span class="dot"></span></li>
+                <li><span class="dot"></span></li>
+                <li><span class="dot"></span></li>
+            {% endif %}
+        {% if page_obj.number|add:'3' < page_obj.paginator.num_pages %}
+        <li>
+            <a href="?page={{ page_obj.paginator.num_pages }}&{{ filter_params }}" class="page-number">
+                {{ page_obj.paginator.num_pages }}
+            </a>
+        </li>
+        {% endif %}
+
+        {% if page_obj.has_next %}
+        <li>
+            <a href="?page={{ page_obj.next_page_number }}&{{ filter_params }}" class="page-number">»</a>
+        </li>
+        {% endif %}
+        {% endif %}
+    </ul>
+</nav>

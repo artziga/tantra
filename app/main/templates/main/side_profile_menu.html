@@ -1,0 +1,32 @@
+{% load static %}
+
+
+<li class="has-children">
+    {% if user.is_specialist %}
+        <a href="{% url 'specialists:profile' %}">
+    {% else %}
+        <a href="{% url 'users:profile' %}">
+    {% endif %}
+            <img src="{% if user.avatar %}
+          {{ user.avatar.mini_thumbnail.url }}
+          {% else %}
+          {% static 'main/img/others/profile-icon.png' %}
+          {% endif %}" alt="Avatar" class="avatar">
+          </a>
+    <ul class="sub-menu">
+        {% for title, url in menu.items %}
+            {% if title == 'Выйти' %}
+                <li>
+                    <form id="logout-form" method="post" action="{{ url }}">
+                        {% csrf_token %}
+                        <a href="#" onclick="document.getElementById('logout-form').submit();">{{ title }}</a>
+                    </form>
+                </li>
+            {% else %}
+                <li>
+                    <a href="{{ url }}">{{ title }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</li>

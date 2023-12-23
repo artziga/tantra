@@ -1,0 +1,25 @@
+<div class="form__output">
+    <div class="error">
+{{ form.non_field_errors }}
+    </div>
+</div>
+
+{% for field in form %}
+    <div class="form__group mb--20">
+        <label class="form__label">{{ field.label_tag }}
+        {% if field.field.required %}
+        <span class="required">*</span>
+        {% endif %}
+        </label>
+        {{ field }}
+        {% if field.errors %}
+        <div class="form__output">
+            <ul class="error">
+          {% for error in field.errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+            {% endif %}
+        </ul>
+        </div>
+
+{% endfor %}
