@@ -1,0 +1,31 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<title>{{ title }}</title>
+        <main class="main-content-wrapper">
+            <div class="pt--40 pt-xl--30 pb--120 pb-xl--100 pb-lg--95 pb-sm--90">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-xl-7 col-lg-8 text-center">
+                            <div class="error">
+                                <img src="{{ current_avatar.admin_thumbnail.url }}" alt="Фото">
+                                <i class="fa fa-arrows-h" aria-hidden="true"></i>
+                                <img src="{{ new_avatar.admin_thumbnail.url }}" alt="Фото">
+                                <h2>Замена аватара</h2>
+                              <p>Вы действительно хотите заменить аватар? Предыдущий аватар не будет удалён.</p>
+                                <a class="btn btn-size-sm" href="{% url 'gallery:change_avatar_confirmation' new_avatar.pk %}">Заменить</a>
+                                <a class="btn btn-size-sm" href="{% url 'gallery:edit_gallery' %}">Нет</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+{% endblock content %}
+
+
+
+
+
+

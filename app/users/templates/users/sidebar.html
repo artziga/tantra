@@ -1,0 +1,9 @@
+<div class="user-dashboard-tab__head nav flex-md-column" role="tablist" aria-orientation="vertical">
+    {% for name, url in menu.items %}
+        {% if name == current %}
+            <p class="nav-link active">{{ name }}</p>
+        {% else %}
+            <a class="nav-link" href="{{ url }}">{{ name }}</a>
+        {% endif %}
+    {% endfor %}
+</div>

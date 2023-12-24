@@ -3,7 +3,7 @@ from django.core.mail import send_mail
 from django.shortcuts import render
 from django.urls import reverse_lazy
 
-from forms import ContactUsForm
+from main.forms import ContactUsForm
 
 from django.views.generic import FormView
 

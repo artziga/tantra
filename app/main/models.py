@@ -20,12 +20,8 @@ class User(AbstractUser):
     )
     is_activated = models.BooleanField(verbose_name='активирован', default=False)
     is_specialist = models.BooleanField(verbose_name='Массажист', default=False)
-    rating = GenericRelation(Rating, related_name='users', related_query_name='user')
-    # bookmarks = GenericRelation(Bookmark, related_name='users')
-    reviews = GenericRelation(Rating, related_name='users')
 
     objects = UserManager()
-    # specialists = SpecialistsManager()
 
     def __str__(self):
         if self.first_name or self.last_name:

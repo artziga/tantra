@@ -1,0 +1,34 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div class="heading_container">
+        <div class="title-row">
+        <h2>{{gallery}}</h2>
+            <div class="icons">
+                <a href="{% url 'gallery:add_photos' slug=gallery.slug %}">
+                    <img src="{% static 'main/images/icons8-add-100.png' %}" height="30%" width="auto" alt="">
+                </a>
+            <a href="{% url 'gallery:update_gallery' slug=gallery.slug %}">
+                <img src="{% static 'main/images/icons8-edit-64.png' %}" height="30%" width="auto" alt="Редактировать">
+            </a>
+            <a href="{% url 'gallery:delete_gallery' slug=gallery.slug %}">
+                <img src="{% static 'main/images/icons8-delete-50.png' %}" height="30%" width="auto" alt="Удалить">
+            </a>
+            </div>
+
+        </div>
+        <h3>{{ gallery.description }}</h3>
+    </div>
+    <div class="gallery_container">
+        {% for photo in photos %}
+            <a href="{% url 'gallery:photo' slug=photo.slug %}">
+            <img src="{{ photo.thumbnail.url }}" alt="111">
+            </a>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,31 @@
+{% extends 'users/profile.html' %}
+
+{% block profile_info %}
+    <form method="post" class="form form--account" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% include 'forms/avatar_form.html' %}
+                <div class="row mb--20">
+                <div class="col-md-6 mb-sm--20">
+                    <div class="form__group">
+                        <label class="form__label">{{ form.first_name.label_tag }} </label>
+                        {{ form.first_name }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form__group">
+                        <div class="form__group">
+                        <label class="form__label">{{ form.last_name.label_tag }} </label>
+                        {{ form.last_name }}
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form__group">
+                        <button type="submit" class="btn">Сохранить</button>
+                    </div>
+                </div>
+            </div>
+    </form>
+{% endblock profile_info %}

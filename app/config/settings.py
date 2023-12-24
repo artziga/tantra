@@ -50,8 +50,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'star_ratings',
+    'formtools',
     "accounts.apps.AccountsConfig",
     "users.apps.UsersConfig",
+    "gallery.apps.GalleryConfig"
 ]
 
 MIDDLEWARE = [

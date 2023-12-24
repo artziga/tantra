@@ -1,0 +1,65 @@
+{% extends 'users/profile.html' %}
+
+{% block profile_info %}
+{% csrf_token %}
+    {% if favorite_specialists %}
+                <div class="row">
+                {% for specialist in favorite_specialists %}
+                    <div class="col-xl-4 col-sm-6 mb--50">
+                    {% include 'specialists/specialist_card_grid.html' %}
+                    </div>
+                {% endfor %}
+                </div>
+            {% include 'main/pagination.html' %}
+    {% else %}
+            <p><i class="fa fa-check-circle"></i>У вас пока нет избранного</p>
+            <a href="{% url 'specialists:specialists' %}">Посмотреть список мастеров</a>
+    {% endif %}
+{% endblock profile_info %}
+
+{% block script %}
+<script>
+function sendPostRequest(link) {
+    const obj_pk = link.getAttribute("data-obj-pk");
+    const content_type_id = link.getAttribute("data-content-type-id");
+
+    const url = "{% url 'feedback:like' %}";
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+    const data = JSON.stringify({ obj_pk: obj_pk, content_type_id: content_type_id });
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+
+    xhr.setRequestHeader("X-CSRFToken", csrfToken);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            const response = JSON.parse(xhr.responseText);
+            console.log("POST запрос выполнен успешно");
+            console.log("Результат: " + response.result);
+            console.log("Количество: " + response.count);
+
+            // Найти все <a> элементы с соответствующим data-obj-pk
+            const allHeartIcons = document.querySelectorAll(`a[data-obj-pk="${obj_pk}"] i.fa`);
+
+            // Обновить классы всех найденных значков сердца
+            allHeartIcons.forEach(heartIcon => {
+                if (response.result) {
+                    heartIcon.classList.remove('fa-heart-o');
+                    heartIcon.classList.add('fa-heart');
+                } else {
+                    heartIcon.classList.remove('fa-heart');
+                    heartIcon.classList.add('fa-heart-o');
+                }
+            });
+        } else {
+            console.error("Ошибка при выполнении POST запроса");
+        }
+    };
+
+    xhr.send(data);
+}
+</script>
+{% endblock script %}

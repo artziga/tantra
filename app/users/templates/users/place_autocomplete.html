@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Автодополнение адресов (Яндекс.Карты)</title>
+    <!-- Включение библиотеки Яндекс.Карты -->
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=b5c66d4f-b818-46bf-8299-11bb0dd62256&suggest_apikey=26a3d65b-7c45-4236-95ad-2c535ce7805c" type="text/javascript"></script>
+</head>
+<body>
+    <input id="addressInput" placeholder="Введите адрес">
+
+    <script>
+        // Настройка автодополнения адресов
+        ymaps.ready(function () {
+            var addressInput = new ymaps.SuggestView('addressInput');
+        });
+    </script>
+</body>
+</html>

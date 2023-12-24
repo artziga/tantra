@@ -1,0 +1,14 @@
+{% load static %}
+{% load rating_tags %}
+{% load like %}
+{% load format_years %}
+
+
+{% block payne_card %}
+<div class="col-xl-4 col-sm-6 mb--50">
+<!--    карточка в сетке   -->
+    {% include 'users/specialist_card_grid.html' %}
+<!--    карточка в списке   -->
+    {% include 'users/specialist_card_list.html' %}
+</div>
+{% endblock payne_card %}

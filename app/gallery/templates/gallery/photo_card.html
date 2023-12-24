@@ -1,0 +1,23 @@
+{% load rating_tags %}
+{% load like %}
+{% load format_years %}
+
+<div class="payne-product">
+    <div class="product__inner">
+        <div class="product__image">
+            <figure class="product__image--holder">
+                <img src="{{ photo.image.url }}" alt="Фото">
+            </figure>
+            <div class="product-gallery__actions">
+                {% if not photo.is_avatar %}
+                <a class="action-btn" href="{% url 'gallery:change_avatar' photo.pk %}">
+                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                </a>
+                {% endif %}
+                <a class="action-btn" href="{% url 'gallery:delete_photo' photo.pk %}">
+                    <i class="fa fa-trash" aria-hidden="true" title="Удалить"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

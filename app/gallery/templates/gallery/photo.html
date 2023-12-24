@@ -1,0 +1,47 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div class="heading_container">
+        <h2>{{photo.gallery}}</h2>
+        <h3>{{ photo.gallery.description }}</h3>
+        {% if not edit %}
+            {% if  photo.description %}
+            <div>
+            {{photo.description}}
+                <a href="{% url 'gallery:update_photo_description' slug=photo.slug %}">
+    <!--                    <a target="_blank" href="https://icons8.com/icon/114092/create">Edit</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>-->
+                        <img src="{% static 'main/images/icons8-edit-64.png' %}" alt="Редактировать описание">
+                      </a>
+            </div>
+            {% else %}
+            <a href="{% url 'gallery:update_photo_description' slug=photo.slug %}">
+    <!--                    <a target="_blank" href="https://icons8.com/icon/114092/create">Edit</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>-->
+                        <img src="{% static 'main/images/icons8-edit-64.png' %}" alt="Добавить описание">
+                      </a>
+            {% endif %}
+        <a href="{% url 'gallery:delete_photo' slug=photo.slug %}">
+                <img src="{% static 'main/images/icons8-delete-50.png' %}" height="30%" width="auto" alt="Удалить">
+            </a>
+        {% else %}
+        <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Сохранить</button>
+        </form>
+        {% endif %}
+        <img src="{{photo.image.url}}" title="" alt="{{photo.image}}">
+        <a href="{% url 'gallery:photo' slug=photo.next.slug %}">
+    <!--                    <a target="_blank" href="https://icons8.com/icon/114092/create">Edit</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>-->
+                        вперед
+                      </a>
+        <a href="{% url 'gallery:photo' slug=photo.prev.slug %}">
+    <!--                    <a target="_blank" href="https://icons8.com/icon/114092/create">Edit</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>-->
+                        назад
+                      </a>
+    </div>
+</div>
+{% endblock content %}
+

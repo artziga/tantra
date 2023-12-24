@@ -1,0 +1,26 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load sidebar %}
+
+{% block content %}
+<div class="main-content-wrapper">
+    <div class="page-content-inner ptb--20 ptb-md--20 pb-sm--55">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="user-dashboard-tab flex-column flex-md-row">
+                            {% sidebar user selected %}
+                        <div class="user-dashboard-tab__content tab-content">
+                            {% block profile_info %}
+                            {% endblock profile_info %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+{% endblock script %}

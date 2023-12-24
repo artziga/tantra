@@ -1,0 +1,36 @@
+{% extends 'main/base.html' %}
+
+{% block profile_info %}
+<div class="tab-pane fade" id="appointments">
+    <div class="message-box mb--30 d-none">
+        <p><i class="fa fa-exclamation-circle"></i>No downloads available yet.</p>
+        <a href="shop.html">Go Shop</a>
+    </div>
+    <div class="table-content table-responsive">
+        <table class="table text-center">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Downloads</th>
+                    <th>Expires</th>
+                    <th>Download</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="wide-column">Furtrate</td>
+                    <td>August 10, 2018 </td>
+                    <td class="wide-column">Never</td>
+                    <td><a href="#" class="btn">Download File</a></td>
+                </tr>
+                <tr>
+                    <td class="wide-column">Furtrate</td>
+                    <td>August 10, 2018 </td>
+                    <td class="wide-column">Never</td>
+                    <td><a href="#" class="btn">Download File</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock profile_info %}

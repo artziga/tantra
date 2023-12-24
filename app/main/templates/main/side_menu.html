@@ -17,7 +17,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'specialists:specialists' %}">
+                    <a href="{% url 'users:specialists' %}">
                         <span class="mm-text">Мастера</span>
                     </a>
                 </li>
@@ -34,11 +34,11 @@
                         <li>
                             {% if user.is_authenticated %}
                                 {% if user.is_specialist %}
-                                    <a href="{% url 'specialists:delete_a_specialist' %}">
+                                    <a href="{% url 'users:delete_a_specialist' %}">
                                         <span class="mm-text">Удалить профиль массажиста</span>
                                     </a>
                                 {% else %}
-                                    <a href="{% url 'specialists:become_a_specialist' %}">
+                                    <a href="{% url 'users:become_a_specialist' %}">
                                         <span class="mm-text">Создать профиль массажиста</span>
                                     </a>
                                 {% endif %}

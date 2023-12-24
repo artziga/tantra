@@ -1,0 +1,36 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<title>{{ title }}</title>
+        <main class="main-content-wrapper">
+            <div class="pt--40 pt-xl--30 pb--120 pb-xl--100 pb-lg--95 pb-sm--90">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-xl-7 col-lg-8 text-center">
+                            <div class="error">
+                                <img src="{{ photo.admin_thumbnail.url }}" alt="Фото">
+                                <h2>Подтвердите удаление</h2>
+                              <p>Хотите ли вы удалить фотографию без возможности восстановления?</p>
+                              <form method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-size-sm">Да, удалить</button>
+                                  {% if user.is_specialist %}
+                                <a class="btn btn-size-sm" href="{% url 'gallery:edit_gallery' %}">Нет</a>
+                                  {% else %}
+                                <a class="btn btn-size-sm" href="{% url 'users:edit_profile' user.pk %}">Нет</a>
+                                  {% endif %}
+                              </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+{% endblock content %}
+
+
+
+
+
+

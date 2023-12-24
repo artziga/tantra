@@ -10,6 +10,8 @@ services:
 
     volumes:
       - ./app:/home/app
+      - static_volume:/home/app/static
+      - media_volume:/home/app/media
     ports:
       - "8000:8000"
     env_file:
@@ -29,5 +31,18 @@ services:
       POSTGRES_USER: ${DB_USER-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD-postgres}
 
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/home/app/static
+      - media_volume:/home/app/media
+    ports:
+      - "1337:80"
+    depends_on:
+      - web-app
+
 volumes:
   postgres_data:
+  static_volume:
+  media_volume:
+
