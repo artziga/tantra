@@ -4,6 +4,7 @@ from django.db import models
 from django.urls import reverse
 from star_ratings.models import Rating
 
+from feedback.models import Bookmark
 from users.managers import SpecialistsManager
 from users.validators import validate_age
 
@@ -68,7 +69,7 @@ class SpecialistProfile(models.Model):
     instagram_profile = models.CharField(max_length=20, verbose_name='Инстаграм', null=True, blank=True)
     description = models.TextField(verbose_name='О себе', null=True, blank=True)
     rating = GenericRelation(Rating, related_name='users', related_query_name='user')
-    # bookmarks = GenericRelation(Bookmark, related_name='users')
+    bookmarks = GenericRelation(Bookmark, related_name='users')
     is_profile_active = models.BooleanField(default=False)
 
     objects = SpecialistsManager()

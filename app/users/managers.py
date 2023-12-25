@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-# from django.db.models import Prefetch, F
+from django.db.models import Prefetch, F
+
+from gallery.models import Photo
 
 User = get_user_model()
 
@@ -8,7 +10,7 @@ User = get_user_model()
 class SpecialistsManager(models.Manager):
 
     def get_queryset(self):
-        return super().get_queryset().select_related(User)
+        return super().get_queryset().select_related('user')
 
     def active(self):
         return self.filter(

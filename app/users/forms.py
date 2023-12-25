@@ -1,8 +1,10 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 
+from main.utils import Locator
 from users.mixins import AddUserMixin
-from users.models import SpecialistProfile, MassageFor, BasicService, BasicServicePrice
+from users.models import SpecialistProfile, MassageFor, BasicService, BasicServicePrice, Feature
 from users.validators import validate_age
 
 User = get_user_model()
@@ -234,8 +236,8 @@ class SpecialistFilterForm(forms.Form):
         price = self.cleaned_data.get('price')
         queryset = (queryset.
                     filter(
-            specialist_profile__gender__in=genders,
-            specialist_profile__massage_for__slug__in=massage_for
+            gender__in=genders,
+            massage_for__slug__in=massage_for
         )
                     .distinct())
         if price:

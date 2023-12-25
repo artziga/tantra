@@ -15,6 +15,7 @@ from star_ratings.models import UserRating
 
 from accounts.views import MyPasswordChangeView
 from config import settings
+from feedback.views import add_is_bookmarked
 from gallery.forms import AvatarForm
 from gallery.models import Photo
 from gallery.views import add_avatar
@@ -309,22 +310,22 @@ class SpecialistPasswordChangeView(SpecialistOnlyMixin, MyPasswordChangeView):
 
 
 class SpecialistsListView(FilterFormMixin, ListView):
-    model = User
+    model = SpecialistProfile
     paginate_by = 20
     template_name = 'specialists/specialists_list.html'
     context_object_name = 'specialists'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context_def = self.get_user_context(title='Мастер')
+        context['title'] = 'Мастер'
         context['filter_form'] = SpecialistFilterForm(self.request.GET)
         context['content_type_id'] = ContentType.objects.get_for_model(User).pk
-        return {**context, **context_def}
+        return context
 
     def get_queryset(self):
-        specialists = User.specialists.specialist_card_info()
-        # if self.request.user.is_authenticated and not self.request.user.is_specialist:
-        #     specialists = add_is_bookmarked(queryset=specialists, user=self.request.user)
+        specialists = SpecialistProfile.objects.all()
+        if self.request.user.is_authenticated and not self.request.user.is_specialist:
+            specialists = add_is_bookmarked(queryset=specialists, user=self.request.user)
         form = SpecialistFilterForm(self.request.GET)
         if form.is_valid():
             queryset = form.filter(specialists)
