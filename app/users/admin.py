@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 
-from users.models import SpecialistProfile
+from users.models import SpecialistProfile, MassageFor, BasicService, BasicServicePrice, Feature
 
 User = get_user_model()
 
@@ -69,3 +69,7 @@ class SpecialistAdmin(admin.ModelAdmin):
 
 admin.site.register(SpecialistProfile, SpecialistAdmin)
 admin.site.register(User, UserAdmin)
+admin.site.register(MassageFor)
+admin.site.register(BasicService)
+admin.site.register(BasicServicePrice)
+admin.site.register(Feature)

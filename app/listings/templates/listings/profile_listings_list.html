@@ -1,0 +1,22 @@
+{% load static %}
+
+{% block listings %}
+
+<section class="spl_section layout_padding layout_padding-left">
+<div class="container">
+      <div class="heading_container">
+    <div class="title-row">
+        <h2>
+            Мои программы
+        </h2>
+        <div class="icons">
+                <a href="{% url 'listings:create_offer' username=user.username %}">
+                    <img src="{% static 'main/images/icons8-add-100.png' %}" height="30%" width="auto" alt="">
+                </a>
+        </div>
+    </div>
+    </div>
+</div>
+    <div class="spl_container">
+
+        {% endblock listings %}

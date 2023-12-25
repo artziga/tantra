@@ -1,0 +1,82 @@
+{% load static %}
+{% block comments %}
+  <div class="comments">
+
+    <h2>Отзывы</h2>
+    <form action="{% url 'feedback:add_comment' from_user=user.username %}"  class="comment-form" method="post">
+      {% csrf_token %}
+      {{ comment_form }}
+      <button type="submit">Отправить</button>
+    </form>
+    <ul>
+      {% for comment in comments %}
+        {% if not comment.parent %}
+          <li>
+            <div class="comment">
+                {% if comment.author.avatar %}
+                <img src="{{ comment.author.avatar.comment_thumbnail.url }}" width="100" height="auto" alt=""class="rounded-image">
+                {% endif %}
+              <p>{{ comment.text }}</p>
+              <p>{{ comment.date_added }}</p>
+                {% if comment.author == user %}
+                <form method="post" action="{% url 'feedback:delete_comment' pk=comment.pk %}">
+                {% csrf_token %}
+                <button type="submit">Удалить</button>
+                </form>
+                {% endif %}
+              <button class="reply-button">Ответить</button>
+              <div class="reply-container">
+                <form action="{% url 'feedback:add_comment_with_parent' from_user=user.username parent_comment_id=comment.pk%}" class="reply-form" method="post">
+                {% csrf_token %}
+                {{ comment_form }}
+                <button type="submit">Отправить</button>
+              </form>
+              </div>
+            </div>
+            <ul class="child-comments">
+              {% for child_comment in comment.comment_set.all %}
+                <li class="child-comment">
+                    {% if child_comment.author.avatar %}
+                <img src="{{ child_comment.author.avatar.comment_thumbnail.url }}" width="100" height="auto" alt="" class="rounded-image">
+                {% endif %}
+                  <p>{{ child_comment.text }}</p>
+                    <p>{{ child_comment.date_added }}</p>
+                    {% if child_comment.author == user %}
+                    <a href="{% url 'feedback:delete_comment' pk=child_comment.pk %}">Удалить</a>
+                {% endif %}
+                  <button class="reply-button">Ответить</button>
+                  <div class="reply-container">
+                <form action="{% url 'feedback:add_comment_with_parent' from_user=user.username parent_comment_id=comment.pk%}" class="reply-form" method="post">
+                     <form action="{% url 'feedback:add_comment' from_user=user.username %}"  class="comment-form" method="post">
+                      {% csrf_token %}
+                      {{ comment_form }}
+                     <button type="submit">Отправить</button>
+    </form>
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const replyButtons = document.querySelectorAll(".reply-button");
+    replyButtons.forEach(button => {
+      button.addEventListener("click", function() {
+        const replyContainer = this.nextElementSibling;
+        if (replyContainer.style.display === "block") {
+          replyContainer.style.display = "none";
+        } else {
+          replyContainer.style.display = "block";
+        }
+      });
+    });
+  });
+</script>
+
+{% endblock comments %}

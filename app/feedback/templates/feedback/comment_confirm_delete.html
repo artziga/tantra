@@ -1,0 +1,16 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+  <h1>Подтвердите удаление</h1>
+  <p>Вы действительно хотите удалить "{{ object.text }}"?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Да, удалить</button>
+    <a href="{% url 'users:specialist_profile' %}">Отмена</a>
+  </form>
+{% endblock %}
+
+
+
+
+

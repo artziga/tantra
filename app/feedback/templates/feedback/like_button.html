@@ -1,0 +1,13 @@
+{% load static %}
+{% if not user.is_specialist %}
+<a href="#"
+   data-obj-pk="{{ specialist }}"
+   data-content-type-id="{{ content_type }}"
+   onclick="sendPostRequest(this); return false">
+    {% if is_bookmarked %}
+    <i class="fa fa-heart" aria-hidden="true"></i>
+    {% else %}
+    <i class="fa fa-heart-o" aria-hidden="true"></i>
+    {% endif %}
+</a>
+{% endif %}

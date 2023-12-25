@@ -1,0 +1,34 @@
+{% load static %}
+{% load rating_tags %}
+
+<div class="review__container" style="position: relative;">
+    <img src="{% if review.user.avatar %}
+              {{ review.user.avatar.comment_thumbnail.url }}
+              {% else %}
+              {% static 'main/img/others/profile-icon.png' %}
+              {% endif %}" alt="Review Avatar"
+        class="review__avatar">
+    <div class="review__text">
+        <div class="d-flex flex-sm-row flex-column justify-content-between">
+            <div class="review__meta">
+                <strong class="review__author">{{ review.user }}</strong>
+                <span class="review__dash">-</span>
+                <span class="review__published-date">
+                    {{ review.created }}</span>
+            </div>
+            <div class="product-rating">
+                <div class="star-rating {% rating_class review.score %}">
+                    <span>Rated <strong class="rating">{{ review.score }}</strong> out of 5</span>
+                </div>
+            </div>
+        </div>
+        <p class="review__description">{{ review.review.text|linebreaksbr }}</p>
+        {% if user == review.user %}
+        <div class="review__icons">
+            <a href="{% url 'feedback:delete_review' specialist.pk %}">
+            <i class="fa fa-trash" aria-hidden="true" title="Удалить"></i>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>

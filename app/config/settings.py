@@ -53,7 +53,9 @@ INSTALLED_APPS = [
     'formtools',
     "accounts.apps.AccountsConfig",
     "users.apps.UsersConfig",
-    "gallery.apps.GalleryConfig"
+    "gallery.apps.GalleryConfig",
+    "feedback.apps.FeedbackConfig",
+    "listings.apps.ListingsConfig"
 ]
 
 MIDDLEWARE = [

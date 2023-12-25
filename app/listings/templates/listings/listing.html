@@ -1,0 +1,25 @@
+{% load format_duration %}
+
+<div class="article mb--40">
+  <div class="article-title mb--20">
+    <h2>{{ listing.title }}
+        {% if user == specialist %}
+        <a href="{% url 'listings:update_offer' listing.pk %}">
+            <i class="fa fa-pencil-square-o" aria-hidden="true" title="Редактировать"></i>
+        </a>
+        {% endif %}
+    </h2>
+    <p>Продолжительность: {{ listing.duration|format_duration }}</p>
+    <p>{{ listing.price }} ₽</p>
+  </div>
+  <div class="article-text">
+    <p>{{ listing.description|linebreaksbr }}</p>
+      {% if user == specialist %}
+      <div class="review__icons">
+        <a href="{% url 'listings:remove_offer' listing.pk %}">
+        <i class="fa fa-trash" aria-hidden="true" title="Удалить"></i>
+        </a>
+      </div>
+      {% endif %}
+  </div>
+</div>
