@@ -1,8 +1,9 @@
 from django.apps import AppConfig
-app_name = 'users'
+from django.dispatch import Signal
 
 
 class UsersConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'users'
-    verbose_name = 'Пользователи'
+    verbose_name = 'Мастера'
+
