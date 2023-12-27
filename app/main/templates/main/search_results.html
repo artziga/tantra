@@ -1,0 +1,33 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+
+{% block content %}
+  <title>{{ title }}</title>
+
+
+
+<section class="health_section layout_padding-left layout_padding">
+    <div class="container-fluid">
+        {% if not relevant_specialist and not relevant_listings%}
+        <h1>По вашему запросу результатов нет</h1>
+        {% endif %}
+
+        {% if relevant_specialist %}
+        <h1>Мастера</h1>
+      {% for specialist in relevant_specialists %}
+        {% include 'users/profile_card.html' %}
+        {% endfor %}
+        {% endif %}
+
+        {% if relevant_listings %}
+        <h1>Программы</h1>
+      {% for listing in relevant_listings %}
+        {{listing}}
+        {% endfor %}
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock content %}

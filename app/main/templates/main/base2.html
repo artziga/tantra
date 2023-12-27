@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <meta name="monetization" content="$ilp.uphold.com/WUdKN2pAgLAG">
+
+  <!-- slider stylesheet -->
+
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css" />
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="{% static 'main/css/bootstrap.css' %}" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700|Raleway:400,500,700&display=swap" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="{% static 'main/css/style.css' %}" rel="stylesheet" />
+  <!-- filter style -->
+  <!-- profile card style -->
+  <link href="{% static 'main/css/profile_card.css' %}" rel="stylesheet" />
+  <link href="{% static 'main/css/profile.css' %}" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'main/css/card.css' %}">
+  <link href="{% static 'main/css/offers.css' %}" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="{% static 'main/css/responsive.css' %}" rel="stylesheet" />
+<!--  стили галереи-->
+  <link href="{% static 'main/css/gallery.css' %}" rel="stylesheet" />
+
+<!--  стили блока комментариев-->
+    <link rel="stylesheet" type="text/css" href="{% static 'main/css/comments.css' %}">
+
+<!--  подключение яндекс карты-->
+      <script
+              src="https://api-maps.yandex.ru/2.1/?apikey={{API_KEY}}&lang=ru_RU" type="text/javascript">
+    </script>
+
+<!--  статика для рейтинга -->
+
+    <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
+    <script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+
+      <link rel="stylesheet" href="{% static 'main/css/multistep_form.css' %}">
+
+</head>
+
+<body class="sub_page">
+  <div class="hero_area layout_padding-left">
+    <div class="custom_nav-box">
+      <div class="custom_menu-btn ">
+        <button>
+          <span class=" s-1">
+
+          </span>
+          <span class="s-2">
+
+          </span>
+          <span class="s-3">
+
+          </span>
+        </button>
+      </div>
+      <div class="custom_sidenav-container">
+        <ul class="navbar-nav">
+          {% for p in menu %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url p.url_name %}">{{ p.title }}<span class="sr-only">(current)</span></a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+    </div>
+    <div class="hero_container">
+
+      <!-- header section strats -->
+      <header class="header_section">
+        <div class="container-fluid">
+          <nav class="navbar navbar-expand-lg custom_nav-container">
+            <a class="navbar-brand" href="{% url 'main:home' %}"
+            <img src="{% static 'main/images/logo.png' %}" alt="" />
+              <span>
+                Tantra-Kazan
+              </span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+                <ul class="navbar-nav  ">
+                  {% for p in menu %}
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{% url p.url_name %}">{{ p.title }}<span class="sr-only">(current)</span></a>
+                  </li>
+                  {% endfor %}
+                </ul>
+                <div class="user_option ">
+                  <a href="{%url 'accounts:registration' %}">
+                    ОЛОЛЛОЛОЛ!!!!!!!!
+                  </a>
+                </div>
+                {% include 'main/search_form.html' %}
+              </div>
+            </div>
+            <div class="user_option user_option-lg">
+              {% if request.user.is_authenticated %}
+              {% if request.user.is_specialist %}
+              <a href="{% url 'users:profile' %}">
+                {% if user.avatar %}
+              <img src="{{ user.avatar.mini_thumbnail.url }}" width="50" height="50" alt="" class="rounded-image">
+                {% else %}
+              <img src="{% static 'main/images/profile-icon.png' %}" width="50" height="50" alt=""class="rounded-image">
+                {% endif %}
+              </a>
+              {% else %}
+              <a href="{% url 'users:profile'%}">
+                <img src="{% static 'main/images/profile-icon.png' %}" width="50" height="50" alt="">
+              </a>
+              {% endif %}
+              <a href="{%url 'accounts:logout' %}">
+                Выйти
+              </a>
+              <p>
+              {% else %}
+              <a href="{%url 'accounts:login' %}">
+                Вход
+              </a>
+              <a href="{%url 'accounts:registration' %}">
+                Регистрация
+              </a>
+                </p>
+              {% endif %}
+             {% include 'main/search_form.html' %}
+
+            </div>
+          </nav>
+        </div>
+      </header>
+      <!-- end header section -->
+    </div>
+  </div>
+
+<div class="content_block layout_padding-left">
+{% block content %}
+{% endblock content %}
+</div>
+
+</div>
+</body>
+ <!-- info section -->
+
+  <section class="info_section  layout_padding-left">
+    <div class="social_box">
+      <a href="">
+        <img src="{% static 'main/images/facebook-logo-button.png' %}" alt="">
+      </a>
+      <a href="">
+        <img src="{% static 'main/images/twitter-logo-button.png' %}" alt="">
+      </a>
+      <a href="">
+        <img src="{% static 'main/images/linkedin.png' %}" alt="">
+      </a>
+      <a href="">
+        <img src="{% static 'main/images/instagram.png' %}" alt="">
+      </a>
+    </div>
+    <div class="info_container layout_padding">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3">
+            <h6>
+              About Drokula
+            </h6>
+            <p>
+              consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation u
+            </p>
+          </div>
+          <div class="col-md-2 offset-lg-1">
+            <h6>
+              Menus
+            </h6>
+            <ul>
+              <li class=" active">
+                <a class="" href="{% url 'main:home' %}">Home <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="">
+                <a class="" href="about.html">About </a>
+              </li>
+              <li class="">
+                <a class="" href="service.html">Services </a>
+              </li>
+              <li class="">
+                <a class="" href="specialist.html">Specialists </a>
+              </li>
+              <li class="">
+                <a class="" href="contact.html">Contact Us</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-3">
+            <h6>
+              Useful Links
+            </h6>
+            <ul>
+              <li>
+                <a href="">
+                  Adipiscing
+                </a>
+              </li>
+              <li>
+                <a href="">
+                  Elit, sed
+                </a>
+              </li>
+              <li>
+                <a href="">
+                  do Eiusmod
+                </a>
+              </li>
+              <li>
+                <a href="">
+                  Tempor
+                </a>
+              </li>
+              <li>
+                <a href="">
+                  incididunt
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4 col-lg-3">
+            <h6>
+              Contact Us
+            </h6>
+            <div class="info_link-box">
+              <a href="">
+                <img src="{% static 'main/images/location.png' %}" alt="">
+                <span> No.123 Chalingt Gates, loram ipusm</span>
+              </a>
+              <a href="">
+                <img src="{% static 'main/images/call.png' %}" alt="">
+                <span>+01 12345678901</span>
+              </a>
+              <a href="">
+                <img src="{% static 'main/images/mail.png' %}" alt="">
+                <span> demo123@gmail.com</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end info section -->
+  <!-- footer section -->
+  <footer class="container-fluid footer_section ">
+    <div class="social_container">
+      <div class="social_box">
+        <a href="">
+          <img src="{% static 'main/images/facebook-logo-button.png' %}" alt="">
+        </a>
+        <a href="">
+          <img src="{% static 'main/images/twitter-logo-button.png' %}" alt="">
+        </a>
+        <a href="">
+          <img src="{% static 'main/images/linkedin.png' %}" alt="">
+        </a>
+        <a href="">
+          <img src="{% static 'main/images/instagram.png' %}" alt="">
+        </a>
+      </div>
+    </div>
+    <div class="container">
+      <p>
+        &copy; 2019 All Rights Reserved By
+        <a href="https://html.design/">Free Html Templates</a>
+      </p>
+    </div>
+  </footer>
+  <!-- footer section -->
+
+  <link rel="stylesheet" type="text/css" href="{% static '/vendor/select2/dist/css/select2.min.css' %}">
+
+
+  <script src="{% static 'main/js/bootstrap.js' %}"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+
+
+  <script src="{% static 'main/js/jquery-3.4.1.min.js' %}"></script>
+{% block scripts %}
+{% endblock scripts %}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <script>
+    var nav = $(".custom_sidenav-container ");
+    var btn = $(".custom_menu-btn");
+    btn.click
+    btn.click(function (e) {
+      e.preventDefault();
+      nav.toggleClass("lg_nav-toggle");
+      document.querySelector(".custom_menu-btn").classList.toggle("menu_btn-style")
+    });
+  </script>
+  <script>
+    $(".owl-carousel").owlCarousel({
+      autoplay: true,
+      loop: true,
+      margin: 20,
+      autoHeight: true,
+      nav: true,
+      autoWidth: true,
+      items: 3
+    });
+   </script>
+
+
+{% block form_media %}
+{% endblock form_media %}
+</body>
+
+</html>
