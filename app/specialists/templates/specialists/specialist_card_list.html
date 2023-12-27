@@ -1,0 +1,54 @@
+{% load rating_tags %}
+{% load like %}
+{% load format_years %}
+
+<div class="payne-product-list">
+    <div class="product__inner">
+        <figure class="product__image">
+            {% if user == specialist %}
+            <a href="{% url 'specialists:profile' %}">
+            {% else %}
+            <a href="{% url 'specialists:specialist_profile' specialist.username %}">
+            {% endif %}
+                <img src="{{ specialist.avatar.image.url }}" alt="Мастер">
+            </a>
+        </figure>
+        <div class="product__info">
+            <div class="header-flex-container">
+            <h3 class="product__title">
+                {% if user == specialist %}
+                    <a href="{% url 'specialists:profile' %}">
+                    {% else %}
+                    <a href="{% url 'specialists:specialist_profile' specialist.username %}">
+                    {% endif %}
+                    {{ specialist.name }}
+                </a>
+                {{ specialist.specialist_profile.birth_date|years_from_date|format_years }}
+            </h3>
+            </div>
+            <div class="product__price">
+                <span class="money">от {{specialist.min_price}}</span>
+                <span class="sign">₽</span>
+            </div>
+            <span class="product__rating">
+                {% rating specialist.rating.first.average %}
+                <p>Отзывов: {{ specialist.rating.first.count|default:"0" }}</p>
+            </span>
+
+            <p>
+                {% if  specialist.specialist_profile.address%}
+                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                {{specialist.specialist_profile.address}}</p>
+                {% endif %}
+            <p class="product__short-description">
+                    {{specialist.specialist_profile.description|linebreaksbr|truncatechars:250}}</p>
+            {% if user.is_authenticated %}
+            <div class="d-flex product__list-action like-button">
+                {% if user.is_authenticated %}
+                {% like_button user.pk specialist.pk content_type_id specialist.is_bookmarked %}
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
