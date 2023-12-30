@@ -1,9 +1,10 @@
 from django import forms
 from django.db.models import Q
 
-from listings.models import MassageFor, Feature, BasicService, BasicServicePrice
+from listings.models import Feature
+from specialists.models import MassageFor, BasicService, BasicServicePrice
 from specialists.mixins import AddUserMixin
-from config.utils import Locator
+from main.utils import Locator
 from specialists.models import validate_age, SpecialistProfile
 
 

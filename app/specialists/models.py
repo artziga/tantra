@@ -1,23 +1,41 @@
-from datetime import date
-
 from django.contrib.auth import get_user_model
-from django.contrib.contenttypes.fields import GenericRelation
-from django.core.exceptions import ValidationError
 from django.db import models
 from star_ratings.models import Rating
 
-from listings.models import MassageFor, Feature, BasicService
+from listings.models import Feature
 from django.urls import reverse
 
+from users.validators import validate_age
 
-def validate_age(value):
-    today = date.today()
-    age = today.year - value.year - ((today.month, today.day) < (value.month, value.day))
 
-    if age < 18:
-        raise ValidationError("Вам должно быть более 18 лет для регистрации", code='too_young')
-    elif age >= 100:
-        raise ValidationError("Введите корректный возраст", code='too_old')
+class BasicService(models.Model):
+    title = models.CharField(max_length=50, verbose_name='Название')
+
+    class Meta:
+        verbose_name = 'Базовая услуга'
+        verbose_name_plural = 'Базовые услуги'
+
+
+class BasicServicePrice(models.Model):
+    service = models.ForeignKey(BasicService,
+                                on_delete=models.CASCADE,
+                                )
+    specialist = models.ForeignKey('specialists.SpecialistProfile', on_delete=models.CASCADE, null=True)
+    home_price = models.PositiveSmallIntegerField(verbose_name='Приём у себя', null=True)
+    on_site_price = models.PositiveSmallIntegerField(verbose_name='Выезд на дом', null=True)
+
+
+class MassageFor(models.Model):
+    massage_for = models.CharField(max_length=50, verbose_name='Массаж для')
+    slug = models.SlugField()
+    icon = models.CharField(max_length=50, verbose_name='Иконка')
+
+    def __str__(self):
+        return self.slug
+
+    class Meta:
+        verbose_name = 'Для кого массаж'
+        verbose_name_plural = verbose_name
 
 
 class SpecialistProfile(models.Model):

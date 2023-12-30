@@ -3,14 +3,11 @@ from django.core.mail import send_mail
 from django.shortcuts import render
 from django.urls import reverse_lazy
 
-from listings.models import Listing
 from main.forms import ContactUsForm
 
-from django.db.models import Q
-from django.views.generic import TemplateView, FormView
+from django.views.generic import FormView
 
 from config.settings import DEFAULT_FROM_EMAIL
-from config.utils import DataMixin
 
 User = get_user_model()
 

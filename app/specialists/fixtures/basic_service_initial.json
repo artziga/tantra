@@ -1,0 +1,9 @@
+[
+{
+  "model": "specialists.basicservice",
+  "pk": 1,
+  "fields": {
+    "title": "Базовая программа"
+  }
+}
+]

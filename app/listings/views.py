@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, ListView
 
 
 from listings.forms import CreateOfferForm
@@ -15,7 +15,7 @@ class OfferCreateView(CreateView):
     form_class = CreateOfferForm
     template_name = 'listings/listing_form.html'
     success_url = reverse_lazy('users:profile')
-    extra_context = {'title': 'Создание программы'}
+    extra_context = {'title': 'Профиль'}
 
     def form_valid(self, form):
         listing = form.save(commit=False)

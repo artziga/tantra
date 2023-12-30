@@ -81,6 +81,21 @@ files = [
 Django = ">=2.2"
 
 [[package]]
+name = "django-cors-headers"
+version = "4.3.1"
+description = "django-cors-headers is a Django application for handling the server headers required for Cross-Origin Resource Sharing (CORS)."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "django-cors-headers-4.3.1.tar.gz", hash = "sha256:0bf65ef45e606aff1994d35503e6b677c0b26cafff6506f8fd7187f3be840207"},
+    {file = "django_cors_headers-4.3.1-py3-none-any.whl", hash = "sha256:0b1fd19297e37417fc9f835d39e45c8c642938ddba1acce0c1753d3edef04f36"},
+]
+
+[package.dependencies]
+asgiref = ">=3.6"
+Django = ">=3.2"
+
+[[package]]
 name = "django-formtools"
 version = "2.5.1"
 description = "A set of high-level abstractions for Django forms"
@@ -541,4 +556,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "9960e41c16200807aeca1feb80c7a96a296f4ae124dff04cf3e551cfa0f1b16f"
+content-hash = "8bb6cb7bb428b5bc79ae40a5786128e2fc5dd0c9368249779f7fdc47bfeb3995"

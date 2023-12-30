@@ -26,11 +26,6 @@ from gallery.photo_processor import CropFaceProcessor, get_square_borders
 
 from config.settings import MEDIA_ROOT
 
-
-LATEST_LIMIT = getattr(settings, 'PHOTOLOGUE_GALLERY_LATEST_LIMIT', None)
-SAMPLE_SIZE = getattr(settings, 'PHOTOLOGUE_GALLERY_LATEST_LIMIT', 3)
-IMAGE_FIELD_MAX_LENGTH = getattr(settings, 'PHOTOLOGUE_IMAGE_FIELD_MAX_LENGTH', 100)
-#
 CROP_ANCHOR_CHOICES = (
     ('top', 'Top'),
     ('right', 'Right'),
@@ -41,8 +36,7 @@ CROP_ANCHOR_CHOICES = (
 #
 logger = logging.getLogger('gallery.models')
 
-IMAGE_DIR = 'img/'
-IMAGE_DIR_FOR_THUMB = 'media/img/'
+IMAGE_DIR = 'users_images/'
 
 
 def get_storage_path(instance, filename: str) -> str:
@@ -72,7 +66,7 @@ class BaseImage(models.Model):
     )
     image = ProcessedImageField(verbose_name='фото',
                                 processors=[SmartResize(*image_size)],
-                                max_length=IMAGE_FIELD_MAX_LENGTH,
+                                max_length=100,
                                 upload_to=get_storage_path,
                                 )
     slug = AutoSlugField(verbose_name='слаг', db_index=True, unique=True, populate_from=generate_slug)
@@ -82,6 +76,8 @@ class BaseImage(models.Model):
                                      format='JPEG',
                                      options={'quality': 60})
     upload_date = models.DateTimeField(auto_now_add=True)
+
+
 
     class Meta:
         abstract = True

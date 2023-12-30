@@ -19,6 +19,7 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 dotenv_path = os.path.join(BASE_DIR.parent, ".env.dev")
 
 if os.path.exists(dotenv_path):
@@ -38,11 +39,20 @@ DEBUG = int(os.environ.get("DEBUG", default=0))
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
+CORS_ALLOWED_ORIGINS = [
+    "http://0.0.0.0:1337",
+    "http://localhost:1337"
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://0.0.0.0:1337",
+    "http://localhost:1337"
+]
 
 # Application definition
 
 INSTALLED_APPS = [
-    "main.apps.MainConfig",
+    "users.apps.UsersConfig",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,17 +60,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'star_ratings',
-    'formtools',
+    'corsheaders',
+    "main.apps.MainConfig",
     "accounts.apps.AccountsConfig",
-    "users.apps.UsersConfig",
+    "specialists.apps.SpecialistsConfig",
     "gallery.apps.GalleryConfig",
     "feedback.apps.FeedbackConfig",
-    "listings.apps.ListingsConfig"
+    "listings.apps.ListingsConfig",
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -141,10 +153,11 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
-AUTH_USER_MODEL = 'main.User'
+
+AUTH_USER_MODEL = 'users.User'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -154,11 +167,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.mail.ru'
-EMAIL_PORT = 465  # Обычно порт 587 для SMTP с TLS
+EMAIL_PORT = 465
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')  # Ваш адрес электронной почты на mail.ru
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')  # Ваш пароль от почтового ящика
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
 
 LOGOUT_REDIRECT_URL = reverse_lazy('specialists:specialists')

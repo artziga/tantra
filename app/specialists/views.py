@@ -21,12 +21,13 @@ from feedback.models import Bookmark
 from feedback.views import add_is_bookmarked
 from gallery.forms import AvatarForm
 from gallery.models import Photo
-from listings.models import Listing, BasicService, BasicServicePrice
+from listings.models import Listing
+from specialists.models import BasicService, BasicServicePrice
 from specialists.forms import PersonDataForm, SpecialistDataForm, ContactDataForm, AboutForm, SpecialistFilterForm
 from specialists.mixins import SpecialistOnlyMixin, specialist_only
 from specialists.utils import make_user_a_specialist, delete_specialist
 from config import settings
-from config.utils import DataMixin, FilterFormMixin
+from main.utils import FilterFormMixin
 from specialists.models import SpecialistProfile
 from users.views import ProfileView
 from gallery.views import add_avatar
@@ -69,7 +70,7 @@ def delete_a_specialist_confirmation(request):
     return redirect('users:profile')
 
 
-class SpecialistProfileWizard(DataMixin, SessionWizardView):
+class SpecialistProfileWizard(SessionWizardView):
     form_list = FORMS
     file_storage = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'photos'))
 
@@ -86,10 +87,10 @@ class SpecialistProfileWizard(DataMixin, SessionWizardView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context_def = self.get_user_context(title='Анкета')
+        context['title'] = 'Анкета'
         context['steps'] = FORMS_NAMES
         context['not_delete'] = True
-        return dict(list(context.items()) + list(context_def.items()))
+        return context
 
     def get_form_step_files(self, form):
         if self.steps.current == 'avatar':
@@ -140,7 +141,7 @@ class SpecialistProfileDetailView(ProfileView):
     template_name = 'specialists/profile.html'
 
     def get_context_data(self, *args, **kwargs):
-        context = self.get_user_context(**kwargs)
+        context = super().get_context_data(*args, **kwargs)
         specialist = self.get_specialist()
         offers = Listing.objects.filter(specialist_id=specialist.pk)
         photos = Photo.objects.filter(user=specialist)
@@ -232,7 +233,7 @@ class SpecialistPasswordChangeView(SpecialistOnlyMixin, MyPasswordChangeView):
     template_name = 'specialists/profile_change_password.html'
 
 
-class SpecialistsListView(DataMixin, FilterFormMixin, ListView):
+class SpecialistsListView(FilterFormMixin, ListView):
     model = User
     paginate_by = 20
     template_name = 'specialists/specialists_list.html'
@@ -240,10 +241,10 @@ class SpecialistsListView(DataMixin, FilterFormMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context_def = self.get_user_context(title='Мастер')
+        context['title'] = 'Мастер'
         context['filter_form'] = SpecialistFilterForm(self.request.GET)
         context['content_type_id'] = ContentType.objects.get_for_model(User).pk
-        return {**context, **context_def}
+        return context
 
     def get_queryset(self):
         specialists = User.specialists.specialist_card_info()

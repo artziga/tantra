@@ -8,7 +8,7 @@ from django.views.generic import CreateView, TemplateView
 from accounts.apps import user_registered
 from accounts.forms import LoginUserForm, RegisterUserForm, MyPasswordChangeForm, MySetPasswordForm
 from accounts.utils import signer
-from users.utils import make_user_a_specialist
+from specialists.utils import make_user_a_specialist
 
 User = get_user_model()
 
@@ -56,12 +56,11 @@ def user_activate(request, sign):
         return render(request, 'accounts/bad_signature.html', {'title': 'Активация не удалась'})
 
     user = get_object_or_404(User, username=username)
-    if user.is_active:
+    if user.is_verified:
         template = 'accounts/user_is_activated.html'
         return render(request, template, {'title': 'Активация выполнена ранее'})
 
-    user.is_active = True
-    user.is_activated = True
+    user.is_verified = True
     user.save()
     login(request, user)
     goto = 'users:edit_profile' if user.is_specialist else 'users:profile'

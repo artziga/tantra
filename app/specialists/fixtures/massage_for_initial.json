@@ -1,0 +1,29 @@
+[
+{
+  "model": "specialists.massagefor",
+  "pk": 1,
+  "fields": {
+    "massage_for": "Для мужчин",
+    "slug": "for_mens",
+    "icon": "fa-mars"
+  }
+},
+{
+  "model": "specialists.massagefor",
+  "pk": 2,
+  "fields": {
+    "massage_for": "Для женщин",
+    "slug": "for_womens",
+    "icon": "fa-venus"
+  }
+},
+{
+  "model": "specialists.massagefor",
+  "pk": 3,
+  "fields": {
+    "massage_for": "Для пар",
+    "slug": "for_pairs",
+    "icon": "fa-venus-mars"
+  }
+}
+]

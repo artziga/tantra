@@ -17,22 +17,17 @@ from gallery.views import add_avatar
 from users.forms import EditProfileForm
 from users.models import *
 
-from config.utils import DataMixin
 from gallery.models import Photo
 
 User = get_user_model()
 
 
-class AddAvatar(LoginRequiredMixin, DataMixin, FormView):
+class AddAvatar(LoginRequiredMixin, FormView):
     model = Photo
     form_class = AvatarForm
     template_name = 'users/profile.html'
     success_url = reverse_lazy('users:profile')
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context_def = self.get_user_context(title='Добавление фото пользователя')
-        return dict(list(context.items()) + list(context_def.items()))
+    extra_context = {'title': 'Добавление фото пользователя'}
 
     def form_valid(self, form):
         image = self.request.FILES.get('avatar')
@@ -44,14 +39,14 @@ class AddAvatar(LoginRequiredMixin, DataMixin, FormView):
         return super().form_valid(form)
 
 
-class ProfileView(DataMixin, TemplateView):
+class ProfileView(TemplateView):
     template_name = 'users/profile_details.html'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        context_def = self.get_user_context(title='Профиль')
         context['selected'] = self.request.user.username
-        return {**context, **context_def}
+        context['title'] = 'Профиль'
+        return context
 
 
 class Favorite(ListView):

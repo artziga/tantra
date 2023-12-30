@@ -1,6 +1,5 @@
 from django.contrib import admin
-from users.models import User
-from specialists.models import SpecialistProfile
+from specialists.models import SpecialistProfile, MassageFor, BasicService, BasicServicePrice
 
 
 class SpecialistAdmin(admin.ModelAdmin):
@@ -56,3 +55,6 @@ class SpecialistAdmin(admin.ModelAdmin):
 
 
 admin.site.register(SpecialistProfile, SpecialistAdmin)
+admin.site.register(MassageFor)
+admin.site.register(BasicService)
+admin.site.register(BasicServicePrice)
