@@ -8,35 +8,36 @@ from config import settings
 
 class BaseComment(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL,
+                               null=True,
                                on_delete=models.CASCADE,
-                               verbose_name='автор',
+                               verbose_name='Автор',
                                related_query_name='review',
                                related_name='reviews')
-    text = models.TextField(max_length=255, verbose_name='Отзыв')
-    parent = models.ForeignKey(
-        'self',
-        null=True,
-        blank=True,
-        on_delete=models.CASCADE,
-        verbose_name='Родительский комментарий',
-        related_name='child_comment',
-        related_query_name='child_comments')
-    date_added = models.DateTimeField('Дата создания',
-                                      auto_now_add=True)
+    text = models.TextField(max_length=255, verbose_name='Комментарий')
+    date_added = models.DateTimeField(
+        'Дата создания',
+        auto_now_add=True,
+        null=True
+    )
 
     class Meta:
         abstract = True
 
 
-class Review(models.Model):
-    text = models.TextField(max_length=255, verbose_name='Отзыв')
-    # score = models.OneToOneField(
-    #     UserRating,
-    #     verbose_name='Оценка',
-    #     on_delete=models.CASCADE,
-    #     related_name='review',
-    #     related_query_name='review',
-    # )
+class Review(BaseComment):
+    score = models.SmallIntegerField(verbose_name='Оценка')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Кому')
+
+
+# class Comment(BaseComment):
+#     parent = models.ForeignKey(
+#         'self',
+#         null=True,
+#         blank=True,
+#         on_delete=models.CASCADE,
+#         verbose_name='Родительский комментарий',
+#         related_name='child_comment',
+#         related_query_name='child_comments')
 
 
 class Bookmark(models.Model):
