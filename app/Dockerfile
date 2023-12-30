@@ -36,4 +36,5 @@ RUN poetry install --verbose
 
 COPY ./app ./app
 
+
 ENTRYPOINT ["./app/entrypoint.sh"]
