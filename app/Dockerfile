@@ -32,7 +32,7 @@ COPY ./pyproject.toml .
 COPY ./poetry.lock .
 
 # Установка зависимостей
-RUN echo "Before poetry install" && poetry install --verbose --no-interaction && echo "After poetry install"
+RUN poetry install --verbose --no-interaction
 
 COPY ./app ./app
 
