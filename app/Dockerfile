@@ -32,7 +32,7 @@ COPY ./pyproject.toml .
 COPY ./poetry.lock .
 
 # Установка зависимостей
-RUN poetry install --verbose
+RUN echo "Before poetry install" && poetry install --verbose --no-interaction --timeout=300 && echo "After poetry install"
 
 COPY ./app ./app
 
