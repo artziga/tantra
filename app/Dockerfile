@@ -19,7 +19,7 @@ RUN apt update && \
 
 RUN pip install --upgrade pip
 # Установка poetry
-RUN python -m pip install --no-cache-dir poetry
+RUN #python -m pip install --no-cache-dir poetry
 
 RUN mkdir -p /home/app
 RUN mkdir -p /home/app/static
@@ -28,11 +28,12 @@ RUN mkdir -p /home/app/static
 WORKDIR /home
 
 # Копирование файлов с зависимостями
-COPY ./pyproject.toml .
-COPY ./poetry.lock .
-
+#COPY ./pyproject.toml .
+#COPY ./poetry.lock .
+COPY ./requirements.txt .
+RUN pip install -r requirements.txt
 # Установка зависимостей
-RUN echo "Before poetry install" && poetry install --verbose --no-interaction && echo "After poetry install"
+RUN #echo "Before poetry install" && poetry install --verbose --no-interaction && echo "After poetry install"
 
 COPY ./app ./app
 
