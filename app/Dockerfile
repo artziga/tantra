@@ -1,8 +1,5 @@
-FROM python:3.10
-LABEL authors="zai"
-
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+# Этап 1: Установка зависимостей с большим объемом памяти
+FROM python:3.10 as builder
 
 RUN apt update && \
     apt install -y \
@@ -18,12 +15,6 @@ RUN apt update && \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install --upgrade pip
-# Установка poetry
-RUN python -m pip install --no-cache-dir poetry
-
-RUN mkdir -p /home/app
-RUN mkdir -p /home/app/static
-
 
 WORKDIR /home
 
@@ -31,10 +22,21 @@ WORKDIR /home
 COPY ./pyproject.toml .
 COPY ./poetry.lock .
 
-# Установка зависимостей
+# Установка Poetry
+RUN pip install poetry
+
+# Установка зависимостей проекта
 RUN poetry install --verbose --no-interaction
 
-COPY ./app ./app
+# Этап 2: Копирование необходимых файлов в более легкий образ
+FROM python:3.10
 
+WORKDIR /home
+
+# Копирование зависимостей из предыдущего этапа
+COPY --from=builder /home /home
+
+# Копирование остальных файлов и установка приложения
+COPY ./app ./app
 
 ENTRYPOINT ["./app/entrypoint.sh"]
