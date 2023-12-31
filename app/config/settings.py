@@ -41,12 +41,14 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
 CORS_ALLOWED_ORIGINS = [
     "http://0.0.0.0:1337",
-    "http://localhost:1337"
+    "http://localhost:1337",
+    "http://77.223.98.23:1337",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://0.0.0.0:1337",
-    "http://localhost:1337"
+    "http://localhost:1337",
+    "http://77.223.98.23:1337",
 ]
 
 # Application definition
