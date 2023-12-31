@@ -22,9 +22,10 @@ from django.urls import reverse
 from django.utils.encoding import force_str, filepath_to_uri, smart_str
 from django.utils.safestring import mark_safe
 
-from gallery.photo_processor import CropFaceProcessor, get_square_borders
+# from gallery.photo_processor import CropFaceProcessor, get_square_borders
 
 from config.settings import MEDIA_ROOT
+
 
 CROP_ANCHOR_CHOICES = (
     ('top', 'Top'),
@@ -86,8 +87,7 @@ class BaseImage(models.Model):
 class Photo(BaseImage):
     is_avatar = models.BooleanField(verbose_name='Аватар', default=False)
     comment_thumbnail = ImageSpecField(source='image',
-                                       processors=[CropFaceProcessor(margin_percent=0.6),
-                                                   Thumbnail(90, 90)],
+                                       processors=[Thumbnail(90, 90)],
                                        format='JPEG',
                                        options={'quality': 90})
     mini_thumbnail = ImageSpecField(source='comment_thumbnail',
