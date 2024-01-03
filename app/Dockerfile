@@ -19,7 +19,7 @@ RUN apt update && \
 
 RUN pip install --upgrade pip
 # Установка poetry
-RUN python -m pip install --no-cache-dir poetry
+RUN python -m pip install poetry
 
 RUN mkdir -p /home/app
 RUN mkdir -p /home/app/static

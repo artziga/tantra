@@ -12,7 +12,7 @@ logger.setLevel(level=logging.DEBUG)
 
 def send_activation_notification(user):
     if ALLOWED_HOSTS:
-        host = 'http://' + ALLOWED_HOSTS[0]
+        host = 'http://' + ALLOWED_HOSTS[-1]
     else:
         host = 'localhost:8000'
 

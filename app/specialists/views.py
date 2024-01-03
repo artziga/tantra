@@ -12,6 +12,7 @@ from django.db.models import F, OuterRef, Value, BooleanField, Subquery
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.views.generic import ListView
+from django.conf import settings
 from formtools.wizard.views import SessionWizardView
 from star_ratings.models import UserRating
 
@@ -26,7 +27,6 @@ from specialists.models import BasicService, BasicServicePrice
 from specialists.forms import PersonDataForm, SpecialistDataForm, ContactDataForm, AboutForm, SpecialistFilterForm
 from specialists.mixins import SpecialistOnlyMixin, specialist_only
 from specialists.utils import make_user_a_specialist, delete_specialist
-from config import settings
 from main.utils import FilterFormMixin
 from specialists.models import SpecialistProfile
 from users.views import ProfileView
@@ -90,6 +90,8 @@ class SpecialistProfileWizard(SessionWizardView):
         context['title'] = 'Анкета'
         context['steps'] = FORMS_NAMES
         context['not_delete'] = True
+        context['YANDEX_API_KEY'] = settings.YANDEX_GEOCODER_API_KEY
+        context['GEOSUGGEST_KEY'] = settings.YANDEX_GEOSUGGEST_API_KEY
         return context
 
     def get_form_step_files(self, form):
@@ -244,6 +246,9 @@ class SpecialistsListView(FilterFormMixin, ListView):
         context['title'] = 'Мастер'
         context['filter_form'] = SpecialistFilterForm(self.request.GET)
         context['content_type_id'] = ContentType.objects.get_for_model(User).pk
+        context['YANDEX_API_KEY'] = settings.YANDEX_GEOCODER_API_KEY
+        print(settings.YANDEX_GEOCODER_API_KEY)
+        context['GEOSUGGEST_KEY'] = settings.YANDEX_GEOSUGGEST_API_KEY
         return context
 
     def get_queryset(self):

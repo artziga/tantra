@@ -4,10 +4,12 @@
 
 {% block head %}
 {{ wizard.form.media }}
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey={{YANDEX_API_KEY}}&suggest_apikey={{GEOSUGGEST_KEY}}" type="text/javascript"></script>
 {% endblock %}
 
 
 {% block content %}
+
 <title>{{ title }}</title>
         <div class="main-content-wrapper">
             <div class="page-content-inner pt--40 pb--80">

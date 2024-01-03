@@ -33,6 +33,7 @@ services:
 
   nginx:
     build: ./nginx
+    restart: unless-stopped
     volumes:
       - static_volume:/home/app/static
       - media_volume:/home/app/media

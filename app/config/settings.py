@@ -39,17 +39,9 @@ DEBUG = int(os.environ.get("DEBUG", default=0))
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
-CORS_ALLOWED_ORIGINS = [
-    "http://0.0.0.0:1337",
-    "http://localhost:1337",
-    "http://77.223.98.23:1337",
-]
-
-CSRF_TRUSTED_ORIGINS = [
-    "http://0.0.0.0:1337",
-    "http://localhost:1337",
-    "http://77.223.98.23:1337",
-]
+if not DEBUG:
+    CORS_ALLOWED_ORIGINS = os.environ.get("DJANGO_CORS_ALLOWED_ORIGINS").split(" ")
+    CSRF_TRUSTED_ORIGINS = os.environ.get("DJANGO_CSRF_TRUSTED_ORIGINS").split(" ")
 
 # Application definition
 
