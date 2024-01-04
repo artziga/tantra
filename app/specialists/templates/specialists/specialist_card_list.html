@@ -10,7 +10,7 @@
             {% else %}
             <a href="{% url 'specialists:specialist_profile' specialist.username %}">
             {% endif %}
-                <img src="{{ specialist.avatar.image.url }}" alt="Мастер">
+                <img src="{{ specialist.avatar.0.image.url }}" alt="Мастер {{ specialist }}">
             </a>
         </figure>
         <div class="product__info">

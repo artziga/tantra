@@ -4,7 +4,7 @@
   "pk": 1,
   "fields": {
     "massage_for": "Для мужчин",
-    "slug": "for_mens",
+    "slug": "for_males",
     "icon": "fa-mars"
   }
 },
@@ -13,7 +13,7 @@
   "pk": 2,
   "fields": {
     "massage_for": "Для женщин",
-    "slug": "for_womens",
+    "slug": "for_females",
     "icon": "fa-venus"
   }
 },

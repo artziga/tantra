@@ -1,9 +1,8 @@
+from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from star_ratings.models import UserRating
-
-from config import settings
 
 
 class BaseComment(models.Model):
@@ -26,7 +25,11 @@ class BaseComment(models.Model):
 
 class Review(BaseComment):
     score = models.SmallIntegerField(verbose_name='Оценка')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Кому')
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        verbose_name='Кому',
+        related_name='review_for')
 
 
 # class Comment(BaseComment):

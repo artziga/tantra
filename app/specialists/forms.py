@@ -1,3 +1,5 @@
+import logging
+
 from django import forms
 from django.db.models import Q
 
@@ -171,7 +173,7 @@ class ActivateProfileForm(AddUserMixin, forms.Form):
 
 
 price_range = {'low': (1000, 3000), 'medium': (3000, 7000), 'high': (7000, 20000)}
-ORDERINGS = (('-rating__average', 'Рейтинг'),
+ORDERINGS = (('-review__average', 'Рейтинг'),
              ('min_price', '<i class="fa fa-arrow-up" aria-hidden="true">Цена</i>'),
              ('-min_price', '<i class="fa fa-arrow-down" aria-hidden="true">Цена</i>'),
              ('-specialist_profile__birth_date', '<i class="fa fa-arrow-up" aria-hidden="true">Возраст</i>'),
@@ -220,6 +222,7 @@ class SpecialistFilterForm(forms.Form):
         genders = self.cleaned_data.get('gender') or [True, False]
         massage_for = self.cleaned_data.get('massage_for') or ['for_males', 'for_females', 'for_pairs']
         price = self.cleaned_data.get('price')
+        print(queryset[0].avg_score)
         queryset = (queryset.
                     filter(
             specialist_profile__gender__in=genders,

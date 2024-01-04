@@ -58,28 +58,13 @@ class AddReviewView(LoginRequiredMixin, View):
         review_for = self.request.POST.get('review_for')
         text = self.request.POST.get('text')
         specialist = User.objects.get(pk=review_for)
-        ct = ContentType.objects.get_for_model(specialist)
         try:
             with transaction.atomic():
-                Rating.objects.rate(instance=specialist, score=score_value, user=self.request.user)
-                user_rating = UserRating.objects.get(
-                    user=self.request.user,
-                    rating__object_id=specialist.pk,
-                    rating__content_type=ct
-                )
-                Review.objects.create(text=text, score=user_rating)
+                Review.objects.create(author=self.request.user, text=text, score=score_value, user=specialist)
                 logger.info(f"{self.request.user.username} оставил отзыв для {specialist}")
-        except IntegrityError:
-            logger.info(f"{self.request.user.username} пытался оставить второй отзыв для {specialist}")
+        except IntegrityError as e:
+            logger.info(f"{e}!! {self.request.user.username} пытался оставить второй отзыв для {specialist}")
             raise ReviewIntegrityError("Only one review allowed per user.")
-
-    def get_client_ip(self):
-        x_forwarded_for = self.request.META.get('HTTP_X_FORWARDED_FOR')
-        if x_forwarded_for:
-            ip = x_forwarded_for.split(',')[0]
-        else:
-            ip = self.request.META.get('REMOTE_ADDR')
-        return ip
 
 
 @login_required

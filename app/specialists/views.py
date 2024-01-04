@@ -91,7 +91,6 @@ class SpecialistProfileWizard(SessionWizardView):
         context['steps'] = FORMS_NAMES
         context['not_delete'] = True
         context['YANDEX_API_KEY'] = settings.YANDEX_GEOCODER_API_KEY
-        context['GEOSUGGEST_KEY'] = settings.YANDEX_GEOSUGGEST_API_KEY
         return context
 
     def get_form_step_files(self, form):
@@ -247,7 +246,6 @@ class SpecialistsListView(FilterFormMixin, ListView):
         context['filter_form'] = SpecialistFilterForm(self.request.GET)
         context['content_type_id'] = ContentType.objects.get_for_model(User).pk
         context['YANDEX_API_KEY'] = settings.YANDEX_GEOCODER_API_KEY
-        print(settings.YANDEX_GEOCODER_API_KEY)
         context['GEOSUGGEST_KEY'] = settings.YANDEX_GEOSUGGEST_API_KEY
         return context
 
