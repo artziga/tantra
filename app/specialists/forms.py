@@ -222,7 +222,6 @@ class SpecialistFilterForm(forms.Form):
         genders = self.cleaned_data.get('gender') or [True, False]
         massage_for = self.cleaned_data.get('massage_for') or ['for_males', 'for_females', 'for_pairs']
         price = self.cleaned_data.get('price')
-        print(queryset[0].avg_score)
         queryset = (queryset.
                     filter(
             specialist_profile__gender__in=genders,
