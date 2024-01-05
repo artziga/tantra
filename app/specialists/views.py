@@ -19,6 +19,7 @@ from star_ratings.models import UserRating
 from accounts.views import MyPasswordChangeView
 from feedback.forms import ReviewForm
 from feedback.models import Bookmark
+from feedback.utils import get_reviews
 from feedback.views import add_is_bookmarked
 from gallery.forms import AvatarForm
 from gallery.models import Photo
@@ -147,7 +148,7 @@ class SpecialistProfileDetailView(ProfileView):
         offers = Listing.objects.filter(specialist_id=specialist.pk)
         photos = Photo.objects.filter(user=specialist)
         ct = ContentType.objects.get_for_model(specialist)
-        reviews = UserRating.objects.filter(rating__content_type=ct, rating__object_id=specialist.pk)
+        reviews = get_reviews(specialist)
         is_reviewed = self.request.user in [review.user for review in reviews]
         review_form = self.get_review_form(specialist=specialist)
         context['is_reviewed'] = is_reviewed

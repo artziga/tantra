@@ -11,10 +11,10 @@
     <div class="review__text">
         <div class="d-flex flex-sm-row flex-column justify-content-between">
             <div class="review__meta">
-                <strong class="review__author">{{ review.user }}</strong>
+                <strong class="review__author">{{ review.author }}</strong>
                 <span class="review__dash">-</span>
                 <span class="review__published-date">
-                    {{ review.created }}</span>
+                    {{ review.date_added }}</span>
             </div>
             <div class="product-rating">
                 <div class="star-rating {% rating_class review.score %}">
@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-        <p class="review__description">{{ review.review.text|linebreaksbr }}</p>
+        <p class="review__description">{{ review.text|linebreaksbr }}</p>
         {% if user == review.user %}
         <div class="review__icons">
             <a href="{% url 'feedback:delete_review' specialist.pk %}">

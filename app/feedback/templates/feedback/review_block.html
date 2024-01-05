@@ -4,7 +4,6 @@ aria-labelledby="nav-reviews-tab">
         <h3 class="review__title">Отзывов: {{ specialist.rating.first.count|default:"0" }}</h3>
         <ul class="review__list mb--50">
             {% for review in reviews %}
-
             <li class="review__item">
                 {% include 'feedback/review.html' %}
             </li>

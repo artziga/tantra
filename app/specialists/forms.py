@@ -179,7 +179,7 @@ ORDERINGS = (('-avg_score', 'Рейтинг'),
              ('-specialist_profile__birth_date', '<i class="fa fa-arrow-up" aria-hidden="true">Возраст</i>'),
              ('specialist_profile__birth_date', '<i class="fa fa-arrow-down" aria-hidden="true">Возраст</i>'),
              ('specialist_profile__practice_start_date', 'Опыт'),
-             ('-rating__count', 'Количество отзывов'),
+             ('-num_reviews', 'Количество отзывов'),
              ('-date_joined', 'Сначала новые'))
 
 
