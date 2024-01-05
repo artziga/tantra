@@ -173,7 +173,7 @@ class ActivateProfileForm(AddUserMixin, forms.Form):
 
 
 price_range = {'low': (1000, 3000), 'medium': (3000, 7000), 'high': (7000, 20000)}
-ORDERINGS = (('-review__average', 'Рейтинг'),
+ORDERINGS = (('-avg_score', 'Рейтинг'),
              ('min_price', '<i class="fa fa-arrow-up" aria-hidden="true">Цена</i>'),
              ('-min_price', '<i class="fa fa-arrow-down" aria-hidden="true">Цена</i>'),
              ('-specialist_profile__birth_date', '<i class="fa fa-arrow-up" aria-hidden="true">Возраст</i>'),

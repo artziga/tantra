@@ -43,7 +43,7 @@
             </div>
             <div class="product__info--right">
                 <span class="product__rating">
-                    {{ specialist.avg_score }}
+                    {% rating specialist.avg_score %}
                 </span>
                 <p>Отзывов: {{ specialist.num_reviews|default:"0" }}</p>
             </div>

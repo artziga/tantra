@@ -1,5 +1,4 @@
 from django import template
-from config import settings
 
 register = template.Library()
 

@@ -31,7 +31,7 @@
                 <span class="sign">₽</span>
             </div>
             <span class="product__rating">
-                {% rating specialist.rating.first.average %}
+                {% rating specialist.avg_score %}
                 <p>Отзывов: {{ specialist.rating.first.count|default:"0" }}</p>
             </span>
 
@@ -47,6 +47,7 @@
                 {% if user.is_authenticated %}
                 {% like_button user.pk specialist.pk content_type_id specialist.is_bookmarked %}
                 {% endif %}
+                <a href="{% url 'specialists:specialist_profile' specialist.username %}" class="btn btn-size-sm">Подробнее</a>
             </div>
             {% endif %}
         </div>
