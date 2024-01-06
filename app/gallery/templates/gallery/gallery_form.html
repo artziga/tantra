@@ -4,6 +4,21 @@
 
 
 {% block content %}
+        <!-- Breadcrumb area Start -->
+        <section class="page-title-area bg-color" data-bg-color="#f4f4f4">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h1 class="page-title">Галерея</h1>
+                        <ul class="breadcrumb text-center">
+                            <li><a href="{% url 'specialists:profile' %}">Профиль</a></li>
+                            <li class="current"><span>Галерея</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Breadcrumb area End -->
         <!-- Main Content Wrapper Start -->
         <div  class="main-content-wrapper">
             <div class="shop-page-wrapper ptb--80">
@@ -11,11 +26,6 @@
                     <div class="row justify-content-center">
                         <div class="col-xl-9 col-lg-8 order-lg-2 mb-md--50">
                             <div class="shop-products">
-                                <form method="post" class="form--track" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    {{ form.as_p }}
-                                    <button type="submit" class="btn btn-size-sm mb--20">Отправить</button>
-                                </form>
                                 <div class="row justify-content-center">
                                 {% for photo in photos %}
                                     <div class="col-xl-4 col-sm-6 mb--50">
@@ -23,6 +33,11 @@
                                      </div>
                                 {% endfor %}
                                 </div>
+                                <form method="post" class="form--track" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    {{ form.as_p }}
+                                    <button type="submit" class="btn btn-size-sm mb--20">Отправить</button>
+                                </form>
                             </div>
                         </div>
                     </div>

@@ -8,7 +8,7 @@
         <a href="{% url 'users:profile' %}">
     {% endif %}
             <img src="{% if user.avatar %}
-          {{ user.avatar.mini_thumbnail.url }}
+          {{ user.avatar.thumbnail.url }}
           {% else %}
           {% static 'main/img/others/profile-icon.png' %}
           {% endif %}" alt="Avatar" class="avatar">

@@ -3,7 +3,7 @@
 
 <div class="review__container" style="position: relative;">
     <img src="{% if review.user.avatar %}
-              {{ review.user.avatar.comment_thumbnail.url }}
+              {{ review.author.avatar.thumbnail.url }}
               {% else %}
               {% static 'main/img/others/profile-icon.png' %}
               {% endif %}" alt="Review Avatar"
@@ -23,7 +23,7 @@
             </div>
         </div>
         <p class="review__description">{{ review.text|linebreaksbr }}</p>
-        {% if user == review.user %}
+        {% if user == review.author %}
         <div class="review__icons">
             <a href="{% url 'feedback:delete_review' specialist.pk %}">
             <i class="fa fa-trash" aria-hidden="true" title="Удалить"></i>

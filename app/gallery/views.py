@@ -3,15 +3,16 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import FormView, DeleteView
-from gallery.forms import AddPhotosForm
+from gallery.forms import MultiImageUploadForm
 from gallery.models import Photo
+from gallery.utils import make_as_avatar, get_users_avatar
 
 
 def add_avatar(form, user, get='avatar'):
     image = form.files.get(get)
     if image:
-        avatar = Photo.objects.create(image=image, user=user)
-        avatar.make_as_avatar()
+        photo = Photo.objects.create(image=image, user=user, is_avatar=True)
+        make_as_avatar(photo)
 
 
 def add_photos(form, user, get='photos'):
@@ -22,7 +23,7 @@ def add_photos(form, user, get='photos'):
 
 
 class EditGallery(FormView):
-    form_class = AddPhotosForm
+    form_class = MultiImageUploadForm
     template_name = 'gallery/gallery_form.html'
     success_url = reverse_lazy('gallery:edit_gallery')
 
@@ -50,16 +51,12 @@ class PhotoDeleteView(DeleteView):
         return reverse_lazy('users:edit_profile', kwargs={'pk': self.request.user.pk})
 
 
-def make_photo_as_avatar(photo_id):
-    photo = get_object_or_404(Photo, id=photo_id)
-    photo.make_as_avatar()
-
-
 def change_avatar(request, pk):
     try:
-        current_avatar = Photo.objects.get(user=request.user, is_avatar=True)
+        current_avatar = get_users_avatar(user=request.user)
     except ObjectDoesNotExist:
-        make_photo_as_avatar(photo_id=pk)
+        photo = get_object_or_404(Photo, id=pk)
+        make_as_avatar(photo=photo)
         return redirect('gallery:edit_gallery')
     new_avatar = get_object_or_404(Photo, id=pk)
     context = {'current_avatar': current_avatar, 'new_avatar': new_avatar}
@@ -67,5 +64,6 @@ def change_avatar(request, pk):
 
 
 def change_avatar_confirm(request, pk):
-    make_photo_as_avatar(photo_id=pk)
+    photo = get_object_or_404(Photo, id=pk)
+    make_as_avatar(photo=photo)
     return redirect('gallery:edit_gallery')

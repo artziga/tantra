@@ -21,7 +21,6 @@ from feedback.forms import ReviewForm
 from feedback.models import Bookmark
 from feedback.utils import get_reviews
 from feedback.views import add_is_bookmarked
-from gallery.forms import AvatarForm
 from gallery.models import Photo
 from listings.models import Listing
 from specialists.models import BasicService, BasicServicePrice
@@ -31,28 +30,25 @@ from specialists.utils import make_user_a_specialist, delete_specialist
 from main.utils import FilterFormMixin
 from specialists.models import SpecialistProfile
 from users.views import ProfileView
-from gallery.views import add_avatar
 
 User = get_user_model()
 
-
 FORMS = [
-    ('avatar', AvatarForm),
     ("person_data", PersonDataForm),
     ("specialist_data", SpecialistDataForm),
     ("contact_data", ContactDataForm),
     ("about", AboutForm),
 
 ]
-FORMS_NAMES = [
-    '<i class="fa-li fa fa-id-badge"></i>',
-    '<i class="fa-li fa fa-address-card-o" aria-hidden="true"></i>',
-    '<i class="fa-li fa fa-leaf" aria-hidden="true"></i>',
-    '<i class="fa-li fa fa-phone-square" aria-hidden="true"></i>',
-    '<i class="fa-li fa fa-file-text-o" aria-hidden="true"></i>'
-]
 
-TEMPLATES = {'avatar': 'forms/wizard_form_avatar.html'}
+
+# FORMS_NAMES = [
+#     '<i class="fa-li fa fa-id-badge"></i>',
+#     '<i class="fa-li fa fa-address-card-o" aria-hidden="true"></i>',
+#     '<i class="fa-li fa fa-leaf" aria-hidden="true"></i>',
+#     '<i class="fa-li fa fa-phone-square" aria-hidden="true"></i>',
+#     '<i class="fa-li fa fa-file-text-o" aria-hidden="true"></i>'
+# ]
 
 
 def become_a_specialist(request):
@@ -84,20 +80,14 @@ class SpecialistProfileWizard(SessionWizardView):
     #     return super().process_step(form)
 
     def get_template_names(self):
-        return TEMPLATES.get(self.steps.current, 'forms/wizard_form.html')
+        return 'forms/wizard_form.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Анкета'
-        context['steps'] = FORMS_NAMES
         context['not_delete'] = True
         context['YANDEX_API_KEY'] = settings.YANDEX_GEOCODER_API_KEY
         return context
-
-    def get_form_step_files(self, form):
-        if self.steps.current == 'avatar':
-            add_avatar(form, self.request.user, get='avatar-avatar')
-        return super().get_form_step_files(form)
 
     def done(self, form_list, **kwargs):
         cleaned_data = self.get_all_cleaned_data()
@@ -105,11 +95,13 @@ class SpecialistProfileWizard(SessionWizardView):
         user.first_name = cleaned_data.pop('first_name', '')
         user.last_name = cleaned_data.pop('last_name', '')
         massage_for_set = cleaned_data.pop('massage_for', [])
-        cleaned_data.pop('avatar')
         home_price = cleaned_data.pop('home_price', '')
         on_site_price = cleaned_data.pop('on_site_price', '')
         if not user.is_specialist:
+            goto = redirect('gallery:edit_gallery')
             make_user_a_specialist(user)
+        else:
+            goto = redirect('specialists:profile')
         tp, created = SpecialistProfile.objects.update_or_create(user=user, defaults=cleaned_data)
         self.set_price({
             'home_price': home_price,
@@ -119,7 +111,7 @@ class SpecialistProfileWizard(SessionWizardView):
         user.save()
         tp.save()
         logging.info(f"Заполнена анкета пользователем {user}")
-        return redirect('gallery:edit_gallery')
+        return goto
 
     def set_price(self, data):
         bs = BasicService.objects.get(pk=1)

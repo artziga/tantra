@@ -11,14 +11,28 @@
 {% block content %}
 
 <title>{{ title }}</title>
+
+    <!-- Breadcrumb area Start -->
+        <section class="page-title-area bg-color" data-bg-color="#f4f4f4">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 text-center">
+                        <h1 class="page-title">{{ title }}</h1>
+                        <ul class="breadcrumb">
+                            <li><a href="{% url 'specialists:profile' %}">Профиль</a></li>
+                            <li class="current"><span>{{ title }}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Breadcrumb area End -->
+
         <div class="main-content-wrapper">
             <div class="page-content-inner pt--40 pb--80">
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-lg-6">
-                            <h2 class="mb--40">
-                              {{ title }}
-                            </h2>
                             {% include 'forms/steps.html' %}
                               <form class="form form--login" method="post" enctype="multipart/form-data">
                                 {% csrf_token %}

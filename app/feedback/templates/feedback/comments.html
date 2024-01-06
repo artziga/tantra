@@ -14,7 +14,7 @@
           <li>
             <div class="comment">
                 {% if comment.author.avatar %}
-                <img src="{{ comment.author.avatar.comment_thumbnail.url }}" width="100" height="auto" alt=""class="rounded-image">
+                <img src="{{ comment.author.avatar.thumbnail.url }}" width="100" height="auto" alt=""class="rounded-image">
                 {% endif %}
               <p>{{ comment.text }}</p>
               <p>{{ comment.date_added }}</p>
@@ -37,7 +37,7 @@
               {% for child_comment in comment.comment_set.all %}
                 <li class="child-comment">
                     {% if child_comment.author.avatar %}
-                <img src="{{ child_comment.author.avatar.comment_thumbnail.url }}" width="100" height="auto" alt="" class="rounded-image">
+                <img src="{{ child_comment.author.avatar.thumbnail.url }}" width="100" height="auto" alt="" class="rounded-image">
                 {% endif %}
                   <p>{{ child_comment.text }}</p>
                     <p>{{ child_comment.date_added }}</p>
