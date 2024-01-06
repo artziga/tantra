@@ -195,6 +195,7 @@ class SpecialistFilterForm(forms.Form):
         queryset=MassageFor.objects.all(),
         required=False,
         widget=forms.CheckboxSelectMultiple,
+        to_field_name='slug',
     )
     price = forms.ChoiceField(required=False,
                               widget=forms.RadioSelect,
@@ -217,7 +218,8 @@ class SpecialistFilterForm(forms.Form):
 
     def filter(self, queryset):
         genders = self.cleaned_data.get('gender') or [True, False]
-        massage_for = self.cleaned_data.get('massage_for') or ['for_males', 'for_females', 'for_pairs']
+        massage_for = ([mf.slug for mf in self.cleaned_data.get('massage_for')]
+                       or ['for_males', 'for_females', 'for_pairs'])
         price = self.cleaned_data.get('price')
         queryset = (queryset.
                     filter(
