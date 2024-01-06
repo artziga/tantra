@@ -185,17 +185,14 @@ ORDERINGS = (('-avg_score', 'Рейтинг'),
 
 class SpecialistFilterForm(forms.Form):
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['massage_for'].choices = MassageFor.objects.values_list('slug', 'massage_for')
-
     gender = forms.MultipleChoiceField(
         required=False,
         widget=forms.CheckboxSelectMultiple,
         choices=[(True, 'Мужчина'), (False, 'Женщина')],
     )
 
-    massage_for = forms.MultipleChoiceField(
+    massage_for = forms.ModelMultipleChoiceField(
+        queryset=MassageFor.objects.all(),
         required=False,
         widget=forms.CheckboxSelectMultiple,
     )
@@ -238,19 +235,22 @@ class SpecialistFilterForm(forms.Form):
         return queryset
 
 
-class FeaturesForm(forms.Form):
+class FeaturesForm(AddUserMixin, forms.Form):
+    features = forms.ModelMultipleChoiceField(
+        queryset=Feature.objects.all(),
+        required=False,
+        widget=forms.CheckboxSelectMultiple(),
+        label='Удобства'
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        features = Feature.objects.values_list('id', 'name')
-        for massage_for_id, massage_for_name in features:
-            field_name = f'feature_{massage_for_id}'
-            self.fields[field_name] = forms.BooleanField(
-                required=False,
-                label=massage_for_name,
-                widget=forms.CheckboxInput()
-            )
+    )
 
+    @staticmethod
+    def get_initial(user):
+        initial = {}
+        features = SpecialistProfile.objects.filter(user=user).values_list('features', flat=True).all()
+        if features:
+            initial['features'] = list(features)
+        return initial
 
 class OrderingForm(forms.Form):
     order_by = forms.ChoiceField(

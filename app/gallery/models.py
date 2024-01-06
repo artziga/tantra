@@ -56,10 +56,15 @@ class BaseImage(models.Model):
                                 )
     slug = AutoSlugField(verbose_name='слаг', db_index=True, unique=True, populate_from=generate_slug)
     thumbnail = ImageSpecField(source='image',
-                                     processors=[Thumbnail(100, 100)
-                                                 ],
-                                     format='JPEG',
-                                     options={'quality': 100})
+                               processors=[Thumbnail(100, 100)
+                                           ],
+                               format='JPEG',
+                               options={'quality': 100})
+    card_thumbnail = ImageSpecField(source='image',
+                                    processors=[Thumbnail(270, 300)
+                                                ],
+                                    format='JPEG',
+                                    options={'quality': 100})
     upload_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -74,6 +79,7 @@ class Photo(BaseImage):
         if not current_avatar.exists():
             self.is_avatar = True
             self.thumbnail.generate()
+            self.card_thumbnail.generate()
         return super().save(*args, **kwargs)
 
     class Meta:

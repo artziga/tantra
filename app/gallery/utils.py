@@ -25,4 +25,5 @@ def make_as_avatar(photo):
         current_avatar.save()
     photo.is_avatar = True
     photo.thumbnail.generate()
+    photo.card_thumbnail.generate()
     photo.save()

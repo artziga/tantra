@@ -5,5 +5,5 @@ from django.dispatch import Signal
 class UsersConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'users'
-    verbose_name = 'Мастера'
+    verbose_name = 'Пользователи'
 

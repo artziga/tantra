@@ -11,7 +11,7 @@
                 {% else %}
                 <a href="{% url 'specialists:specialist_profile' specialist.username %}">
                 {% endif %}
-                <img src="{{ specialist.avatar.0.image.url }}" alt="Мастер {{ specialist }}">
+                <img src="{{ specialist.avatar.card_thumbnail.url }}" alt="Мастер {{ specialist }}">
                 </a>
             </figure>
             {% if user.is_authenticated %}

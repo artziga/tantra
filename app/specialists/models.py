@@ -31,7 +31,7 @@ class MassageFor(models.Model):
     icon = models.CharField(max_length=50, verbose_name='Иконка')
 
     def __str__(self):
-        return self.slug
+        return self.massage_for
 
     class Meta:
         verbose_name = 'Для кого массаж'

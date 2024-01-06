@@ -24,7 +24,8 @@ from feedback.views import add_is_bookmarked
 from gallery.models import Photo
 from listings.models import Listing
 from specialists.models import BasicService, BasicServicePrice
-from specialists.forms import PersonDataForm, SpecialistDataForm, ContactDataForm, AboutForm, SpecialistFilterForm
+from specialists.forms import PersonDataForm, SpecialistDataForm, ContactDataForm, AboutForm, SpecialistFilterForm, \
+    FeaturesForm
 from specialists.mixins import SpecialistOnlyMixin, specialist_only
 from specialists.utils import make_user_a_specialist, delete_specialist
 from main.utils import FilterFormMixin
@@ -37,6 +38,7 @@ FORMS = [
     ("person_data", PersonDataForm),
     ("specialist_data", SpecialistDataForm),
     ("contact_data", ContactDataForm),
+    ("features", FeaturesForm),
     ("about", AboutForm),
 
 ]
@@ -95,6 +97,7 @@ class SpecialistProfileWizard(SessionWizardView):
         user.first_name = cleaned_data.pop('first_name', '')
         user.last_name = cleaned_data.pop('last_name', '')
         massage_for_set = cleaned_data.pop('massage_for', [])
+        features_set = cleaned_data.pop('features', [])
         home_price = cleaned_data.pop('home_price', '')
         on_site_price = cleaned_data.pop('on_site_price', '')
         if not user.is_specialist:
@@ -108,6 +111,7 @@ class SpecialistProfileWizard(SessionWizardView):
             'on_site_price': on_site_price
         })
         tp.massage_for.set(massage_for_set)
+        tp.features.set(features_set)
         user.save()
         tp.save()
         logging.info(f"Заполнена анкета пользователем {user}")
