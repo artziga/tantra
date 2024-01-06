@@ -25,6 +25,7 @@ class Listing(models.Model):
 
 class Feature(models.Model):
     name = models.CharField(max_length=50, verbose_name='Название')
+    icon = models.CharField(max_length=50, verbose_name='Иконка', null=True)
 
     def __str__(self):
         return self.name
