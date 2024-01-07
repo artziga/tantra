@@ -72,7 +72,7 @@ class BaseImage(models.Model):
 
 
 class Photo(BaseImage):
-    is_avatar = models.BooleanField(verbose_name='Аватар', default=False, validators=[validate_single_avatar])
+    is_avatar = models.BooleanField(verbose_name='Аватар', default=False)
 
     def save(self, *args, **kwargs):
         current_avatar = Photo.objects.filter(user=self.user, is_avatar=True)
