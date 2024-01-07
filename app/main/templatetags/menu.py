@@ -10,6 +10,7 @@ def get_menu(user):
             user.username: reverse_lazy('specialists:profile'),
             'Редактировать профиль': reverse_lazy('specialists:edit_profile', kwargs={'username': user.username}),
             'Сменить пароль': reverse_lazy('specialists:change_password'),
+            'Галерея': reverse_lazy('gallery:edit_gallery'),
             'Выйти': reverse_lazy('accounts:logout')
         }
     else:

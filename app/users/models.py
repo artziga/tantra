@@ -31,5 +31,8 @@ class User(AbstractUser):
 
     @property
     def avatar(self):
-        avatar = Photo.objects.get(user=self, is_avatar=True)
+        try:
+            avatar = Photo.objects.get(user=self, is_avatar=True)
+        except ObjectDoesNotExist:
+            return None
         return avatar
