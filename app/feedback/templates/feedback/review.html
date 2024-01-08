@@ -25,7 +25,7 @@
         <p class="review__description">{{ review.text|linebreaksbr }}</p>
         {% if user == review.author %}
         <div class="review__icons">
-            <a href="{% url 'feedback:delete_review' specialist.pk %}">
+            <a href="{% url 'feedback:delete_review' review.pk %}">
             <i class="fa fa-trash" aria-hidden="true" title="Удалить"></i>
             </a>
         </div>

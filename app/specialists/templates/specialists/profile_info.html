@@ -10,10 +10,10 @@
                 <i class="fa fa-venus" aria-hidden="true" title="Женщина"></i>
                {% endif %}
           </div>
-              {% if specialist.specialist_profile.age %}
+              {% if specialist.specialist_profile.birth_date %}
       <div class="param-name">Возраст</div>
-      <div class="param-value">{{ specialist.specialist_profile.age }}</div>
-      <div class="param-additional">{{ specialist.specialist_profile.age|years_suffix }}</div>
+      <div class="param-value">{{ specialist.specialist_profile.birth_date|years_from_date }}</div>
+      <div class="param-additional">{{ specialist.specialist_profile.birth_date|years_from_date|years_suffix }}</div>
               {% endif %}
               {% if specialist.specialist_profile.practice_start_date is not None %}
       <div class="param-name">Опыт</div>

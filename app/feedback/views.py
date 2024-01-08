@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.db import transaction
+from django.urls import reverse_lazy
+from django.views.generic import DeleteView
 from star_ratings.models import Rating, UserRating
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -83,6 +85,13 @@ def delete_review(request, review_for):
     return redirect(request.META.get('HTTP_REFERER'))
 
 
+class DeleteReviewView(LoginRequiredMixin, DeleteView):
+    model = Review
+
+    def get_success_url(self):
+        return reverse_lazy('specialists:specialist_profile', args=[self.object.user.username])
+
+
 class BookmarkView(LoginRequiredMixin, View):
 
     def post(self, request):
@@ -101,6 +110,3 @@ class BookmarkView(LoginRequiredMixin, View):
             }),
             content_type="application/json"
         )
-
-
-

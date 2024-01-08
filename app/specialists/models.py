@@ -61,6 +61,7 @@ class SpecialistProfile(models.Model):
     phone_number = models.CharField(max_length=20, verbose_name='Номер телефона', null=True, blank=True)
     telegram_profile = models.CharField(max_length=20, verbose_name='Телеграмм', null=True, blank=True)
     instagram_profile = models.CharField(max_length=20, verbose_name='Инстаграм', null=True, blank=True)
+    whatsapp_profile = models.CharField(max_length=20, verbose_name='Whatsapp', null=True, blank=True)
     description = models.TextField(verbose_name='О себе', null=True, blank=True)
     is_profile_active = models.BooleanField(default=False)
 

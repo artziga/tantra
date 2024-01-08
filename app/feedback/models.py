@@ -31,6 +31,9 @@ class Review(BaseComment):
         verbose_name='Кому',
         related_name='review_for')
 
+    class Meta:
+        unique_together = ('user', 'author')
+
 
 # class Comment(BaseComment):
 #     parent = models.ForeignKey(

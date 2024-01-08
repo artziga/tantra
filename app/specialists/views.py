@@ -145,7 +145,7 @@ class SpecialistProfileDetailView(ProfileView):
         photos = Photo.objects.filter(user=specialist)
         ct = ContentType.objects.get_for_model(specialist)
         reviews = get_reviews(specialist)
-        is_reviewed = self.request.user in [review.user for review in reviews]
+        is_reviewed = self.request.user in [review.author for review in reviews]
         review_form = self.get_review_form(specialist=specialist)
         context['is_reviewed'] = is_reviewed
         context['specialist'] = specialist
