@@ -13,12 +13,21 @@ def validate_image_files_extension(value):
             raise ValidationError('Допустимы только файлы с расширениями jpg, jpeg, png и gif.')
 
 
+max_image_size_text = 'Максимальный размер файла - 5 Мб'
+
+
 class AvatarForm(forms.Form):
-    avatar = forms.ImageField(label='Аватар', required=False, widget=forms.ClearableFileInput())
+    avatar = forms.ImageField(
+        help_text=max_image_size_text,
+        label='Аватар',
+        required=False,
+        widget=forms.ClearableFileInput()
+    )
 
 
 class MultiImageUploadForm(forms.Form):
     photos = MultiImageField(
+        help_text=max_image_size_text,
         label='Добавить фотографии',
         min_num=1,
         max_num=10,
