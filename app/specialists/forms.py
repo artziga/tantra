@@ -27,6 +27,8 @@ class PersonDataForm(AddUserMixin, forms.Form):
 
     @staticmethod
     def get_initial(user):
+        if not user.is_specialist:
+            return {'first_name': user.first_name, 'last_name': user.last_name}
         profile_data = SpecialistProfile.objects.select_related('user').filter(user=user).values(
             'user__first_name',
             'user__last_name',

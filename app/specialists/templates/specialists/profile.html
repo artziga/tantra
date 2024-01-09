@@ -23,8 +23,8 @@
                                     </div>
                                 </div>
                                 <div class="product-rating d-flex mb--20">
-                                    <div class="star-rating {% rating_class specialist.rating.first.average %}">
-                                        <span>Rated <strong class="rating">{% rating_class specialist.ratings.first.average %}</strong> out of 5</span>
+                                    <div class="star-rating {% rating_class reviews.avg  %}">
+                                        <span>Rated <strong class="rating">{% rating_class reviews.avg %}</strong> out of 5</span>
                                     </div>
                                     Отзывов: {{ reviews.count }}
                                 </div>

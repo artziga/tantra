@@ -1,24 +1,38 @@
-from email._header_value_parser import get_domain
-
-from django.core.mail import send_mail
+from django.conf import settings
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 
 from gallery.models import Photo
-from config.settings import DEFAULT_FROM_EMAIL
 from specialists.models import SpecialistProfile
 
 
 def make_user_a_specialist(user):
     user.is_specialist = True
     user.save()
-    SpecialistProfile.objects.create(user=user)
+    specialist = SpecialistProfile.objects.create(user=user)
     subject = 'Новый массажист ожидает подтверждения'
     count = SpecialistProfile.objects.filter(is_profile_active=False).count()
-    message = (f'Зарегистрирован новый массажист.'
-               f' Он ожидает подтверждения своего профиля.\nВсего профилей для подтверждения: {count}')
-    from_email = DEFAULT_FROM_EMAIL
+    model_name = specialist._meta.model_name
+    app_label = specialist._meta.app_label
+    if settings.ALLOWED_HOSTS and settings.ALLOWED_HOSTS[-1] not in ['localhost', '127.0.0']:
+        host = 'http://' + settings.ALLOWED_HOSTS[-1]
+    else:
+        host = 'localhost:8000'
+    specialists_url = f'{host}/admin/{app_label}/{model_name}'
+    specialist_url = f'{host}/admin/{app_label}/{model_name}/{specialist.pk}/change'
+    context = {
+        'specialist': specialist,
+        'count': count,
+        'specialists_url': specialists_url,
+        'specialist_url': specialist_url,
+    }
+    from_email = settings.DEFAULT_FROM_EMAIL
     recipient_list = ['kazan-tantra@yandex.ru']
+    html_content = render_to_string('specialists/specialist_activation_for_admin.html', context)
+    email = EmailMessage(subject, html_content, to=recipient_list, from_email=from_email)
+    email.content_subtype = 'html'
+    email.send()  #TODO: Надо сделать асинхронно
 
-    send_mail(subject, message, from_email, recipient_list) #TODO: Надо сделать асинхронно
 
 
 def delete_specialist(user):

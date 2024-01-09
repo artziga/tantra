@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+</head>
+<body>
+Уважаемый {{ user.username }} !
+Вы зарегистрировались на сайте <a href="{{ host }}"> tantra-massage.pro</a>
+Вам необходимо выполнить активацию, чтобы подтвердить свою личность.
+Для этого пройдите, пожалуйста, по ссылке
+{{ host }}{% url 'accounts:register_activate' sign=sign %}
+С уважением, администрация сайта <a href="{{ host }}"> tantra-massage.pro</a>
+
+
+</body>
+</html>

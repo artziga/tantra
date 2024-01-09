@@ -40,17 +40,7 @@ FORMS = [
     ("contact_data", ContactDataForm),
     ("features", FeaturesForm),
     ("about", AboutForm),
-
 ]
-
-
-# FORMS_NAMES = [
-#     '<i class="fa-li fa fa-id-badge"></i>',
-#     '<i class="fa-li fa fa-address-card-o" aria-hidden="true"></i>',
-#     '<i class="fa-li fa fa-leaf" aria-hidden="true"></i>',
-#     '<i class="fa-li fa fa-phone-square" aria-hidden="true"></i>',
-#     '<i class="fa-li fa fa-file-text-o" aria-hidden="true"></i>'
-# ]
 
 
 def become_a_specialist(request):
@@ -127,10 +117,11 @@ class SpecialistProfileWizard(SessionWizardView):
         )
 
     def get_form_initial(self, step):
-        if self.request.user.is_specialist:
+        if self.request.user.is_specialist or step == 'person_data':
             forms = dict(FORMS)
             form = forms[step]
             initial = form.get_initial(self.request.user)
+
 
             return initial
 

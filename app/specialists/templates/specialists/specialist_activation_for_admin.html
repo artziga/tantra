@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация массажиста</title>
+</head>
+<body>
+    <p>Зарегистрирован новый массажист: <a href="{{ specialist_url }}">{{ specialist }}</a></p>
+    <p>Он ожидает подтверждения своего профиля. По этой ссылке вы можете ознакомиться с ним</p>
+    {% if count > 1 %}
+        <a href="{{ specialists_url }}">Всего профилей для подтверждения: {{count}}</a>
+    {% endif %}
+</body>
+</html>
