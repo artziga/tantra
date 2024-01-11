@@ -11,6 +11,7 @@
                                 <h1><i class="fa fa-question" aria-hidden="true"></i></h1>
                                   <h2>Добро пожаловать</h2>
                                   <p>Вы действительно хотите завести анкету массажиста?</p>
+                                    <p class="privacy-text mb--20">Продолжая вы подтверждаете, что согласны соблюдать <a href="" class="comment-reply-link">правила</a> заполнения анкет</p>
                                   <a class="btn btn-size-sm mr--20" href="{% url 'specialists:edit_profile' user.username %}">Да, заполнить анкету</a>
                                 {% if user.is_authenticated %}
                                   <a class="btn btn-size-sm" href="{% url 'users:profile' %}">Нет</a>

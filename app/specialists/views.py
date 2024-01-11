@@ -8,17 +8,16 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.core.files.storage import FileSystemStorage
-from django.db.models import F, OuterRef, Value, BooleanField, Subquery
+from django.db.models import F, OuterRef, Value, BooleanField, Subquery, Prefetch, Count, Avg
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.views.generic import ListView
 from django.conf import settings
 from formtools.wizard.views import SessionWizardView
-from star_ratings.models import UserRating
 
 from accounts.views import MyPasswordChangeView
 from feedback.forms import ReviewForm
-from feedback.models import Bookmark
+from feedback.models import Bookmark, Review
 from feedback.utils import get_reviews
 from feedback.views import add_is_bookmarked
 from gallery.models import Photo
@@ -96,10 +95,12 @@ class SpecialistProfileWizard(SessionWizardView):
         else:
             goto = redirect('specialists:profile')
         tp, created = SpecialistProfile.objects.update_or_create(user=user, defaults=cleaned_data)
-        self.set_price({
+        self.set_price(data={
             'home_price': home_price,
             'on_site_price': on_site_price
-        })
+        },
+            tp=tp
+        )
         tp.massage_for.set(massage_for_set)
         tp.features.set(features_set)
         user.save()
@@ -107,23 +108,28 @@ class SpecialistProfileWizard(SessionWizardView):
         logging.info(f"Заполнена анкета пользователем {user}")
         return goto
 
-    def set_price(self, data):
+    def set_price(self, data, tp):
         bs = BasicService.objects.get(pk=1)
-        BasicServicePrice.objects.update_or_create(
-            service=bs,
-            specialist=SpecialistProfile.objects.get(user=self.request.user),
-            home_price=data['home_price'],
-            on_site_price=data['on_site_price']
+        b = BasicServicePrice.objects.get(specialist=tp, service=bs)
+        print(b)
+        defaults = data
+        query_params = {'specialist': tp, 'service': bs}
+        create_defaults = defaults.copy()
+        create_defaults.update(query_params)
+        cr = BasicServicePrice.objects.update_or_create(
+            **query_params,
+            defaults=defaults,
+            create_defaults=create_defaults
         )
 
+        print(cr)
+
     def get_form_initial(self, step):
-        if self.request.user.is_specialist or step == 'person_data':
-            forms = dict(FORMS)
-            form = forms[step]
-            initial = form.get_initial(self.request.user)
+        forms = dict(FORMS)
+        form = forms[step]
+        initial = form.get_initial(self.request.user)
 
-
-            return initial
+        return initial
 
 
 class SpecialistProfileDetailView(ProfileView):
@@ -153,9 +159,21 @@ class SpecialistProfileDetailView(ProfileView):
         return context
 
     def get_specialist(self):
-        specialist_name = self.kwargs.get('specialist_username')
-        specialist = get_object_or_404(User, username=specialist_name)
-        # specialist = User.objects.get(username=specialist_name)
+        specialist_name = self.kwargs.get('specialist_username', self.request.user.username)
+        print(specialist_name)
+        # specialist = get_object_or_404(User, username=specialist_name)
+
+        specialist = User.objects.filter(username=specialist_name)
+        review = Prefetch('review_for', queryset=Review.objects.all(), to_attr='score')
+        sp = (specialist.select_related('specialist_profile').prefetch_related(review))
+
+        sp = sp.annotate(
+            min_price=F('specialist_profile__basicserviceprice__home_price'),
+            # TODO: сейчас всегда берётся цена дома, нужно сделать чтобы выбиралась наименьшая из дома/на выезде
+            num_reviews=Count('review_for', distinct=True),
+            avg_score=Avg('review_for__score'))
+        specialist = sp.first()
+        print(specialist.avg_score)
         return specialist
 
     @staticmethod
@@ -166,8 +184,9 @@ class SpecialistProfileDetailView(ProfileView):
 
 
 class SpecialistSelfProfileDetailView(SpecialistOnlyMixin, SpecialistProfileDetailView):
-    def get_specialist(self):
-        return self.request.user
+    pass
+    # def get_specialist(self):
+    #     return self.request.user
 
 
 def format_tel(tel: str) -> str:

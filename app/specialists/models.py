@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from star_ratings.models import Rating
 
 from listings.models import Feature
 from django.urls import reverse
@@ -21,7 +20,7 @@ class BasicServicePrice(models.Model):
                                 on_delete=models.CASCADE,
                                 )
     specialist = models.ForeignKey('specialists.SpecialistProfile', on_delete=models.CASCADE, null=True)
-    home_price = models.PositiveSmallIntegerField(verbose_name='Приём у себя', null=True)
+    home_price = models.PositiveSmallIntegerField(verbose_name='Приём у себя')
     on_site_price = models.PositiveSmallIntegerField(verbose_name='Выезд на дом', null=True)
 
 

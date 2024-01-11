@@ -15,10 +15,11 @@ class RegisterUserForm(UserCreationForm):
         attrs={'class': 'form__input'}))
     password2 = forms.CharField(label='Повторите пароль', widget=forms.PasswordInput(
         attrs={'class': 'form__input'}))
+    is_adult = forms.BooleanField(label='Мне больше 18 лет', widget=forms.CheckboxInput())
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password1', 'password2')
+        fields = ('username', 'email', 'password1', 'password2', 'is_adult')
 
 
 class LoginUserForm(AuthenticationForm):

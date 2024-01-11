@@ -10,7 +10,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import transaction
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView
-from star_ratings.models import Rating, UserRating
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.views import View
@@ -68,21 +67,6 @@ class AddReviewView(LoginRequiredMixin, View):
             logger.info(f"{e}!! {self.request.user.username} пытался оставить второй отзыв для {specialist}")
             raise ReviewIntegrityError("Only one review allowed per user.")
 
-
-@login_required
-def delete_review(request, review_for):
-    review_from = request.user
-    try:
-        specialist = User.objects.get(pk=review_for)
-        ct = ContentType.objects.get_for_model(specialist)
-        rating = Rating.objects.get(object_id=specialist.pk, content_type=ct)
-        user_rating = UserRating.objects.get(user=review_from, rating=rating)
-        user_rating.delete()
-        logger.info(f"{request.user.username} удалил отзыв для {specialist}")
-    except UserRating.DoesNotExist as e:
-        logger.error(f"Ошибка удаления отзыва {request.user.username}: {e}")
-
-    return redirect(request.META.get('HTTP_REFERER'))
 
 
 class DeleteReviewView(LoginRequiredMixin, DeleteView):

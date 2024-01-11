@@ -75,6 +75,8 @@ class SpecialistDataForm(AddUserMixin, forms.Form):
     @staticmethod
     def get_initial(user):
         initial = {}
+        if not user.is_specialist:
+            return initial
         profile_data = SpecialistProfile.objects.filter(user=user).values(
             'practice_start_date',
             'massage_for',
@@ -103,6 +105,8 @@ class AboutForm(AddUserMixin, forms.Form):
     @staticmethod
     def get_initial(user):
         initial = {}
+        if not user.is_specialist:
+            return initial
         description = SpecialistProfile.objects.filter(user=user).values(
             'description',
         ).first()
@@ -123,6 +127,8 @@ class ContactDataForm(AddUserMixin, forms.Form):
 
     @staticmethod
     def get_initial(user):
+        if not user.is_specialist:
+            return {}
         initial = SpecialistProfile.objects.filter(user=user).values(
             'address',
             'phone_number',
@@ -148,6 +154,13 @@ class ContactDataForm(AddUserMixin, forms.Form):
                 self.cleaned_data['longitude'] = place.point.longitude
         print(cleaned_data)
         return self.cleaned_data
+
+    def clean_phone_number(self):
+        phone = self.cleaned_data.get('phone_number', '')
+        if phone.startswith('8'):
+            phone = phone.replace('8', '+7', 1)
+        return phone
+
 
     # def clean_address_data(self, user):
     #     cleaned_data = self.cleaned_data

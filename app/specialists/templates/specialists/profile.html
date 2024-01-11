@@ -23,48 +23,12 @@
                                     </div>
                                 </div>
                                 <div class="product-rating d-flex mb--20">
-                                    <div class="star-rating {% rating_class reviews.avg  %}">
-                                        <span>Rated <strong class="rating">{% rating_class reviews.avg %}</strong> out of 5</span>
+                                    <div class="star-rating {% rating_class specialist.avg_score  %}">
+                                        <span>Rated <strong class="rating">{% rating_class reviews.avg_score %}</strong> out of 5</span>
                                     </div>
-                                    Отзывов: {{ reviews.count }}
+                                    Отзывов: {{ specialist.num_reviews }}
                                 </div>
-
-                                        <div class="table-content table-responsive mb--20">
                                             {% include 'specialists/profile_info.html' %}
-                                        </div>
-                                {% if specialist.specialist_profile.address  %}
-                                <p>
-                                    <i class="fa fa-map-marker mr--10" aria-hidden="true"></i>
-                                    {{specialist.specialist_profile.address}}</p>
-                                {% endif %}
-                                <div class="row justify-content-center">
-                                    <div class="contact-buttons social space-20 mb--20">
-                                        {% if specialist.specialist_profile.phone_number %}
-                                        <a href="#" id="phone_number" target="_blank" rel="noopener noreferrer" class="social__link">
-                                            <i class="fa fa-phone"></i>
-                                            <span class="sr-only">Телефон</span>
-                                        </a>
-                                        {% endif %}
-                                        {% if specialist.specialist_profile.telegram_profile %}
-                                        <a href="#" id="telegram_profile" target="_blank" rel="noopener noreferrer" class="social__link">
-                                            <i class="fa fa-telegram"></i>
-                                            <span class="sr-only">Телеграм</span>
-                                        </a>
-                                        {% endif %}
-                                        {% if specialist.specialist_profile.instagram_profile %}
-                                        <a href="#" id="instagram_profile" target="_blank" rel="noopener noreferrer" class="social__link">
-                                            <i class="fa fa-instagram"></i>
-                                            <span class="sr-only">Instagram</span>
-                                        </a>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="row justify-content-center">
-                                    <div class='contact-data-container'></div>
-                                </div>
-
-
-
                                 <div id="bookmark-result"></div>
                             </div>
                         </div>

@@ -5,7 +5,6 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from star_ratings.models import Rating
 
 from feedback.models import Bookmark
 from gallery.models import Photo

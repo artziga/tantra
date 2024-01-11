@@ -1,5 +1,5 @@
 from django.urls import path
-from feedback.views import AddReviewView, delete_review, BookmarkView, DeleteReviewView
+from feedback.views import AddReviewView, BookmarkView, DeleteReviewView
 
 app_name = 'feedback'
 
