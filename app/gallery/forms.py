@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from django import forms
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from multiupload.fields import MultiImageField
 from django.core.validators import validate_image_file_extension
@@ -13,7 +14,8 @@ def validate_image_files_extension(value):
             raise ValidationError('Допустимы только файлы с расширениями jpg, jpeg, png и gif.')
 
 
-max_image_size_text = 'Максимальный размер файла - 5 Мб'
+max_image_size_limit = settings.MAX_IMAGE_SIZE_LIMIT
+max_image_size_text = f'Максимальный размер файла - {max_image_size_limit} Мб'
 
 
 class AvatarForm(forms.Form):
@@ -31,7 +33,7 @@ class MultiImageUploadForm(forms.Form):
         label='Добавить фотографии',
         min_num=1,
         max_num=10,
-        max_file_size=1024 * 1024 * 5,
+        max_file_size=1024 * 1024 * max_image_size_limit,
         required=False
     )
 

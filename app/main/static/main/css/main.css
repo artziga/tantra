@@ -4291,6 +4291,8 @@ a, button, .item-overlay, .global-overlay, .scroll-to-top i:before, .slick-dots 
   align-items: center;
 }
 
+
+
 .w--50 {
   width: 50px;
 }
@@ -4360,6 +4362,8 @@ multistep form
   background: black;
 }
 
+
+
 @media screen and (max-width: 500px) {
   .step p {
     font-size: 11px;
@@ -4370,6 +4374,10 @@ multistep form
 
 
 
+.bottom-element {
+    position: absolute;
+    bottom: 0;
+}
 
 
 /*****************************

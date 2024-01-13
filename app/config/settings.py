@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     "gallery.apps.GalleryConfig",
     "feedback.apps.FeedbackConfig",
     "listings.apps.ListingsConfig",
+    "articles.apps.ArticlesConfig"
 ]
 
 MIDDLEWARE = [
@@ -148,6 +149,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MAX_IMAGE_SIZE_LIMIT = 2
 
 
 AUTH_USER_MODEL = 'users.User'

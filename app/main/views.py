@@ -3,9 +3,10 @@ from django.core.mail import send_mail
 from django.shortcuts import render
 from django.urls import reverse_lazy
 
+from articles.models import Article, Announcement
 from main.forms import ContactUsForm
 
-from django.views.generic import FormView
+from django.views.generic import FormView, TemplateView
 
 from config.settings import DEFAULT_FROM_EMAIL
 
@@ -14,6 +15,21 @@ User = get_user_model()
 
 def index(request):
     return render(request, 'main/index.html')
+
+
+class IndexView(TemplateView):
+    template_name = 'main/index.html'
+    extra_context = {'title': 'tantra-massage.pro'}
+
+    def get_context_data(self, **kwargs):
+        articles = Article.objects.all()[:2]
+        announcements = Announcement.objects.all()[:2]
+        specialists = User.specialists.all().order_by('?')[:5]
+        context = super().get_context_data(**kwargs)
+        context['articles'] = articles
+        context['announcements'] = announcements
+        context['specialists'] = specialists
+        return context
 
 
 class ContactUsView(FormView):

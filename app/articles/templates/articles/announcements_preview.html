@@ -1,0 +1,34 @@
+<section class="featured-product-area mb--10pt8">
+    <div class="container mb--20">
+        <div class="row">
+            <div class="col-12 heading__secondary mb--20">
+                <h2>Ближайшие мероприятия</h2>
+            </div>
+        </div>
+        <div class="row align-items-center">
+            {% for announcement in announcements %}
+            <div class="col-md-6 mb-sm--50">
+                <div class="featured-product">
+                    <div class="featured-product__inner info-center">
+                        <figure class="featured-product__image">
+                            <img src="{{ announcement.image.url }}" alt="тантрический массаж в Казани">
+                        </figure>
+                        <div class="featured-product__info wow pbounceInLeft" data-wow-delay=".3s" data-wow-duration="1s">
+                            <div class="featured-product__info-inner">
+                                <h4 class="featured-product__text">{{ announcement.event_time }}</h4>
+                                <h3 class="featured-product__text">{{ announcement.place }}</h3>
+                                <h2 class="featured-product__name color--primary">{{ announcement.title }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+<div class="d-flex align-items-center justify-content-center mb--20">
+    <div class="form__group mr--30">
+        <a href="" type="submit" class="btn btn-size-sm">Больше анонсов</a>
+    </div>
+</div>
+</section>

@@ -1,0 +1,61 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+<!-- Breadcrumb area Start -->
+        <section class="page-title-area-2 bg-image" data-bg-image="{% static 'main/img/bg/blog-breadcrumb.jpg' %}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h1 class="sr-only">Статья от тантричнском массаже</h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Breadcrumb area End -->
+
+        <!-- Main Content Wrapper Start -->
+        <main class="main-content-wrapper">
+            <div class="inner-page-content">
+                <!-- Single Post Area Start -->
+                <div class="single-post-area mb--75 mb-md--55">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-9">
+                                <!-- Single Post Start -->
+                                <article class="single-post mb--75 mb-md--55 pb--75 pb-md--55">
+                                    <header class="single-post__header">
+                                        <h2 class="single-post__title">{{ article.tile }}</h2>
+                                        <div class="single-post__media">
+                                            <figure class="image">
+                                                <img src="{{ article.image.url }}" alt="Single Post Title" class="w-100">
+                                            </figure>
+                                        </div>
+                                        <div class="single-post__header-meta">
+                                            <span class="posted-on">{{ article.date_added }}</span>
+                                        </div>
+                                    </header>
+                                    <div class="single-post__info">
+                                        <div class="row mb--43 mb-md-33">
+                                            <div class="col-lg-4 col-md-4 pl--45 pl-sm--15">
+                                                <div class="single-post__meta">
+                                                    <div class="posted-by">
+                                                        <span class="byline">Автор:</span>
+                                                        <a href="blog-details-image.html">
+                                                            <span>{{ article.author }}</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-8 col-md-8">
+                                                {{ article.body }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+                                <!-- Single Post End -->
