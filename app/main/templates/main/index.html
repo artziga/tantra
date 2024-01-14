@@ -6,11 +6,15 @@
         <!-- Main Content Wrapper Start -->
         <main class="main-content-wrapper">
             <!-- About Slider area Start -->
+        {% if articles %}
             {% include 'articles/articles_slider.html' %}
-
+        {% endif %}
+        {% if announcements %}
             {% include 'articles/announcements_preview.html' %}
+        {% endif %}
 
             <!-- Product Area Start -->
+        {% if specialists %}
             <section class="product-area mb--50 mb-xl--40 mb-lg--25 mb-md--30 mb-sm--20 mb-xs--15">
                 <div class="container">
                     <div class="row mb--42">
@@ -32,6 +36,7 @@
                 </div>
                 </div>
             </section>
+        {% endif %}
             <!-- Product Area End -->
 
 
