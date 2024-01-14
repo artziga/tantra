@@ -40,7 +40,7 @@ services:
       - static_volume:/home/app/static
       - media_volume:/home/app/media
     ports:
-      - "80:80"
+      - "80:80" #sd
       - "443:443"
     depends_on:
       - web-app
