@@ -9,6 +9,7 @@
             {% for announcement in announcements %}
             <div class="col-md-6 mb-sm--50">
                 <div class="featured-product">
+                    <a href="{{ announcement.get_absolute_url }}">
                     <div class="featured-product__inner info-center">
                         <figure class="featured-product__image">
                             <img src="{{ announcement.image.url }}" alt="тантрический массаж в Казани">
@@ -21,6 +22,7 @@
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
             </div>
             {% endfor %}
@@ -28,7 +30,7 @@
     </div>
 <div class="d-flex align-items-center justify-content-center mb--20">
     <div class="form__group mr--30">
-        <a href="" type="submit" class="btn btn-size-sm">Больше анонсов</a>
+        <a href="{% url 'articles:announcements_list' %}" type="submit" class="btn btn-size-sm">Больше анонсов</a>
     </div>
 </div>
 </section>

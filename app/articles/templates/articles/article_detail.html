@@ -1,6 +1,7 @@
 {% extends 'main/base.html' %}
 {% load static %}
 
+{% block content %}
 <!-- Breadcrumb area Start -->
         <section class="page-title-area-2 bg-image" data-bg-image="{% static 'main/img/bg/blog-breadcrumb.jpg' %}">
             <div class="container">
@@ -24,7 +25,7 @@
                                 <!-- Single Post Start -->
                                 <article class="single-post mb--75 mb-md--55 pb--75 pb-md--55">
                                     <header class="single-post__header">
-                                        <h2 class="single-post__title">{{ article.tile }}</h2>
+                                        <h2 class="single-post__title">{{ article.title }}</h2>
                                         <div class="single-post__media">
                                             <figure class="image">
                                                 <img src="{{ article.image.url }}" alt="Single Post Title" class="w-100">
@@ -58,4 +59,7 @@
                 </div>
             </div>
         </main>
+
+{% endblock content %}
+
                                 <!-- Single Post End -->

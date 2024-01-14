@@ -28,6 +28,7 @@ urlpatterns = [
     path('listings/', include('listings.urls')),
     path('gallery/', include('gallery.urls')),
     path('feedback/', include('feedback.urls')),
+    path('articles/', include('articles.urls')),
 ]
 
 if settings.DEBUG:

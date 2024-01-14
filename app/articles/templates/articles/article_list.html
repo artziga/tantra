@@ -1,0 +1,58 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+        <!-- Breadcrumb area Start -->
+        <section class="page-title-area bg-color" data-bg-color="#f4f4f4">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h1 class="page-title">{{ title }}</h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Breadcrumb area End -->
+
+    <main class="main-content-wrapper">
+            <div class="inner-page-content ptb--80 ptb-md--60">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-9">
+                            <div class="row">
+                                {% for article in article_list %}
+                                <div class="col-12 mb--45">
+                                    <article class="post format-standard">
+                                        <div class="post__inner">
+                                            <div class="post__media">
+                                                <figure class="image">
+                                                    <img src="{{ article.card_thumbnail.url }}" alt="post" class="w-100">
+                                                    <a href="{{ article.get_absolute_url }}" class="item-overlay"></a>
+                                                </figure>
+                                            </div>
+                                            <div class="post__info">
+                                                <h2 class="post__title"><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h2>
+                                                <div class="post__meta">
+                                                    <span class="posted-on">{{ article.date_added }}</span>
+                                                    <span class="posted-by"><span>Автор: </span><a href="blog-details-image.html">{{ article.author }}</a></span>
+                                                </div>
+                                                <div class="post__desc">
+                                                    <p>{{ article.body|truncatechars:500 }}</p>
+                                                </div>
+                                                <div class="post__footer-meta">
+                                                    <a href="{{ article.get_absolute_url }}" class="read-more-btn">Читать далее</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% include 'main/pagination.html' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    {{ articles }}
+{% endblock content %}

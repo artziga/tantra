@@ -3,11 +3,11 @@ import os
 from autoslug import AutoSlugField
 from django.contrib.auth import get_user_model
 from django.db import models
-from imagekit.models import ProcessedImageField
-from pilkit.processors import SmartResize
+from django.urls import reverse
+from imagekit.models import ProcessedImageField, ImageSpecField
+from pilkit.processors import SmartResize, Thumbnail
 
 User = get_user_model()
-
 
 
 def get_storage_path(instance, filename: str) -> str:
@@ -18,8 +18,6 @@ def get_storage_path(instance, filename: str) -> str:
 
 
 class BaseArticle(models.Model):
-
-
     title = models.CharField(max_length=100, verbose_name='Заголовок')
     slug = AutoSlugField(db_index=True, unique=True, populate_from='title')
     body = models.TextField(verbose_name='Текст')
@@ -29,6 +27,13 @@ class BaseArticle(models.Model):
         auto_now_add=True,
         editable=False
     )
+
+    thumbnail = ImageSpecField(source='image',
+                               processors=[Thumbnail(100, 100)
+                                           ],
+                               format='JPEG',
+                               options={'quality': 100})
+
     date_modified = models.DateTimeField(verbose_name='Дата изменения', null=True, blank=True)
 
     class Meta:
@@ -39,7 +44,7 @@ class BaseArticle(models.Model):
 
 
 class Article(BaseArticle):
-    image_size = (444, 567)
+    image_size = (800, 561)
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -47,11 +52,21 @@ class Article(BaseArticle):
         verbose_name='Автор',
         related_query_name='article'
     )
+
     image = ProcessedImageField(verbose_name='фото',
                                 processors=[SmartResize(*image_size)],
                                 max_length=100,
                                 upload_to='articles/%Y/%m',
                                 )
+
+    card_thumbnail = ImageSpecField(source='image',
+                                    processors=[Thumbnail(400, 280)
+                                                ],
+                                    format='JPEG',
+                                    options={'quality': 100})
+
+    def get_absolute_url(self):
+        return reverse('articles:article_detail', kwargs={'slug': self.slug})
 
     class Meta:
         verbose_name = 'Статья'
@@ -61,7 +76,7 @@ class Article(BaseArticle):
 
 
 class Announcement(BaseArticle):
-    image_size = (500, 466)
+    image_size = (800, 561)
     place = models.CharField(max_length=100, null=True, blank=True, verbose_name='Место',
                              help_text='Место проведения')
     event_time = models.DateTimeField(verbose_name='Дата и время мероприятия', null=True, blank=True, )
@@ -70,6 +85,15 @@ class Announcement(BaseArticle):
                                 max_length=100,
                                 upload_to='articles/%Y/%m',
                                 )
+
+    card_thumbnail = ImageSpecField(source='image',
+                                    processors=[Thumbnail(444, 567)
+                                                ],
+                                    format='JPEG',
+                                    options={'quality': 100})
+
+    def get_absolute_url(self):
+        return reverse('articles:announcement_detail', kwargs={'slug': self.slug})
 
     class Meta:
         verbose_name = 'Анонс'

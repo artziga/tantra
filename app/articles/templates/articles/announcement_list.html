@@ -1,0 +1,61 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="page-title-area bg-color" data-bg-color="#f4f4f4">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="page-title">Анонсы</h1>
+                <ul class="breadcrumb">
+                    <li><a href="{% url 'main:index' %}">Главная</a></li>
+                    <li class="current"><span>Анонсы</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<main class="main-content-wrapper">
+        <div class="inner-page-content ptb--80 ptb-md--60">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row">
+                            {% for announcement in announcement_list %}
+                            <div class="col-xl-4 col-lg-6 mb--50">
+                                <article class="post format-standard">
+                                    <div class="post__inner">
+                                        <div class="post__media">
+                                            <figure class="image">
+                                                <img src="{{ announcement.card_thumbnail.url }}" alt="post" class="w-100">
+                                                <a href="{{ announcement.get_absolute_url }}" class="item-overlay"></a>
+                                            </figure>
+                                        </div>
+                                        <div class="post__info">
+                                            <h2 class="post__title"><a href="blog-details-image.html">{{ announcement.title }}</a></h2>
+                                            <div class="post__meta">
+                                                <span class="posted-on">{{ announcement.event_time }}</span>
+                                            </div>
+                                            <div class="post__desc">
+                                                <p>{{ announcement.body|truncatechars:100 }}</p>
+                                            </div>
+                                            <div class="post__footer-meta">
+                                                <a href="{{ announcement.get_absolute_url }}" class="read-more-btn">Подробнее</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% include 'main/pagination.html' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+
+{% endblock content %}
