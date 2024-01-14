@@ -24,7 +24,7 @@ class IndexView(TemplateView):
     def get_context_data(self, **kwargs):
         articles = Article.objects.all()[:2]
         announcements = Announcement.objects.all()[:2]
-        specialists = User.specialists.all().order_by('?')[:5]
+        specialists = User.specialists.specialist_card_info().order_by('?')[:5]
         context = super().get_context_data(**kwargs)
         context['articles'] = articles
         context['announcements'] = announcements
@@ -52,3 +52,8 @@ class ContactUsView(FormView):
 
         send_mail(subject, message, from_email, recipient_list)  # TODO: Надо сделать асинхронно
         return super().form_valid(form)
+
+
+class ProfileFillingRules(TemplateView):
+    template_name = 'main/profile_filling_rules.html'
+    extra_context = {'title': 'Правила размещения анкет'}

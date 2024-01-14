@@ -45,6 +45,11 @@
                                             <li>
                                                 <a href="{% url 'main:contact-us' %}">Обратная связь</a>
                                             </li>
+                                        {% if user.is_specialist %}
+                                            <li>
+                                                <a href="{% url 'main:profile-filling-rules' %}">Правила заполнения анкет</a>
+                                            </li>
+                                        {% endif %}
                                             <li>
                                             {% if user.is_authenticated %}
                                                 {% if user.is_specialist %}

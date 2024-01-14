@@ -23,6 +23,23 @@
                 </li>
                 <li class="has-children">
                     <a href="#">
+                        <span class="mm-text">Информация</span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="{% url 'articles:articles_list' %}">
+                                <span class="mm-text">Статьи</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'articles:announcements_list' %}">
+                                <span class="mm-text">Анонсы</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has-children">
+                    <a href="#">
                         <span class="mm-text">Дополнительно</span>
                     </a>
                     <ul class="sub-menu">
@@ -31,6 +48,13 @@
                                 <span class="mm-text">Обратная связь</span>
                             </a>
                         </li>
+                    {% if user.is_specialist %}
+                        <li>
+                            <a href="{% url 'main:profile-filling-rules' %}">
+                                <span class="mm-text">Правила заполнения анкет</span>
+                            </a>
+                        </li>
+                    {% endif %}
                         <li>
                             {% if user.is_authenticated %}
                                 {% if user.is_specialist %}
