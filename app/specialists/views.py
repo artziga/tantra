@@ -78,6 +78,7 @@ class SpecialistProfileWizard(SessionWizardView):
         context['title'] = 'Анкета'
         context['not_delete'] = True
         context['YANDEX_API_KEY'] = settings.YANDEX_GEOCODER_API_KEY
+        context['GEOSUGGEST_KEY'] = settings.YANDEX_GEOSUGGEST_API_KEY
         return context
 
     def done(self, form_list, **kwargs):
@@ -253,7 +254,6 @@ class SpecialistsListView(FilterFormMixin, ListView):
         context['filter_form'] = SpecialistFilterForm(self.request.GET)
         context['content_type_id'] = ContentType.objects.get_for_model(User).pk
         context['YANDEX_API_KEY'] = settings.YANDEX_GEOCODER_API_KEY
-        context['GEOSUGGEST_KEY'] = settings.YANDEX_GEOSUGGEST_API_KEY
         return context
 
     def get_queryset(self):
