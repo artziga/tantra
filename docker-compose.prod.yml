@@ -35,12 +35,22 @@ services:
     build: ./nginx
     restart: unless-stopped
     volumes:
+      - ./app/certbot/conf:/etc/letsencrypt
+      - ./app/certbot/www:/var/www/certbot
       - static_volume:/home/app/static
       - media_volume:/home/app/media
     ports:
       - "80:80"
+      - "443:443"
     depends_on:
       - web-app
+
+  certbot:
+    image: certbot/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    volumes:
+      - ./app/certbot/conf:/etc/letsencrypt # <--here
+      - ./app/certbot/www:/var/www/certbot
 
 volumes:
   postgres_data:
