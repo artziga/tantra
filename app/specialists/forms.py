@@ -1,6 +1,7 @@
 import logging
 
 from django import forms
+from django.core.validators import MinValueValidator
 from django.db.models import Q
 
 from listings.models import Feature
@@ -69,9 +70,12 @@ class SpecialistDataForm(AddUserMixin, forms.Form):
                                               attrs={'type': 'date', 'class': 'form__input'}))
 
     home_price = forms.IntegerField(label='Цена базовой программы дома, ₽',
-                                    widget=forms.NumberInput(attrs={'class': 'form__input'}))
+                                    widget=forms.NumberInput(attrs={'class': 'form__input'}),
+                                    validators=[MinValueValidator(1, message='Введите сумму больше 0')])
     on_site_price = forms.IntegerField(required=False, label='Цена базовой программы с выездом, ₽',
-                                       widget=forms.NumberInput(attrs={'class': 'form__input'}))
+                                       widget=forms.NumberInput(attrs={'class': 'form__input'}),
+                                       validators=[MinValueValidator(1, message='Введите сумму больше 0, либо '
+                                                                                'оставьте это поле пустым')])
 
     @staticmethod
     def get_initial(user):
