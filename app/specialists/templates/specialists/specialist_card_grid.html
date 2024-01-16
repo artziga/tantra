@@ -33,7 +33,9 @@
                     {% endif %}
                         {{ specialist.first_name }}
                     </a>
+                {% if specialist.specialist_profile.birth_date %}
                     {{ specialist.specialist_profile.birth_date|years_from_date|format_years }}
+                {% endif %}
                 </h3>
                 </div>
                 <div class="product__price">
