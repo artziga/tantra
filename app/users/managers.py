@@ -1,5 +1,6 @@
 from django.contrib.auth import models
-from django.db.models import F, OuterRef, Subquery, ImageField, Prefetch, Count, Avg
+from django.db.models import F, OuterRef, Subquery, ImageField, Prefetch, Count, Avg, Min, Case, When, IntegerField
+from django.db.models.functions import Least
 
 from gallery.models import Photo
 from feedback.models import Review
@@ -21,8 +22,11 @@ class SpecialistsManager(models.UserManager):
               .filter(specialist_profile__is_profile_active=True))
 
         qs = qs.annotate(
-            min_price=F('specialist_profile__basicserviceprice__home_price'),
-            # TODO: сейчас всегда берётся цена дома, нужно сделать чтобы выбиралась наименьшая из дома/на выезде
+            min_price=Least(
+                F('specialist_profile__basicserviceprice__home_price'),
+                F('specialist_profile__basicserviceprice__on_site_price'),
+                output_field=IntegerField()
+            ),
             num_reviews=Count('review_for', distinct=True),
             avg_score=Avg('review_for__score')
         )

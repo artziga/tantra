@@ -70,7 +70,11 @@
                                     </form>
                                     <div class="col-md-7">
                                         <div class="shop-toolbar__right">
+                                            <div class="shop-products">
+                                                <div class="pages">
                                              <p class="product-pages">Показано {{ page_obj|length }} из {{ paginator.count }}</p>
+                                                    </div>
+                                                </div>
                                              <div class="product-view-mode ml--50 ml-xs--0">
                                                 <a class="active" data-target="grid">
                                                     <img src="{% static 'main/img/icons/grid.png' %}" alt="Grid">
@@ -99,11 +103,13 @@
                                 </div>
                                 <div class="payne-product-map">
                                     <div id="map" style="width: 100%; height: 65vh;;" >
-                                    {% include 'map/map_multiply.html' %}
+                                    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey={{YANDEX_API_KEY}}" type="text/javascript"></script>
                                     </div>
                                 </div>
-                            </div>
+                            <div class="pages">
                             {% include 'main/pagination.html' %}
+                            </div>
+                            </div>
                         </div>
 
 
@@ -160,6 +166,66 @@ function sendPostRequest(link) {
 
     xhr.send(data);
 }
+</script>
+
+<script>ymaps.ready(function () {
+    var myMap = new ymaps.Map("map", {
+        center: [55.823462, 49.131547],
+        zoom: 13
+    }, {
+        searchControlProvider: 'yandex#search'
+    });
+
+    document.querySelector('[data-target="map"]').addEventListener('click', function() {
+        // Получение текущего URL
+        var currentUrl = window.location.href;
+
+        // Парсинг GET-параметров из текущего URL
+        var searchParams = new URLSearchParams(window.location.search);
+        var queryParams = Array.from(searchParams.entries()).map(param => `${param[0]}=${param[1]}`).join('&');
+
+        // Формирование полного URL с GET-параметрами
+        var apiUrl = `{% url 'specialists:specialists_on_map' %}?${queryParams}`;
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                if (data && Array.isArray(data.specialists_for_map) && data.specialists_for_map.length > 0) {
+                    myMap.geoObjects.removeAll();  // Очистка текущих маркеров на карте
+
+                    data.specialists_for_map.forEach(specialist => {
+                        if (specialist.username) {
+                            const MyIconContentLayout = ymaps.templateLayoutFactory.createClass(
+                                `<div style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden;"><img src="${specialist.avatar}" alt="" style="width: 100%; height: 100%; object-fit: cover;"></div>`
+                            );
+
+                            const myPlacemark = new ymaps.Placemark(
+                                specialist.point,
+                                {
+                                    hintContent: specialist.address,
+                                    balloonContent: `<a href="${specialist.url}">${specialist.name}</a>`
+                                },
+                                {
+                                    iconLayout: 'default#imageWithContent',
+                                    iconImageSize: [50, 50],
+                                    iconImageOffset: [-15, -15],
+                                    iconContentLayout: MyIconContentLayout
+                                }
+                            );
+
+                            myMap.geoObjects.add(myPlacemark);
+                        }
+                    });
+                    myMap.setCenter(data.map_center);
+                } else {
+                    console.error('Error: specialists_on_map data is empty or not an array.');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching specialists data:', error);
+            });
+    });
+});
 </script>
 {% endblock script %}
 

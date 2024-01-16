@@ -21,7 +21,7 @@ class BasicServicePrice(models.Model):
                                 )
     specialist = models.ForeignKey('specialists.SpecialistProfile', on_delete=models.CASCADE, null=True)
     home_price = models.PositiveSmallIntegerField(verbose_name='Приём у себя')
-    on_site_price = models.PositiveSmallIntegerField(verbose_name='Выезд на дом', null=True)
+    on_site_price = models.PositiveSmallIntegerField(verbose_name='Выезд на дом', null=True, blank=True)
 
 
 class MassageFor(models.Model):

@@ -1,14 +1,14 @@
 {% load static %}
 {% block map %}
 
-        <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey={{YANDEX_API_KEY}}" type="text/javascript"></script>
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey={{YANDEX_API_KEY}}" type="text/javascript"></script>
 
 <script type="text/javascript">
     ymaps.ready(init);
     function init() {
     var myMap = new ymaps.Map("map", {
-            center: [55.823462, 49.131547],
-            zoom: 13
+            center: {{specialist.specialist_profile.point}},
+            zoom: 15
         }, {
             searchControlProvider: 'yandex#search'
         });

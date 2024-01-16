@@ -9,6 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.core.files.storage import FileSystemStorage
 from django.db.models import F, OuterRef, Value, BooleanField, Subquery, Prefetch, Count, Avg
+from django.urls import reverse
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.views.generic import ListView
@@ -26,7 +27,7 @@ from specialists.models import BasicService, BasicServicePrice
 from specialists.forms import PersonDataForm, SpecialistDataForm, ContactDataForm, AboutForm, SpecialistFilterForm, \
     FeaturesForm
 from specialists.mixins import SpecialistOnlyMixin, specialist_only
-from specialists.utils import make_user_a_specialist, delete_specialist
+from specialists.utils import make_user_a_specialist, delete_specialist, filter_specialists
 from main.utils import FilterFormMixin
 from specialists.models import SpecialistProfile
 from users.views import ProfileView
@@ -111,19 +112,15 @@ class SpecialistProfileWizard(SessionWizardView):
 
     def set_price(self, data, tp):
         bs = BasicService.objects.get(pk=1)
-        b = BasicServicePrice.objects.get(specialist=tp, service=bs)
-        print(b)
         defaults = data
         query_params = {'specialist': tp, 'service': bs}
         create_defaults = defaults.copy()
         create_defaults.update(query_params)
-        cr = BasicServicePrice.objects.update_or_create(
+        BasicServicePrice.objects.update_or_create(
             **query_params,
             defaults=defaults,
             create_defaults=create_defaults
         )
-
-        print(cr)
 
     def get_form_initial(self, step):
         forms = dict(FORMS)
@@ -220,18 +217,6 @@ def get_social_info(request):
     except AttributeError:
         info = None
         href = None
-    # Словарь для формирования ссылок в зависимости от типа соцсети
-
-    # field_info = field_mapping.get(field_name, {'info_key': None, 'href_prefix': None})
-    # info_key = field_info['info_key']
-    # href_prefix = field_info['href_prefix']
-    #
-    # try:
-    #     info = escape(getattr(specialist, info_key)) if info_key else None
-    #     href = href_prefix + escape(getattr(specialist, field_name)) if href_prefix else None
-    # except AttributeError:
-    #     info = None
-    #     href = None
 
     data = {'info': info, 'href': href}
     print(data)
@@ -244,7 +229,7 @@ class SpecialistPasswordChangeView(SpecialistOnlyMixin, MyPasswordChangeView):
 
 class SpecialistsListView(FilterFormMixin, ListView):
     model = User
-    paginate_by = 20
+    paginate_by = 10
     template_name = 'specialists/specialists_list.html'
     context_object_name = 'specialists'
 
@@ -262,7 +247,35 @@ class SpecialistsListView(FilterFormMixin, ListView):
             specialists = add_is_bookmarked(queryset=specialists, user=self.request.user)
         form = SpecialistFilterForm(self.request.GET)
         if form.is_valid():
-            queryset = form.filter(specialists)
+            filter_parameters = self.request.GET
+            queryset = filter_specialists(specialists, filter_parameters)
         else:
             logging.error(form.errors)
         return queryset
+
+
+def specialists_on_map_list(request):
+    get_parameters = request.GET
+    filter_params = get_parameters
+    specialists = User.specialists.active()
+    if filter_params:
+        specialists = filter_specialists(specialists, filter_params, for_map=True)
+    specialists_data = []
+    lat = 0
+    long = 0
+    count = 0
+    for specialist in specialists:
+        specialists_data.append(
+            {
+                'username': specialist.username,
+                'avatar': specialist.avatar.image.url,
+                'name': specialist.get_full_name(),
+                'point': specialist.specialist_profile.point,
+                'url': reverse('specialists:specialist_profile', kwargs={'specialist_username': specialist.username})
+            }
+        )
+        lat += specialist.specialist_profile.latitude
+        long += specialist.specialist_profile.longitude
+        count += 1
+    map_center = (lat/count, long/count)
+    return JsonResponse({'specialists_for_map': specialists_data, 'map_center': map_center})

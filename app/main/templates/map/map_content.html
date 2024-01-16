@@ -7,7 +7,7 @@ myPlacemark = new ymaps.Placemark(
     {{specialist.specialist_profile.point}},
     {
         hintContent: '{{ specialist.specialist_profile.address }}',
-        balloonContent: '{{ specialist }}',
+        balloonContent: '<a href="{% url 'specialists:specialist_profile' specialist.username %}">{{ specialist }}</a>',
 
     },
     {

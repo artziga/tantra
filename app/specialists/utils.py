@@ -1,5 +1,7 @@
 from django.conf import settings
+from django.core.exceptions import FieldError
 from django.core.mail import EmailMessage
+from django.db.models import Q
 from django.template.loader import render_to_string
 
 from gallery.models import Photo
@@ -31,8 +33,7 @@ def make_user_a_specialist(user):
     html_content = render_to_string('specialists/specialist_activation_for_admin.html', context)
     email = EmailMessage(subject, html_content, to=recipient_list, from_email=from_email)
     email.content_subtype = 'html'
-    email.send()  #TODO: Надо сделать асинхронно
-
+    email.send()  # TODO: Надо сделать асинхронно
 
 
 def delete_specialist(user):
@@ -42,3 +43,29 @@ def delete_specialist(user):
     photos = Photo.objects.filter(user=user, is_avatar=False)
     photos.delete()
     specialist_profile.delete()
+
+
+price_range = {'low': (1000, 3000), 'medium': (3000, 7000), 'high': (7000, 20000)}
+
+
+def filter_specialists(queryset, parameters, for_map=False):
+    genders = parameters.getlist('gender') or [True, False]
+    massage_for = ([mf.slug for mf in parameters.getlist('massage_for', [])]
+                   or ['for_males', 'for_females', 'for_pairs'])
+    price = parameters.get('price', None)
+    queryset = (queryset.
+                filter(
+        specialist_profile__gender__in=genders,
+        specialist_profile__massage_for__slug__in=massage_for
+    )
+                .distinct())
+    if not for_map:
+        if price:
+            price_filter = Q(min_price__gte=price_range[price][0], min_price__lte=price_range[price][1])
+            queryset = queryset.filter(price_filter)
+        ordering = parameters.get('order_by')
+
+        if ordering:
+            queryset = queryset.order_by(ordering)
+
+    return queryset

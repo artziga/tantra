@@ -8,6 +8,7 @@ from specialists.models import MassageFor, BasicService, BasicServicePrice
 from specialists.mixins import AddUserMixin
 from main.utils import Locator
 from specialists.models import validate_age, SpecialistProfile
+from specialists.utils import price_range
 
 
 class PersonDataForm(AddUserMixin, forms.Form):
@@ -69,7 +70,7 @@ class SpecialistDataForm(AddUserMixin, forms.Form):
 
     home_price = forms.IntegerField(label='Цена базовой программы дома, ₽',
                                     widget=forms.NumberInput(attrs={'class': 'form__input'}))
-    on_site_price = forms.IntegerField(label='Цена базовой программы с выездом, ₽',
+    on_site_price = forms.IntegerField(required=False, label='Цена базовой программы с выездом, ₽',
                                        widget=forms.NumberInput(attrs={'class': 'form__input'}))
 
     @staticmethod
@@ -161,7 +162,6 @@ class ContactDataForm(AddUserMixin, forms.Form):
             phone = phone.replace('8', '+7', 1)
         return phone
 
-
     # def clean_address_data(self, user):
     #     cleaned_data = self.cleaned_data
     #     current_address = None
@@ -187,7 +187,6 @@ class ActivateProfileForm(AddUserMixin, forms.Form):
     is_profile_active = forms.BooleanField(required=False)
 
 
-price_range = {'low': (1000, 3000), 'medium': (3000, 7000), 'high': (7000, 20000)}
 ORDERINGS = (('-avg_score', 'Рейтинг'),
              ('min_price', '<i class="fa fa-arrow-up" aria-hidden="true">Цена</i>'),
              ('-min_price', '<i class="fa fa-arrow-down" aria-hidden="true">Цена</i>'),
@@ -199,7 +198,6 @@ ORDERINGS = (('-avg_score', 'Рейтинг'),
 
 
 class SpecialistFilterForm(forms.Form):
-
     gender = forms.MultipleChoiceField(
         required=False,
         widget=forms.CheckboxSelectMultiple,
@@ -268,6 +266,7 @@ class FeaturesForm(AddUserMixin, forms.Form):
         if features:
             initial['features'] = list(features)
         return initial
+
 
 class OrderingForm(forms.Form):
     order_by = forms.ChoiceField(

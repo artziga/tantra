@@ -4194,6 +4194,16 @@ a, button, .item-overlay, .global-overlay, .scroll-to-top i:before, .slick-dots 
   display: block;
 }
 
+.shop-products.list .pages,
+.shop-products.grid .pages {
+  display: block;
+}
+
+.shop-products.map .pages {
+  display: none;
+}
+
+
 .shop-products.list .row > [class^="col"] {
   -webkit-flex-basis: 100%;
   -moz-flex-basis: 100%;
