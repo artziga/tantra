@@ -35,9 +35,11 @@
           <div class="param-name">Цена дома</div>
           <div class="param-value">{{ specialist.specialist_profile.basicserviceprice_set.first.home_price }}</div>
           <div class="param-additional">₽</div>
+    {% if specialist.specialist_profile.basicserviceprice_set.first.on_site_price %}
           <div class="param-name">Цена с выездом</div>
           <div class="param-value">{{ specialist.specialist_profile.basicserviceprice_set.first.on_site_price }}</div>
           <div class="param-additional">₽</div>
+    {% endif %}
     </div>
 </div>
 

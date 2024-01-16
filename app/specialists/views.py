@@ -235,10 +235,11 @@ class SpecialistsListView(FilterFormMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Мастер'
+        context['title'] = 'Массажисты Казани'
         context['filter_form'] = SpecialistFilterForm(self.request.GET)
         context['content_type_id'] = ContentType.objects.get_for_model(User).pk
         context['YANDEX_API_KEY'] = settings.YANDEX_GEOCODER_API_KEY
+        context['breadcrumbs'] = True
         return context
 
     def get_queryset(self):
@@ -251,6 +252,7 @@ class SpecialistsListView(FilterFormMixin, ListView):
             queryset = filter_specialists(specialists, filter_parameters)
         else:
             logging.error(form.errors)
+            queryset = []
         return queryset
 
 

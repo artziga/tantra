@@ -49,6 +49,9 @@
     </div>
         <!-- Header End -->
 
+        {% if breadcrumbs or breadcrumbs_steps%}
+        {% include 'main/breadcrumbs.html' %}
+        {% endif %}
 
         {% block content %}
         {% endblock content %}
