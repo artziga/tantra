@@ -628,7 +628,51 @@
 	});
 
 
-	$('.zoom').zoom();
+	$(document).ready(function () {
+		var zoomEnabled = false;
+
+		function checkScreenSize() {
+			zoomEnabled = window.innerWidth > 768; // Измените 768 на необходимую вам ширину экрана
+			if (zoomEnabled) {
+				$('.zoom').zoom();
+			} else {
+				$('.zoom').trigger('zoom.destroy');
+			}
+		}
+
+		// Проверка размера экрана при загрузке страницы
+		checkScreenSize();
+
+		// Проверка размера экрана при изменении размера окна
+		$(window).resize(function () {
+			checkScreenSize();
+		});
+	});
+
+	/**********************
+	*N
+	***********************/
+
+	document.addEventListener('DOMContentLoaded', function () {
+        var mobileScreenWidth = 767;
+
+        function updateZoomClass() {
+            var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+            var productGalleryImages = document.querySelectorAll('.product-gallery__image');
+            productGalleryImages.forEach(function (figure) {
+                if (screenWidth <= mobileScreenWidth) {
+                    figure.classList.remove('zoom');
+                } else {
+                    figure.classList.add('zoom');
+                }
+            });
+        }
+
+        updateZoomClass();
+
+        window.addEventListener('resize', updateZoomClass);
+    });
 
 	/**********************
 	*Nice Select Activation
