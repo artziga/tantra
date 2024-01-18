@@ -16,16 +16,21 @@
                         <div class="col-lg-6 col-md-8">
                             <div class="slider-content">
                                 <div class="slider-content__text mb--95 md-lg--80 mb-md--40 mb-sm--15">
-                                    <h1 class="heading__primary mb--40 mb-md--20" data-animation="fadeInUp"
+                                    <h1 class="heading__primary mb--20 mb-md--10" data-animation="fadeInUp"
                                         data-duration=".3s" data-delay=".3s">
                                         <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
                                     </h1>
                                     <p class="font-weight-light" data-animation="fadeInUp"
                                         data-duration=".3s" data-delay=".3s">{{ article.body|truncatechars:400 }}</p>
                                 </div>
-                                <div class="form__group mr--30">
-                                    <a href="{% url 'articles:articles_list' %}" type="submit" class="btn btn-size-sm">Другие статьи</a>
+                                <div class="row">
+                                <div class="post__footer-meta mr--30">
+                                                    <a href="{{ article.get_absolute_url }}" class="read-more-btn">Читать далее</a>
                                 </div>
+                                <div class="post__footer-meta post__footer-meta">
+                                    <a href="{% url 'articles:articles_list' %}" type="submit" class="read-more-btn"">Другие статьи</a>
+                                </div>
+                                    </div>
                             </div>
                         </div>
                         <div class="col-lg-4 offset-lg-2 col-md-4">
