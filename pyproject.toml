@@ -18,6 +18,7 @@ django-autoslug = "^1.9.9"
 django-imagekit = "^5.0.0"
 django-multiupload = "^0.6.1"
 django-cors-headers = "^4.3.1"
+django-ckeditor = "^6.7.0"
 
 
 [build-system]

@@ -1,6 +1,7 @@
 import os
 
 from autoslug import AutoSlugField
+from ckeditor.fields import RichTextField
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
@@ -18,23 +19,22 @@ def get_storage_path(instance, filename: str) -> str:
 
 
 class BaseArticle(models.Model):
-    title = models.CharField(max_length=100, verbose_name='Заголовок')
+    title = models.CharField(max_length=150, verbose_name='Заголовок')
     slug = AutoSlugField(db_index=True, unique=True, populate_from='title')
-    body = models.TextField(verbose_name='Текст')
+    body = RichTextField(verbose_name='Текст')
     published = models.BooleanField(verbose_name='Опубликовано', default=False)
     date_added = models.DateTimeField(
         'Дата создания',
         auto_now_add=True,
         editable=False
     )
+    date_modified = models.DateTimeField(verbose_name='Дата изменения', auto_now=True, null=True, blank=True)
 
     thumbnail = ImageSpecField(source='image',
                                processors=[Thumbnail(100, 100)
                                            ],
                                format='JPEG',
                                options={'quality': 100})
-
-    date_modified = models.DateTimeField(verbose_name='Дата изменения', null=True, blank=True)
 
     class Meta:
         abstract = True

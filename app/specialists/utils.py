@@ -45,7 +45,7 @@ def delete_specialist(user):
     specialist_profile.delete()
 
 
-price_range = {'low': (1000, 3000), 'medium': (3000, 7000), 'high': (7000, 20000)}
+price_range = {'low': (6000, 11000), 'medium': (11000, 15000), 'high': (15000, 20000)}
 
 
 def filter_specialists(queryset, parameters, for_map=False):
