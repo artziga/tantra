@@ -38,7 +38,7 @@
                                                 <span class="posted-on">{{ announcement.event_time }}</span>
                                             </div>
                                             <div class="post__desc">
-                                                <p>{{ announcement.body|truncatechars:100 }}</p>
+                                                <p>{{ announcement.body|safe|truncatechars:100 }}</p>
                                             </div>
                                             <div class="post__footer-meta">
                                                 <a href="{{ announcement.get_absolute_url }}" class="read-more-btn">Подробнее</a>

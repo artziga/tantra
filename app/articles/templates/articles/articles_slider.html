@@ -21,7 +21,7 @@
                                         <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
                                     </h1>
                                     <p class="font-weight-light" data-animation="fadeInUp"
-                                        data-duration=".3s" data-delay=".3s">{{ article.body|truncatechars:400 }}</p>
+                                        data-duration=".3s" data-delay=".3s">{{ article.body|safe|truncatechars:400 }}</p>
                                 </div>
                                 <div class="row">
                                 <div class="post__footer-meta mr--30">
