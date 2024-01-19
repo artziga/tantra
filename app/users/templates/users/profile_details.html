@@ -4,7 +4,7 @@
 {% block profile_info %}
 <div class="tab-pane fade show active" id="dashboard">
     <div class="profile-container">
-    <img class="profile-image mr--20" src="{% if avatar %}{{ user.avatar.image.url }}{% else %}{% static 'main/img/others/profile-icon.png' %}{% endif %}" alt="Avatar">
+    <img class="profile-image mr--20" src="{% if user.avatar %}{{ user.avatar.image.url }}{% else %}{% static 'main/img/others/profile-icon.png' %}{% endif %}" alt="Avatar">
     <div class="profile-text">
         <p>Привет, <strong>{{ user }}</strong></p>
         <p>E-mail: {{ user.email }}</p>
