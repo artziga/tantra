@@ -7,6 +7,9 @@ User = get_user_model()
 
 
 class EditProfileForm(forms.ModelForm):
+    """
+       Форма редактирования профиля пользователя.
+    """
 
     avatar = forms.ImageField(label='Аватар', required=False, help_text=max_image_size_text,
                               widget=forms.ClearableFileInput())

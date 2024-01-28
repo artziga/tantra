@@ -23,6 +23,10 @@ User = get_user_model()
 
 
 class AddAvatar(LoginRequiredMixin, FormView):
+    """
+    Представление для добавления аватара пользователя.
+    """
+
     model = Photo
     form_class = AvatarForm
     template_name = 'users/profile.html'
@@ -40,6 +44,8 @@ class AddAvatar(LoginRequiredMixin, FormView):
 
 
 class ProfileView(TemplateView):
+    """Просмотр профиля пользователя."""
+
     template_name = 'users/profile_details.html'
 
     def get_context_data(self, *args, **kwargs):
@@ -50,6 +56,8 @@ class ProfileView(TemplateView):
 
 
 class Favorite(ListView):
+    """Избранные специалисты пользователя."""
+
     context_object_name = 'favorite_specialists'
     template_name = 'users/profile_favorite.html'
 
@@ -70,6 +78,8 @@ class Favorite(ListView):
 
 
 class EditProfile(UpdateView):
+    """Редактирование профиля пользователя."""
+
     model = User
     template_name = 'users/profile_edit.html'
     form_class = EditProfileForm
@@ -107,6 +117,8 @@ class EditProfile(UpdateView):
 
 
 class UserPasswordChangeView(MyPasswordChangeView):
+    """Изменение пароля пользователя."""
+
     template_name = 'users/profile_change_password.html'
 
     def get_context_data(self, **kwargs):

@@ -8,6 +8,8 @@ from django.core.validators import validate_image_file_extension
 
 
 def validate_image_files_extension(value):
+    """Пользовательская валидация для проверки расширений изображений."""
+
     for file in value:
         extension = Path(file.name).suffix[1:].lower()
         if extension not in ['jpg', 'jpeg', 'png', 'gif']:
@@ -19,6 +21,8 @@ max_image_size_text = f'Максимальный размер файла - {max_
 
 
 class AvatarForm(forms.Form):
+    """Форма для загрузки аватара."""
+
     avatar = forms.ImageField(
         help_text=max_image_size_text,
         label='Аватар',
@@ -28,6 +32,8 @@ class AvatarForm(forms.Form):
 
 
 class MultiImageUploadForm(forms.Form):
+    """Форма для множественной загрузки изображений."""
+
     photos = MultiImageField(
         help_text=max_image_size_text,
         label='Добавить фотографии',
