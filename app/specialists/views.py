@@ -34,6 +34,7 @@ from users.views import ProfileView
 
 User = get_user_model()
 
+# Формы для мастера и их порядок в мастер-визарде
 FORMS = [
     ("person_data", PersonDataForm),
     ("specialist_data", SpecialistDataForm),
@@ -44,32 +45,35 @@ FORMS = [
 
 
 def become_a_specialist(request):
+    """Страница подтверждения желания стать мастером."""
     return render(request, template_name='specialists/become_a_specialist_confirmation.html')
 
 
 @specialist_only
 def delete_specialist_profile(request):
+    """Страница подтверждения удаления профиля мастера."""
     return render(request, template_name='specialists/delete_specialist_profile.html')
 
 
 @specialist_only
 def delete_a_specialist_confirmation(request):
+    """Удаление профиля мастера."""
     user = request.user
     delete_specialist(user)
     return redirect('users:profile')
 
 
 class SpecialistProfileWizard(SessionWizardView):
+    """Мастер-визард для заполнения анкеты мастера.
+    Пользователь должен быть аутентифицирован для доступа к этому визарду.
+    После успешного заполнения всех шагов визарда, пользователь становится мастером.
+    """
+
     form_list = FORMS
     file_storage = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'photos'))
 
     def get_form_kwargs(self, step=None):
         return {'user': self.request.user}
-
-    # def process_step(self, form):
-    #     if self.steps.current == 'contact_data':
-    #         form.clean_address_data(user=self.request.user)
-    #     return super().process_step(form)
 
     def get_template_names(self):
         return 'forms/wizard_form.html'
@@ -131,6 +135,8 @@ class SpecialistProfileWizard(SessionWizardView):
 
 
 class SpecialistProfileDetailView(ProfileView):
+    """Просмотр профиля мастера."""
+
     template_name = 'specialists/profile.html'
 
     def get_context_data(self, *args, **kwargs):
@@ -224,10 +230,13 @@ def get_social_info(request):
 
 
 class SpecialistPasswordChangeView(SpecialistOnlyMixin, MyPasswordChangeView):
+    """Изменение пароля мастера."""
     template_name = 'specialists/profile_change_password.html'
 
 
 class SpecialistsListView(FilterFormMixin, ListView):
+    """Список мастеров."""
+
     model = User
     paginate_by = 10
     template_name = 'specialists/specialists_list.html'
@@ -257,6 +266,8 @@ class SpecialistsListView(FilterFormMixin, ListView):
 
 
 def specialists_on_map_list(request):
+    """Список мастеров для отображения на карте."""
+
     get_parameters = request.GET
     filter_params = get_parameters
     specialists = User.specialists.active()
