@@ -32,7 +32,7 @@ COPY ./pyproject.toml .
 COPY ./poetry.lock .
 
 # Установка зависимостей
-RUN poetry install --verbose --no-interaction
+RUN poetry install --verbose --no-interaction --without dev
 
 COPY ./app ./app
 
