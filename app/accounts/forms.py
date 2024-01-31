@@ -1,20 +1,18 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, UserCreationForm, PasswordChangeForm, \
-    SetPasswordForm
+from django.contrib.auth.forms import (
+    AuthenticationForm, PasswordResetForm, UserCreationForm, PasswordChangeForm, SetPasswordForm
+)
 
 User = get_user_model()
 
 
 class RegisterUserForm(UserCreationForm):
-    username = forms.CharField(label='Логин', widget=forms.TextInput(
-        attrs={'class': 'form__input'}))
-    email = forms.EmailField(label='Email', widget=forms.TextInput(
-        attrs={'class': 'form__input'}))
-    password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput(
-        attrs={'class': 'form__input'}))
-    password2 = forms.CharField(label='Повторите пароль', widget=forms.PasswordInput(
-        attrs={'class': 'form__input'}))
+    """
+    Форма регистрации нового пользователя.
+    Добавляет дополнительное поле 'is_adult', чтобы подтвердить совершеннолетие пользователя.
+    """
+
     is_adult = forms.BooleanField(label='Мне больше 18 лет', widget=forms.CheckboxInput())
 
     class Meta:
@@ -23,10 +21,10 @@ class RegisterUserForm(UserCreationForm):
 
 
 class LoginUserForm(AuthenticationForm):
-    username = forms.CharField(label='Логин', widget=forms.TextInput(
-        attrs={'class': 'form__input'}))
-    password = forms.CharField(label='Пароль', widget=forms.PasswordInput(
-        attrs={'class': 'form__input'}))
+    """
+    Форма аутентификации пользователя.
+    Используется для входа пользователя в систему.
+    """
 
     class Meta:
         model = User
@@ -34,6 +32,11 @@ class LoginUserForm(AuthenticationForm):
 
 
 class UserPasswordResetForm(PasswordResetForm):
+    """
+    Форма сброса пароля пользователя.
+    Используется для отправки электронного письма со ссылкой на сброс пароля.
+    """
+
     email = forms.EmailField(
         max_length=254,
         widget=forms.EmailInput(attrs={'class': 'form__input', "autocomplete": "email"}),
@@ -41,6 +44,11 @@ class UserPasswordResetForm(PasswordResetForm):
 
 
 class MySetPasswordForm(SetPasswordForm):
+    """
+    Форма установки нового пароля пользователя.
+    Используется для установки нового пароля после сброса.
+    """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -54,11 +62,12 @@ class MySetPasswordForm(SetPasswordForm):
 
 
 class MyPasswordChangeForm(MySetPasswordForm, PasswordChangeForm):
+    """
+    Форма изменения пароля пользователя.
+    Используется для изменения пароля пользователя.
+    """
+
     old_password = forms.CharField(
         widget=forms.PasswordInput(attrs={'class': 'form__input'}),
         label='Текущий пароль'
     )
-
-
-
-

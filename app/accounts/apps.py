@@ -13,6 +13,10 @@ user_registered = Signal()
 
 
 def user_registered_dispatcher(instance, **kwargs):
+    """
+        Функция диспетчера сигнала, подключенная к сигналу `user_registered`.
+        Отправляет уведомление об активации при регистрации нового пользователя.
+        """
     send_activation_notification(instance)
 
 
