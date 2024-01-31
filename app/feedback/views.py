@@ -24,6 +24,11 @@ logger = logging.getLogger(__name__)
 
 
 def add_is_bookmarked(queryset, user):
+    """
+        Добавляет атрибут is_bookmarked к queryset, указывающий,
+        добавлен ли объект в избранное для конкретного пользователя.
+    """
+
     if user and user.is_authenticated:
         bookmarked_subquery = Bookmark.objects.filter(
             user=user,
@@ -42,6 +47,11 @@ class ReviewIntegrityError(Exception):
 
 
 class AddReviewView(LoginRequiredMixin, View):
+    """
+    Класс для добавления отзыва.
+
+    """
+
     def post(self, request):
         form = ReviewForm(self.request.POST)
         if form.is_valid():
@@ -68,8 +78,11 @@ class AddReviewView(LoginRequiredMixin, View):
             raise ReviewIntegrityError("Only one review allowed per user.")
 
 
-
 class DeleteReviewView(LoginRequiredMixin, DeleteView):
+    """
+    Класс для удаления отзыва.
+
+    """
     model = Review
 
     def get_success_url(self):
@@ -77,7 +90,10 @@ class DeleteReviewView(LoginRequiredMixin, DeleteView):
 
 
 class BookmarkView(LoginRequiredMixin, View):
+    """
+    Класс для добавления или удаления избранного.
 
+    """
     def post(self, request):
         data = json.loads(request.body.decode('utf-8'))
         obj_pk = data.get('obj_pk')

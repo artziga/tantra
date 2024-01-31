@@ -3,6 +3,10 @@ from feedback.widgets import StarRatingWidget
 
 
 class ReviewForm(forms.Form):
+    """
+    Форма для создания отзыва.
+
+    """
 
     text = forms.CharField(label='Отзыв', widget=forms.Textarea(
                 attrs={'class': 'form__input form__input--textarea', 'placeholder': 'Оставьте отзыв'}))
