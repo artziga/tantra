@@ -1,4 +1,3 @@
-
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -9,6 +8,9 @@ from gallery.utils import make_as_avatar, get_users_avatar
 
 
 def add_avatar(form, user, get='avatar'):
+    """Обработка добавления аватара из формы.
+
+    """
     image = form.files.get(get)
     if image:
         photo = Photo.objects.create(image=image, user=user, is_avatar=True)
@@ -16,6 +18,9 @@ def add_avatar(form, user, get='avatar'):
 
 
 def add_photos(form, user, get='photos'):
+    """Обработка добавления фотографий из формы.
+
+    """
     photos = form.files.getlist(get)
     if photos:
         for photo in photos:
@@ -23,6 +28,8 @@ def add_photos(form, user, get='photos'):
 
 
 class EditGallery(FormView):
+    """Представление для редактирования галереи пользователя."""
+
     form_class = MultiImageUploadForm
     template_name = 'gallery/gallery_form.html'
     success_url = reverse_lazy('gallery:edit_gallery')
@@ -36,6 +43,9 @@ class EditGallery(FormView):
         return context
 
     def form_valid(self, form):
+        """
+        Обработка формы после успешного валидирования.
+        """
         user = self.request.user
         add_avatar(form=form, user=user)
         add_photos(form=form, user=user)
@@ -43,15 +53,22 @@ class EditGallery(FormView):
 
 
 class PhotoDeleteView(DeleteView):
+    """Представление для удаления фотографии из галереи."""
+
     model = Photo
 
     def get_success_url(self):
+        """
+        Получение URL для перенаправления после успешного удаления фотографии.
+        """
         if self.request.user.is_specialist:
             return reverse_lazy('gallery:edit_gallery')
         return reverse_lazy('users:edit_profile', kwargs={'pk': self.request.user.pk})
 
 
 def change_avatar(request, pk):
+    """Представление для подтверждения изменения аватара."""
+
     try:
         current_avatar = get_users_avatar(user=request.user)
     except ObjectDoesNotExist:
@@ -64,6 +81,8 @@ def change_avatar(request, pk):
 
 
 def change_avatar_confirm(request, pk):
+    """Представление для подтверждения изменения аватара (выполнение изменения)."""
+
     photo = get_object_or_404(Photo, id=pk)
     make_as_avatar(photo=photo)
     return redirect('gallery:edit_gallery')
