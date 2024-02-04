@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 
 from articles.models import Article, Announcement
+from articles.utils import get_upcoming_events
 from main.forms import ContactUsForm
 
 from django.views.generic import FormView, TemplateView
@@ -23,7 +24,7 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         articles = Article.objects.all()[:2]
-        announcements = Announcement.objects.all()[:2]
+        announcements = get_upcoming_events()[:2]
         specialists = User.specialists.specialist_card_info().order_by('?')[:5]
         context = super().get_context_data(**kwargs)
         context['articles'] = articles

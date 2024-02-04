@@ -1,6 +1,7 @@
 from django.views.generic import DetailView, ListView
 
 from articles.models import Article, Announcement
+from articles.utils import get_upcoming_events
 
 
 class ArticleView(DetailView):
@@ -46,4 +47,4 @@ class AnnouncementListView(ListView):
     model = Announcement
     paginate_by = 10
     extra_context = {'title': 'Анонсы'}
-    queryset = Announcement.objects.filter(published=True)
+    queryset = get_upcoming_events()
