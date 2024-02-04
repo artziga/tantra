@@ -129,17 +129,30 @@ class ContactDataForm(AddUserMixin, forms.Form):
         attrs={'class': 'form__input', 'placeholder': 'Введите ваш ник'}))
     instagram_profile = forms.CharField(required=False, label='Инстаграм', widget=forms.TextInput(
         attrs={'class': 'form__input', 'placeholder': 'Введите ваш ник'}))
+    whatsapp_profile = forms.CharField(required=False, label='Whatsapp', widget=forms.TextInput(
+        attrs={'class': 'form__input', 'placeholder': 'Введите ваш ник'}))
 
     @staticmethod
     def get_initial(user):
         if not user.is_specialist:
-            return {}
-        initial = SpecialistProfile.objects.filter(user=user).values(
+            return {'address': 'Казань',
+                    'phone_number': '+7',
+                    'telegram_profile': '@',
+                    'instagram_profile': '@',
+                    'whatsapp_profile': '@'
+                    }
+        sd = SpecialistProfile.objects.filter(user=user).values(
             'address',
             'phone_number',
             'telegram_profile',
             'instagram_profile',
         ).first()
+        initial = {sd.get('address', ''),
+                   sd.get('phone_number', '+7'),
+                   sd.get('telegram_profile', '@'),
+                   sd.get('instagram_profile', '@'),
+                   sd.get('whatsapp_profile', '@')
+                   }
         return initial
 
     def clean(self):
@@ -157,7 +170,6 @@ class ContactDataForm(AddUserMixin, forms.Form):
                 self.cleaned_data['address'] = place
                 self.cleaned_data['latitude'] = place.point.latitude
                 self.cleaned_data['longitude'] = place.point.longitude
-        print(cleaned_data)
         return self.cleaned_data
 
     def clean_phone_number(self):
@@ -166,25 +178,22 @@ class ContactDataForm(AddUserMixin, forms.Form):
             phone = phone.replace('8', '+7', 1)
         return phone
 
-    # def clean_address_data(self, user):
-    #     cleaned_data = self.cleaned_data
-    #     current_address = None
-    #     if user.is_specialist:
-    #         current_address = user.specialist_profile.address
-    #     new_address = cleaned_data['address']
-    #     print(new_address)
-    #     print(current_address)
-    #     if new_address:
-    #         if current_address and new_address == current_address:
-    #             return
-    #         else:
-    #             raw_address = cleaned_data['address']
-    #             place = Locator(raw_place=raw_address).location()
-    #             self.cleaned_data['address'] = place
-    #             self.cleaned_data['latitude'] = place.point.latitude
-    #             self.cleaned_data['longitude'] = place.point.longitude
-    #     print(cleaned_data)
-    #     return self.cleaned_data
+    @staticmethod
+    def _clean_profile(profile: str):
+        return profile.strip('@')
+
+    def clean_telegram_profile(self):
+        telegram_profile = self.cleaned_data.get('telegram_profile', '')
+        return self._clean_profile(telegram_profile)
+
+    def clean_whatsapp_profile(self):
+        whatsapp_profile = self.cleaned_data.get('whatsapp_profile', '')
+        return self._clean_profile(whatsapp_profile)
+
+    def clean_instagram_profile(self):
+        instagram_profile = self.cleaned_data.get('instagram_profile', '')
+        return self._clean_profile(instagram_profile)
+
 
 
 class ActivateProfileForm(AddUserMixin, forms.Form):
