@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 
@@ -23,7 +24,7 @@ class BaseComment(models.Model):
 
 
 class Review(BaseComment):
-    score = models.SmallIntegerField(verbose_name='Оценка')
+    score = models.SmallIntegerField(verbose_name='Оценка', validators=[MinValueValidator(1), MaxValueValidator(5)])
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

@@ -13,10 +13,13 @@ from django.views.generic import DeleteView
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.views import View
+from rest_framework.generics import ListAPIView
 
 from feedback.forms import ReviewForm
 from feedback.models import Review, Bookmark
 from django.db.models import F, OuterRef, Value, BooleanField, Subquery
+
+from feedback.serializers import ReviewSerializer
 
 User = get_user_model()
 
@@ -89,11 +92,19 @@ class DeleteReviewView(LoginRequiredMixin, DeleteView):
         return reverse_lazy('specialists:specialist_profile', args=[self.object.user.username])
 
 
+class ReviewListView(ListAPIView):
+    serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        return Review.objects.filter(user__username=self.kwargs['specialist_username'])
+
+
 class BookmarkView(LoginRequiredMixin, View):
     """
     Класс для добавления или удаления избранного.
 
     """
+
     def post(self, request):
         data = json.loads(request.body.decode('utf-8'))
         obj_pk = data.get('obj_pk')
