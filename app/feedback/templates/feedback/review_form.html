@@ -2,9 +2,9 @@
             <div class="row">
                 <div class="col-lg-8">
                     <h3 class="reply-title">Оставить отзыв</h3>
-                    <form id="review-form" method="post" action="{% url 'feedback:add_comment' %}" class="form pr--30">
+                    <form id="review-form" method="post" action="{% url 'feedback:reviews_api' specialist_username=specialist.username %}" class="form pr--30">
                         {% csrf_token %}
-                        {{form.review_for}}
+{#                        {{form.review_for}}#}
                         <div class="form__output">
                             <div class="error">
                         {{ form.non_field_errors }}

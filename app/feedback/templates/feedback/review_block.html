@@ -3,14 +3,55 @@ aria-labelledby="nav-reviews-tab">
     <div class="product-reviews">
         <h3 class="review__title">Отзывов: {{ reviews.count|default:"0"  }}</h3>
         <ul class="review__list mb--50">
-            {% for review in reviews %}
-            <li class="review__item">
-                {% include 'feedback/review.html' %}
-            </li>
-            {% endfor %}
+
         </ul>
         {% if not is_reviewed and specialist != user %}
         {% include 'feedback/review_form.html' %}
         {% endif %}
     </div>
 </div>
+
+<script>
+    // Функция для выполнения запроса к API
+    function fetchReviews() {
+        fetch('{% url  'feedback:reviews_api' specialist_username=specialist.username %}')
+            .then(response => response.json())
+            .then(data => {
+                // Обновляем элементы на странице с полученными данными
+                const reviewsContainer = document.querySelector('.review__list');
+                reviewsContainer.innerHTML = ''; // Очищаем контейнер от предыдущих данных
+
+                // Перебираем полученные отзывы и добавляем их на страницу
+                data.forEach(review => {
+                    const reviewItem = document.createElement('li');
+                    reviewItem.classList.add('review__item');
+
+                    reviewItem.innerHTML = `
+                        <div class="review__container" style="position: relative;">
+                            <img src="${review.author.avatar_img.image}" alt="Review Avatar" class="review__avatar">
+                            <div class="review__text">
+                                <div class="d-flex flex-sm-row flex-column justify-content-between">
+                                    <div class="review__meta">
+                                        <strong class="review__author">${review.author.first_name} ${review.author.last_name}</strong>
+                                        <span class="review__dash">-</span>
+                                        <span class="review__published-date">${review.date_added}</span>
+                                    </div>
+                                    <div class="product-rating">
+                                        <div class="star-rating ${ review.rating_class }">
+                                            <span>Rated <strong class="rating">{{ review.score }}</strong> out of 5</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="review__description">${review.text}</p>
+                            </div>
+                        </div>
+                    `;
+                    reviewsContainer.appendChild(reviewItem);
+                });
+            })
+            .catch(error => console.error('Ошибка при получении отзывов:', error));
+    }
+
+    // Вызываем функцию для получения отзывов при загрузке страницы
+    document.addEventListener('DOMContentLoaded', fetchReviews);
+</script>

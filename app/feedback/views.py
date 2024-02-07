@@ -13,6 +13,7 @@ from django.views.generic import DeleteView
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.views import View
+from rest_framework import viewsets, mixins
 from rest_framework.generics import ListAPIView
 
 from feedback.forms import ReviewForm
@@ -96,7 +97,17 @@ class ReviewListView(ListAPIView):
     serializer_class = ReviewSerializer
 
     def get_queryset(self):
-        return Review.objects.filter(user__username=self.kwargs['specialist_username'])
+        return Review.objects.select_related('user').filter(user__username=self.kwargs['specialist_username'])
+
+
+class ReviewViewSet(mixins.CreateModelMixin,
+                    mixins.DestroyModelMixin,
+                    mixins.ListModelMixin,
+                    viewsets.GenericViewSet):
+    serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        return Review.objects.select_related('user').filter(user__username=self.kwargs['specialist_username'])
 
 
 class BookmarkView(LoginRequiredMixin, View):
