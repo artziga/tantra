@@ -11,7 +11,7 @@ import logging
 
 from accounts.views import MyPasswordChangeView
 from feedback.models import Bookmark
-from feedback.views import add_is_bookmarked
+from feedback.utils import add_is_bookmarked
 from gallery.forms import AvatarForm
 from gallery.views import add_avatar
 from users.forms import EditProfileForm

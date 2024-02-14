@@ -2,48 +2,33 @@ import json
 import logging
 
 from django.contrib.auth import get_user_model
+from django.db.models import Count, Avg, F, Subquery, BooleanField, Value, OuterRef, Exists
 from django.db.utils import IntegrityError
 from django.contrib import auth, messages
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.db import transaction
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.views import View
-from rest_framework import viewsets, mixins
-from rest_framework.generics import ListAPIView
+from rest_framework import viewsets, mixins, status
+from rest_framework.generics import RetrieveAPIView
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
+
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from feedback.forms import ReviewForm
 from feedback.models import Review, Bookmark
-from django.db.models import F, OuterRef, Value, BooleanField, Subquery
 
-from feedback.serializers import ReviewSerializer
+from feedback.serializers import ReviewSerializer, ReviewsMetaDataSerializer
 
 User = get_user_model()
 
 logger = logging.getLogger(__name__)
-
-
-def add_is_bookmarked(queryset, user):
-    """
-        Добавляет атрибут is_bookmarked к queryset, указывающий,
-        добавлен ли объект в избранное для конкретного пользователя.
-    """
-
-    if user and user.is_authenticated:
-        bookmarked_subquery = Bookmark.objects.filter(
-            user=user,
-            content_type=ContentType.objects.get_for_model(User),
-            object_id=OuterRef('pk')
-        ).values('user').annotate(is_bookmarked=Value(True, output_field=BooleanField())).values('is_bookmarked')
-        queryset = queryset.annotate(
-            is_bookmarked=Subquery(bookmarked_subquery, output_field=BooleanField())
-        )
-
-    return queryset
 
 
 class ReviewIntegrityError(Exception):
@@ -93,11 +78,10 @@ class DeleteReviewView(LoginRequiredMixin, DeleteView):
         return reverse_lazy('specialists:specialist_profile', args=[self.object.user.username])
 
 
-class ReviewListView(ListAPIView):
-    serializer_class = ReviewSerializer
-
-    def get_queryset(self):
-        return Review.objects.select_related('user').filter(user__username=self.kwargs['specialist_username'])
+class ReviewPagination(PageNumberPagination):
+    page_size = 1
+    page_size_query_param = 'page_size'
+    max_page_size = 100
 
 
 class ReviewViewSet(mixins.CreateModelMixin,
@@ -105,9 +89,40 @@ class ReviewViewSet(mixins.CreateModelMixin,
                     mixins.ListModelMixin,
                     viewsets.GenericViewSet):
     serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Review.objects.select_related('user').filter(user__username=self.kwargs['specialist_username'])
+        queryset = Review.objects.filter(user__username=self.kwargs['specialist_username'])
+
+        return queryset
+
+    def perform_create(self, serializer):
+        specialist = self.kwargs['specialist_username']
+        specialist = get_object_or_404(User, username=specialist)
+        serializer.save(author=self.request.user, user=specialist)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        specialist_username = self.kwargs['specialist_username']
+        if Review.objects.filter(author=self.request.user, user__username=specialist_username).exists():
+            return Response({"detail": "Отзыв уже существует"}, status=status.HTTP_400_BAD_REQUEST)
+
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class RatingAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        user_reviews_exists = Exists(
+            Review.objects.filter(author=self.request.user, user=OuterRef('pk')))
+        specialist = (User.objects.filter(username=self.kwargs['specialist_username'])
+                      .annotate(average_rating=Avg('review_for__score'), is_reviewed=user_reviews_exists)
+                      .values('average_rating', 'is_reviewed').get())
+        return Response(specialist, status=status.HTTP_200_OK)
+
 
 
 class BookmarkView(LoginRequiredMixin, View):

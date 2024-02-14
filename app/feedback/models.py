@@ -7,7 +7,6 @@ from django.db import models
 
 class BaseComment(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL,
-                               null=True,
                                on_delete=models.CASCADE,
                                verbose_name='Автор',
                                related_query_name='review',

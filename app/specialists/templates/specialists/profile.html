@@ -23,10 +23,15 @@
                                     </div>
                                 </div>
                                 <div class="product-rating d-flex mb--20">
+                                    <div class="avg_rating">
                                     <div class="star-rating {% rating_class specialist.avg_score  %}">
                                         <span>Rated <strong class="rating">{% rating_class reviews.avg_score %}</strong> out of 5</span>
                                     </div>
-                                    Отзывов: {{ specialist.num_reviews }}
+                                    </div>
+                                    Отзывов:
+                                    <span class="reviews_count">
+                                          {{ specialist.num_reviews }}
+                                    </span>
                                 </div>
                                             {% include 'specialists/profile_info.html' %}
                                 <div id="bookmark-result"></div>
@@ -55,7 +60,8 @@
                                     {% endif %}
                                     <a class="nav-link" id="nav-reviews-tab" data-toggle="tab" href="#nav-reviews"
                                         role="tab" aria-selected="true">
-                                        <span>Отзывы ({{ reviews.count }})</span>
+                                            Отзывы
+                                            (<span class="reviews_count">{{ reviews.count }}</span>)
                                     </a>
                                 </div>
                                 <div class="tab-content" id="product-tabContent">

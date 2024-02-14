@@ -20,7 +20,7 @@ from accounts.views import MyPasswordChangeView
 from feedback.forms import ReviewForm
 from feedback.models import Bookmark, Review
 from feedback.utils import get_reviews
-from feedback.views import add_is_bookmarked
+from feedback.utils import add_is_bookmarked
 from gallery.models import Photo
 from listings.models import Listing
 from specialists.models import BasicService, BasicServicePrice
@@ -164,7 +164,6 @@ class SpecialistProfileDetailView(ProfileView):
 
     def get_specialist(self):
         specialist_name = self.kwargs.get('specialist_username', self.request.user.username)
-        print(specialist_name)
         # specialist = get_object_or_404(User, username=specialist_name)
 
         specialist = User.objects.filter(username=specialist_name)
@@ -177,7 +176,6 @@ class SpecialistProfileDetailView(ProfileView):
             num_reviews=Count('review_for', distinct=True),
             avg_score=Avg('review_for__score'))
         specialist = sp.first()
-        print(specialist.avg_score)
         return specialist
 
     @staticmethod
