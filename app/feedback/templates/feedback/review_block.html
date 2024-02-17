@@ -26,6 +26,11 @@ document.addEventListener('DOMContentLoaded', function() {
         return null;
     }
 
+    // Функция для отображения всплывающего окна с предупреждением
+    function showAlert(message) {
+        alert(message);
+    }
+
     // Функция для получения отзывов с сервера
     function fetchReviews() {
         fetch(`/feedback/api/v1/specialists/${specialistUsername}/reviews/`)
@@ -72,6 +77,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     reviewsContainer.appendChild(reviewItem);
                 });
 
+                document.querySelectorAll('.reviews_count').forEach(element => {
+                    element.textContent = data.count; // Обновляем текстовое содержимое элемента
+                });
+                // Находим элемент с классом "product-rating" и классами "d-flex" и "mb--20"
+                const productRatingElement = document.querySelector('.product-rating.d-flex.mb--20');
+
+                // Получаем значение "average_rating_class" из JSON-ответа сервера
+                const averageRatingClass = data.average_rating_class; // Замените data.average_rating_class на вашу переменную с данными JSON-ответа
+
+                // Находим элемент с классом "star-rating" внутри "product-rating"
+                const starRatingElement = productRatingElement.querySelector('.star-rating');
+
+                // Получаем текущий класс элемента "star-rating"
+                const currentRatingClass = starRatingElement.classList[1]; // Предполагается, что у элемента только один дополнительный класс
+
+                // Заменяем текущий класс элемента "star-rating" на значение "average_rating_class"
+                starRatingElement.classList.replace(currentRatingClass, averageRatingClass);
+
+
                 // Привязываем обработчик события к кнопкам удаления после отрисовки отзывов
                 attachReviewButtonEventListeners();
             })
@@ -103,6 +127,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         star.classList.add('fa-star-o');
                     }
                 });
+
+                // Устанавливаем метод формы на PUT
+                document.getElementById('review-form').setAttribute('method', 'PUT');
+                // Устанавливаем адрес формы на соответствующий для редактирования отзыва
+                document.getElementById('review-form').setAttribute('action', `/feedback/api/v1/specialists/${specialistUsername}/reviews/${reviewId}/`);
+
+                // Фокусируемся на поле ввода текста отзыва
+                document.getElementById('id_text').focus();
             });
         });
 
@@ -148,28 +180,54 @@ document.addEventListener('DOMContentLoaded', function() {
         // Создаем объект FormData для отправки данных формы
         const formData = new FormData(reviewForm);
 
-        // Отправляем POST запрос на сервер
-        fetch(reviewForm.action, {
-            method: 'POST',
+        // Получаем метод формы (POST или PUT)
+        const method = reviewForm.getAttribute('method');
+        // Получаем адрес формы
+        const action = reviewForm.getAttribute('action');
+
+        // Отправляем запрос на сервер
+        fetch(action, {
+            method: method,
             body: formData,
             headers: {
-                'X-CSRFToken': getCSRFToken(), // Добавляем CSRF токен
-            }
+                'X-CSRFToken': getCSRFToken(), // Добавляем CSRF токен в заголовок запроса
+            },
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Ошибка при отправке отзыва');
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.error === "Отзыв уже существует") {
+                showAlert(data.error);
+            } else {
+                // После успешной отправки отзыва обновляем список отзывов
+                fetchReviews();
+                // Очищаем поля формы
+                reviewForm.reset();
+                // Очищаем отображение звёзд
+                clearStarRating();
+                // Очищаем скрытое поле с оценкой
+                document.getElementById('id_score').value = '';
+                // Устанавливаем метод формы обратно на POST
+                reviewForm.setAttribute('method', 'POST');
+                // Устанавливаем адрес формы обратно на добавление отзыва
+                reviewForm.setAttribute('action', `/feedback/api/v1/specialists/${specialistUsername}/reviews/`);
             }
-            // После успешной отправки отзыва обновляем список отзывов
-            fetchReviews();
-            // Очищаем поля формы
-            reviewForm.reset();
         })
         .catch(error => console.error('Ошибка при отправке отзыва:', error));
     });
 
+    // Функция для очистки отображения звёзд в рейтинге
+    function clearStarRating() {
+        const stars = document.querySelectorAll('.star');
+        stars.forEach(star => {
+            star.classList.remove('fa-star');
+            star.classList.add('fa-star-o');
+        });
+    }
+
     // Вызываем функцию для получения и отображения отзывов при загрузке страницы
     fetchReviews();
-});
 
+});
 </script>
+
+

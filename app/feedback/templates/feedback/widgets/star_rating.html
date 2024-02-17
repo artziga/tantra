@@ -32,32 +32,33 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        console.log('Script is running.');
 
-        var form = document.getElementById('review-form');
-        var scoreWarning = document.getElementById('scoreWarning');
+    var form = document.getElementById('review-form');
+    var scoreWarning = document.getElementById('scoreWarning');
 
-        if (form && scoreWarning) {
-            form.addEventListener('submit', function (event) {
-                console.log('Form is submitted.');
+    if (form && scoreWarning) {
+        form.addEventListener('submit', function (event) {
+            console.log('Form is submitted.');
 
-                var scoreField = document.getElementById('id_score');
-                console.log('Value of scoreField:', scoreField ? scoreField.value : 'null');
+            var scoreField = document.getElementById('id_score');
+            console.log('Value of scoreField:', scoreField ? scoreField.value : 'null');
 
-                if (scoreField && (scoreField.value === 'None' || scoreField.value.trim() === '')) {
-                    console.log('Rating is not provided. Cancelling form submission.');
-                    scoreWarning.innerHTML = 'Укажите оценку';
-                    event.preventDefault();
-                } else {
-                    scoreWarning.style.display = 'none';
-                    console.log('Form submission allowed.');
-                    // Если все проверки пройдены, форма будет отправлена
-                }
-            });
-        } else {
-            console.error('Form or warning element not found.');
-        }
-    });
+            if (scoreField && (scoreField.value === 'None' || scoreField.value.trim() === '')) {
+                console.log('Rating is not provided. Cancelling form submission.');
+                scoreWarning.innerHTML = 'Укажите оценку';
+                scoreWarning.style.display = 'block'; // Отображаем предупреждение
+                event.preventDefault();
+            } else {
+                scoreWarning.style.display = 'none'; // Скрываем предупреждение
+                console.log('Form submission allowed.');
+                // Если все проверки пройдены, форма будет отправлена
+            }
+        });
+    } else {
+        console.error('Form or warning element not found.');
+    }
+});
+
 </script>
 
 

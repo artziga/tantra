@@ -26,6 +26,7 @@ from feedback.forms import ReviewForm
 from feedback.models import Review, Bookmark
 
 from feedback.serializers import ReviewSerializer
+from feedback.templatetags.rating_tags import rating_class
 
 User = get_user_model()
 
@@ -92,6 +93,31 @@ class ReviewViewSet(mixins.CreateModelMixin,
                     viewsets.GenericViewSet):
     serializer_class = ReviewSerializer
     permission_classes = [IsAuthenticated]
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        avg_rating = queryset.aggregate(avg=Avg('score'))['avg']
+        avg_rating_class = rating_class(avg_rating)
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            paginated_response = self.get_paginated_response(serializer.data)
+
+            # Добавление своих метаданных
+            rating_metadata = {
+                'average_rating_class': avg_rating_class,
+                # Другие ваши метаданные
+            }
+
+            # Добавляем свои метаданные на одном уровне с данными пагинатора
+            paginated_response.data.update(rating_metadata)
+            print(paginated_response.data)
+            return paginated_response
+            # return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     def get_queryset(self):
         queryset = Review.objects.filter(user__username=self.kwargs['specialist_username'])
