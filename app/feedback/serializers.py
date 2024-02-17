@@ -20,7 +20,7 @@ class ReviewUserSerializer(serializers.ModelSerializer):
 class ReviewSerializer(serializers.ModelSerializer):
     """Список отзывов"""
     date_added = serializers.DateTimeField(format="%Y-%m-%d %H:%M", read_only=True)
-    score = serializers.IntegerField(write_only=True)
+    score = serializers.IntegerField()
     rating_class = serializers.SerializerMethodField()
     author = ReviewUserSerializer(read_only=True)
     is_current_user_author = serializers.SerializerMethodField()
@@ -37,17 +37,3 @@ class ReviewSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         user = request.user if request else None
         return obj.author == user
-
-
-class ReviewsMetaDataSerializer(serializers.Serializer):
-    """Сериализатор для отзывов с массажиста"""
-    avg_rating_class = serializers.SerializerMethodField(read_only=True)
-    has_reviewed = serializers.SerializerMethodField(read_only=True)
-
-    def get_has_reviewed(self, obj):
-        is_reviewed = self.context.get('has_reviewed', False)
-        return is_reviewed
-
-    def get_avg_rating_class(self, obj):
-        return rating_class(4)
-

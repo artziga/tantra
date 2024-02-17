@@ -20,11 +20,12 @@ from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 
 from feedback.forms import ReviewForm
 from feedback.models import Review, Bookmark
 
-from feedback.serializers import ReviewSerializer, ReviewsMetaDataSerializer
+from feedback.serializers import ReviewSerializer
 
 User = get_user_model()
 
@@ -87,6 +88,7 @@ class ReviewPagination(PageNumberPagination):
 class ReviewViewSet(mixins.CreateModelMixin,
                     mixins.DestroyModelMixin,
                     mixins.ListModelMixin,
+                    mixins.UpdateModelMixin,
                     viewsets.GenericViewSet):
     serializer_class = ReviewSerializer
     permission_classes = [IsAuthenticated]
@@ -107,7 +109,7 @@ class ReviewViewSet(mixins.CreateModelMixin,
 
         specialist_username = self.kwargs['specialist_username']
         if Review.objects.filter(author=self.request.user, user__username=specialist_username).exists():
-            return Response({"detail": "Отзыв уже существует"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "Отзыв уже существует"}, status=status.HTTP_400_BAD_REQUEST)
 
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)

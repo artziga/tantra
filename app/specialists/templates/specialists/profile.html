@@ -23,14 +23,13 @@
                                     </div>
                                 </div>
                                 <div class="product-rating d-flex mb--20">
-                                    <div class="avg_rating">
                                     <div class="star-rating {% rating_class specialist.avg_score  %}">
                                         <span>Rated <strong class="rating">{% rating_class reviews.avg_score %}</strong> out of 5</span>
                                     </div>
-                                    </div>
-                                    Отзывов:
-                                    <span class="reviews_count">
+                                    <span>
+                                    Отзывов: <span class="reviews_count">
                                           {{ specialist.num_reviews }}
+                                    </span>
                                     </span>
                                 </div>
                                             {% include 'specialists/profile_info.html' %}

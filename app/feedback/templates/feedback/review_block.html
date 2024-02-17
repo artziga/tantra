@@ -3,86 +3,18 @@ aria-labelledby="nav-reviews-tab">
     <div class="product-reviews">
         <h3 class="review__title">Отзывов: <span class="reviews_count">{{ specialist.num_reviews|default:"0"  }}</span></h3>
         <ul class="review__list mb--50">
-
         </ul>
-        {% if not is_reviewed and specialist != user %}
+{#        {% if not is_reviewed and specialist != user %}#}
         {% include 'feedback/review_form.html' %}
-        {% endif %}
+{#        {% endif %}#}
     </div>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
     let specialistUsername = "{{ specialist.username }}";
-    let reviewFormWrapper = document.querySelector('.review-form-wrapper');
-    let reviewsCountElements = document.querySelectorAll('.reviews_count');
 
-    function fetchReviews() {
-        fetch('{% url 'feedback:reviews_api' specialist_username=specialist.username %}')
-            .then(response => response.json())
-            .then(data => {
-                const reviewsContainer = document.querySelector('.review__list');
-                reviewsContainer.innerHTML = '';
-
-                data.forEach(reviewData => {
-                    reviewData.review_for.forEach(review => {
-                        const reviewItem = document.createElement('li');
-                        reviewItem.classList.add('review__item');
-
-                        reviewItem.innerHTML = `
-                            <div class="review__container" style="position: relative;">
-                                <img src="${review.author.avatar_img.image}" alt="Review Avatar" class="review__avatar">
-                                <div class="review__text">
-                                    <div class="d-flex flex-sm-row flex-column justify-content-between">
-                                        <div class="review__meta">
-                                            <strong class="review__author">${review.author.first_name} ${review.author.last_name}</strong>
-                                            <span class="review__dash">-</span>
-                                            <span class="review__published-date">${review.date_added}</span>
-                                        </div>
-                                        <div class="product-rating">
-                                            <div class="star-rating ${review.rating_class}">
-                                                <span>Rated <strong class="rating">${review.score}</strong> out of 5</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p class="review__description">${review.text}</p>
-
-                                    ${review.is_current_user_author ? `
-                                        <div class="review__icons">
-                                            <a class="delete-review-btn" data-review-id="${review.id}">
-                                                <i class="fa fa-trash" aria-hidden="true" title="Удалить"></i>
-                                            </a>
-                                        </div>
-                                    ` : ''}
-                                </div>
-                            </div>
-                        `;
-                        reviewsContainer.appendChild(reviewItem);
-                    });
-                });
-
-                // Привязываем обработчик события к кнопкам удаления после отрисовки отзывов
-                attachDeleteReviewEventListeners();
-
-                // Обновляем элементы с классом reviews_count
-                reviewsCountElements.forEach(element => {
-                    element.textContent = `${data[0].num_reviews}`;
-                });
-            })
-            .catch(error => console.error('Ошибка при получении отзывов:', error));
-    }
-
-    function attachDeleteReviewEventListeners() {
-        document.querySelectorAll('.delete-review-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const reviewId = this.dataset.reviewId;
-                deleteReview(reviewId, specialistUsername);
-            });
-        });
-    }
-
-    fetchReviews();
-
+    // Функция для получения CSRF токена из кук
     function getCSRFToken() {
         const cookies = document.cookie.split(';');
         for (let i = 0; i < cookies.length; i++) {
@@ -94,11 +26,101 @@ aria-labelledby="nav-reviews-tab">
         return null;
     }
 
-    function deleteReview(reviewId, specialistUsername) {
+    // Функция для получения отзывов с сервера
+    function fetchReviews() {
+        fetch(`/feedback/api/v1/specialists/${specialistUsername}/reviews/`)
+            .then(response => response.json())
+            .then(data => {
+                const reviewsContainer = document.querySelector('.review__list');
+                reviewsContainer.innerHTML = '';
+
+                data.results.forEach(review => {
+                    const reviewItem = document.createElement('li');
+                    reviewItem.classList.add('review__item');
+
+                    reviewItem.innerHTML = `
+                        <div class="review__container" style="position: relative;">
+                            <img src="${review.author.avatar_img.image}" alt="Review Avatar" class="review__avatar">
+                            <div class="review__text">
+                                <div class="d-flex flex-sm-row flex-column justify-content-between">
+                                    <div class="review__meta">
+                                        <strong class="review__author">${review.author.first_name} ${review.author.last_name}</strong>
+                                        <span class="review__dash">-</span>
+                                        <span class="review__published-date">${review.date_added}</span>
+                                    </div>
+                                    <div class="product-rating">
+                                        <div class="star-rating ${review.rating_class}">
+                                            <span>Rated <strong class="rating">${review.score}</strong> out of 5</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="review__description">${review.text}</p>
+
+                                ${review.is_current_user_author ? `
+                                    <div class="review__icons">
+                                        <a class="edit-review-btn" data-review-id="${review.id}" data-review-score="${review.score}" data-review-text="${review.text}">
+                                            <i class="fa fa-pencil-square-o" aria-hidden="true" title="Редактировать"></i>
+                                        </a>
+                                        <a class="delete-review-btn" data-review-id="${review.id}">
+                                            <i class="fa fa-trash" aria-hidden="true" title="Удалить"></i>
+                                        </a>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                    reviewsContainer.appendChild(reviewItem);
+                });
+
+                // Привязываем обработчик события к кнопкам удаления после отрисовки отзывов
+                attachReviewButtonEventListeners();
+            })
+            .catch(error => console.error('Ошибка при получении отзывов:', error));
+    }
+
+    // Функция для привязки обработчиков событий к кнопкам удаления и редактирования отзыва
+    function attachReviewButtonEventListeners() {
+        // Добавляем обработчик события для кнопки редактирования
+        document.querySelectorAll('.edit-review-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const reviewId = this.dataset.reviewId;
+                const reviewScore = this.dataset.reviewScore;
+                const reviewText = this.dataset.reviewText;
+
+                // Заполняем поля формы редактирования данными отзыва
+                document.getElementById('id_score').value = reviewScore;
+                document.getElementById('id_text').value = reviewText;
+
+                // Устанавливаем соответствующее количество звезд в рейтинге
+                const stars = document.querySelectorAll('.star');
+                stars.forEach(star => {
+                    const rating = star.getAttribute('data-rating');
+                    if (rating <= reviewScore) {
+                        star.classList.remove('fa-star-o');
+                        star.classList.add('fa-star');
+                    } else {
+                        star.classList.remove('fa-star');
+                        star.classList.add('fa-star-o');
+                    }
+                });
+            });
+        });
+
+        // Добавляем обработчик события для кнопки удаления
+        document.querySelectorAll('.delete-review-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const reviewId = this.dataset.reviewId;
+                deleteReview(reviewId);
+            });
+        });
+    }
+
+    // Функция для отправки запроса на удаление отзыва
+    function deleteReview(reviewId) {
         if (confirm("Вы уверены, что хотите удалить этот отзыв?")) {
             const csrfToken = getCSRFToken();
 
-            fetch(`/feedback/api/v1/specialists/${specialistUsername}/reviews/${reviewId}`, {
+            fetch(`/feedback/api/v1/specialists/${specialistUsername}/reviews/${reviewId}/`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -111,35 +133,43 @@ aria-labelledby="nav-reviews-tab">
                 }
                 // После успешного удаления отзыва обновляем список отзывов
                 fetchReviews();
-                reviewFormWrapper.style.display = 'block'; // Показываем форму после удаления отзыва
             })
             .catch(error => console.error('Ошибка при удалении отзыва:', error));
         }
     }
 
-    // Обработчик для формы создания отзыва
+    // Получаем форму отзыва
     const reviewForm = document.getElementById('review-form');
-    if (reviewForm) {
-        reviewForm.addEventListener('submit', function(event) {
-            event.preventDefault();
 
-            const formData = new FormData(reviewForm);
+    // Добавляем обработчик события на отправку формы
+    reviewForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Предотвращаем стандартное поведение формы
 
-            fetch(reviewForm.action, {
-                method: reviewForm.method,
-                body: formData,
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Ошибка создания отзыва');
-                }
-                reviewForm.reset();
-                // После успешного создания отзыва обновляем список отзывов
-                fetchReviews();
-                reviewFormWrapper.style.display = 'none'; // Скрываем форму после создания отзыва
-            })
-            .catch(error => console.error('Ошибка при создании отзыва:', error));
-        });
-    }
+        // Создаем объект FormData для отправки данных формы
+        const formData = new FormData(reviewForm);
+
+        // Отправляем POST запрос на сервер
+        fetch(reviewForm.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': getCSRFToken(), // Добавляем CSRF токен
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Ошибка при отправке отзыва');
+            }
+            // После успешной отправки отзыва обновляем список отзывов
+            fetchReviews();
+            // Очищаем поля формы
+            reviewForm.reset();
+        })
+        .catch(error => console.error('Ошибка при отправке отзыва:', error));
+    });
+
+    // Вызываем функцию для получения и отображения отзывов при загрузке страницы
+    fetchReviews();
 });
+
 </script>
