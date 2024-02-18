@@ -12,6 +12,7 @@ from users.managers import SpecialistsManager
 
 
 class User(AbstractUser):
+    email = models.EmailField(_("email address"), unique=True, blank=False, null=False)
     is_verified = models.BooleanField(verbose_name='Подтверждён', default=False)
     is_specialist = models.BooleanField(verbose_name='Массажист', default=False)
     bookmarks = GenericRelation(Bookmark, related_name='users')
