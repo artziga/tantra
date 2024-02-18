@@ -47,7 +47,7 @@ class LoginUserForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.fields['username'].widget = forms.PasswordInput(attrs={
+        self.fields['username'].widget = forms.TextInput(attrs={
             'class': 'form__input'
         })
 
