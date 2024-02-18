@@ -13,11 +13,29 @@ class RegisterUserForm(UserCreationForm):
     Добавляет дополнительное поле 'is_adult', чтобы подтвердить совершеннолетие пользователя.
     """
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['password1'].widget = forms.PasswordInput(attrs={
+            'class': 'form__input'
+        })
+
+        self.fields['password2'].widget = forms.PasswordInput(attrs={
+            'class': 'form__input'
+        })
+
     is_adult = forms.BooleanField(label='Мне больше 18 лет', widget=forms.CheckboxInput())
 
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2', 'is_adult')
+        widgets = {'username': forms.TextInput(attrs={'class': 'form__input'}),
+                   'email': forms.EmailInput(attrs={'class': 'form__input'}),
+                   'password1': forms.PasswordInput(attrs={
+                       'class': 'form__input'
+                   }),
+                   'password2': forms.PasswordInput(attrs={'class': 'form__input'})
+                   }
 
 
 class LoginUserForm(AuthenticationForm):
@@ -26,9 +44,21 @@ class LoginUserForm(AuthenticationForm):
     Используется для входа пользователя в систему.
     """
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['username'].widget = forms.PasswordInput(attrs={
+            'class': 'form__input'
+        })
+
+        self.fields['password'].widget = forms.PasswordInput(attrs={
+            'class': 'form__input'
+        })
+
     class Meta:
         model = User
         fields = (User.USERNAME_FIELD, 'password')
+
 
 
 class UserPasswordResetForm(PasswordResetForm):
