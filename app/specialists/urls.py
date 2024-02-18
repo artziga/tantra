@@ -5,6 +5,7 @@ from specialists import views
 app_name = 'specialists'
 urlpatterns = [
     path('', views.SpecialistsListView.as_view(), name='specialists'),
+    path('api/v1/specialists/', views.SpecialistsListAPIView.as_view(), name='specialistslist'),
     path('on_map', views.specialists_on_map_list, name='specialists_on_map'),
     path('profile/', views.SpecialistSelfProfileDetailView.as_view(), name='profile'),
     path('become_a_specialist/', views.become_a_specialist, name='become_a_specialist'),

@@ -99,25 +99,19 @@ class ReviewViewSet(mixins.CreateModelMixin,
         avg_rating = queryset.aggregate(avg=Avg('score'))['avg']
         avg_rating_class = rating_class(avg_rating)
         page = self.paginate_queryset(queryset)
-
+        rating_metadata = {
+            'average_rating_class': avg_rating_class,
+        }
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             paginated_response = self.get_paginated_response(serializer.data)
 
-            # Добавление своих метаданных
-            rating_metadata = {
-                'average_rating_class': avg_rating_class,
-                # Другие ваши метаданные
-            }
-
-            # Добавляем свои метаданные на одном уровне с данными пагинатора
             paginated_response.data.update(rating_metadata)
-            print(paginated_response.data)
             return paginated_response
-            # return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        data = rating_metadata.update(serializer.data)
+        return Response(data)
 
     def get_queryset(self):
         queryset = Review.objects.filter(user__username=self.kwargs['specialist_username'])
@@ -150,7 +144,6 @@ class RatingAPIView(APIView):
                       .annotate(average_rating=Avg('review_for__score'), is_reviewed=user_reviews_exists)
                       .values('average_rating', 'is_reviewed').get())
         return Response(specialist, status=status.HTTP_200_OK)
-
 
 
 class BookmarkView(LoginRequiredMixin, View):

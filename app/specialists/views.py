@@ -15,10 +15,12 @@ from django.utils.safestring import mark_safe
 from django.views.generic import ListView
 from django.conf import settings
 from formtools.wizard.views import SessionWizardView
+from rest_framework.generics import ListAPIView
 
 from accounts.views import MyPasswordChangeView
 from feedback.forms import ReviewForm
 from feedback.models import Bookmark, Review
+from feedback.serializers import ReviewUserSerializer
 from feedback.utils import get_reviews
 from feedback.utils import add_is_bookmarked
 from gallery.models import Photo
@@ -262,6 +264,10 @@ class SpecialistsListView(FilterFormMixin, ListView):
             queryset = []
         return queryset
 
+
+class SpecialistsListAPIView(ListAPIView):
+    queryset = User.specialists.all()
+    serializer_class = ReviewUserSerializer
 
 def specialists_on_map_list(request):
     """Список мастеров для отображения на карте."""

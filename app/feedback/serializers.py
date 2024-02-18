@@ -4,7 +4,6 @@ from rest_framework import serializers
 from gallery.serializers import PhotoSerializer
 from .models import Review
 from .templatetags.rating_tags import rating_class
-from .utils import get_reviews
 
 User = get_user_model()
 
