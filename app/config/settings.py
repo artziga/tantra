@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'corsheaders',
     "ckeditor",
     "main.apps.MainConfig",
@@ -191,6 +192,11 @@ LOGGING = {
 
 YANDEX_GEOCODER_API_KEY = os.getenv('YANDEX_GEOCODER_API_KEY')
 YANDEX_GEOSUGGEST_API_KEY = os.getenv('YANDEX_GEOSUGGEST_API_KEY')
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10
+}
 
 CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 
