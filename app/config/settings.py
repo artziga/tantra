@@ -66,7 +66,8 @@ INSTALLED_APPS = [
     "gallery.apps.GalleryConfig",
     "feedback.apps.FeedbackConfig",
     "listings.apps.ListingsConfig",
-    "articles.apps.ArticlesConfig"
+    "articles.apps.ArticlesConfig",
+    "appointments.apps.AppointmentsConfig"
 ]
 
 MIDDLEWARE = [
