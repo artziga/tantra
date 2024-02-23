@@ -2,7 +2,7 @@ import json
 import logging
 
 from django.contrib.auth import get_user_model
-from django.db.models import Count, Avg, F, Subquery, BooleanField, Value, OuterRef, Exists
+from django.db.models import Avg, OuterRef, Exists
 from django.db.utils import IntegrityError
 from django.contrib import auth, messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -14,13 +14,11 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.views import View
 from rest_framework import viewsets, mixins, status
-from rest_framework.generics import RetrieveAPIView
-from rest_framework.pagination import PageNumberPagination
+
 from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet
 
 from feedback.forms import ReviewForm
 from feedback.models import Review, Bookmark
@@ -80,12 +78,6 @@ class DeleteReviewView(LoginRequiredMixin, DeleteView):
         return reverse_lazy('specialists:specialist_profile', args=[self.object.user.username])
 
 
-class ReviewPagination(PageNumberPagination):
-    page_size = 1
-    page_size_query_param = 'page_size'
-    max_page_size = 100
-
-
 class ReviewViewSet(mixins.CreateModelMixin,
                     mixins.DestroyModelMixin,
                     mixins.ListModelMixin,
@@ -104,17 +96,12 @@ class ReviewViewSet(mixins.CreateModelMixin,
             serializer = self.get_serializer(page, many=True)
             paginated_response = self.get_paginated_response(serializer.data)
 
-            # Добавление своих метаданных
             rating_metadata = {
                 'average_rating_class': avg_rating_class,
-                # Другие ваши метаданные
             }
 
-            # Добавляем свои метаданные на одном уровне с данными пагинатора
             paginated_response.data.update(rating_metadata)
-            print(paginated_response.data)
             return paginated_response
-            # return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
@@ -150,7 +137,6 @@ class RatingAPIView(APIView):
                       .annotate(average_rating=Avg('review_for__score'), is_reviewed=user_reviews_exists)
                       .values('average_rating', 'is_reviewed').get())
         return Response(specialist, status=status.HTTP_200_OK)
-
 
 
 class BookmarkView(LoginRequiredMixin, View):
