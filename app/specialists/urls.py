@@ -3,6 +3,7 @@ from django.urls import path
 from specialists import views
 
 app_name = 'specialists'
+
 urlpatterns = [
     path('', views.SpecialistsListView.as_view(), name='specialists'),
     path('api/v1/specialists/', views.SpecialistsListAPIView.as_view(), name='specialistslist'),
