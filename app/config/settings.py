@@ -110,7 +110,7 @@ DATABASES = {
 
 
 AUTHENTICATION_BACKENDS = (
-    'accounts.telegram_auth_backend.TelegramAuth',
+    'social_core.backends.telegram.TelegramAuth',
     'django.contrib.auth.backends.ModelBackend',
 )
 
