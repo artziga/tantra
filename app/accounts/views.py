@@ -107,3 +107,8 @@ class MyPasswordResetConfirmView(PasswordResetConfirmView):
     post_reset_login = True
     success_url = reverse_lazy("users:profile")
 
+
+def profile_view(request):
+    if request.user.is_specialist:
+        return redirect("specialists:profile")
+    return redirect("users:profile")
