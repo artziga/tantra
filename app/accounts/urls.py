@@ -1,13 +1,14 @@
 from django.contrib.auth import views
 from django.urls import path, reverse_lazy
 
-from accounts.forms import UserPasswordResetForm, LoginUserForm, MyPasswordChangeForm
+from accounts.forms import UserPasswordResetForm
 from accounts.views import RegisterUserView, RegisterSpecialistView, RegistrationDone, user_activate, \
-    MyPasswordResetConfirmView, MyLoginView
+    MyPasswordResetConfirmView, MyLoginView, profile_view
 
 app_name = 'accounts'
 
 urlpatterns = [
+    path("profile/", profile_view, name="profile"),
     path("registration/", RegisterUserView.as_view(), name="registration"),
     path("specialist_registration/", RegisterSpecialistView.as_view(), name="specialist_registration"),
     path("registration/done", RegistrationDone.as_view(), name="registration_done"),
