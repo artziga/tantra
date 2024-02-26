@@ -24,14 +24,14 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
 
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = ['27aa-176-52-76-244.ngrok-free.app']
 
 if not DEBUG:
     CORS_ALLOWED_ORIGINS = os.environ.get("DJANGO_CORS_ALLOWED_ORIGINS").split(" ")
     CSRF_TRUSTED_ORIGINS = os.environ.get("DJANGO_CSRF_TRUSTED_ORIGINS").split(" ")
 else:
-    CORS_ALLOWED_ORIGINS = ['https://5899-176-52-76-252.ngrok-free.app']
-    CSRF_TRUSTED_ORIGINS = ['https://5899-176-52-76-252.ngrok-free.app']
+    CORS_ALLOWED_ORIGINS = ['https://27aa-176-52-76-244.ngrok-free.app']
+    CSRF_TRUSTED_ORIGINS = ['https://27aa-176-52-76-244.ngrok-free.app']
 
 SOCIAL_AUTH_TELEGRAM_BOT_TOKEN = os.environ.get('SOCIAL_AUTH_TELEGRAM_BOT_TOKEN')
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"

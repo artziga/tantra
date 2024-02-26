@@ -29,6 +29,7 @@ from specialists.models import BasicService, BasicServicePrice
 from specialists.forms import PersonDataForm, SpecialistDataForm, ContactDataForm, AboutForm, SpecialistFilterForm, \
     FeaturesForm
 from specialists.mixins import SpecialistOnlyMixin, specialist_only
+from specialists.serializers import SpecialistSerializer
 from specialists.utils import make_user_a_specialist, delete_specialist, filter_specialists
 from main.utils import FilterFormMixin
 from specialists.models import SpecialistProfile
@@ -267,7 +268,8 @@ class SpecialistsListView(FilterFormMixin, ListView):
 
 class SpecialistsListAPIView(ListAPIView):
     queryset = User.specialists.all()
-    serializer_class = ReviewUserSerializer
+    serializer_class = SpecialistSerializer
+
 
 def specialists_on_map_list(request):
     """Список мастеров для отображения на карте."""
@@ -294,5 +296,5 @@ def specialists_on_map_list(request):
         lat += specialist.specialist_profile.latitude
         long += specialist.specialist_profile.longitude
         count += 1
-    map_center = (lat/count, long/count)
+    map_center = (lat / count, long / count)
     return JsonResponse({'specialists_for_map': specialists_data, 'map_center': map_center})
